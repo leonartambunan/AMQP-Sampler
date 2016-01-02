@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="AMQP-Sampler:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/AMQP_Sampler_jar</output-path>
+    <root id="root">
+      <element id="archive" name="AMQP-Sampler.jar">
+        <element id="module-output" name="AMQP-Sampler" />
+      </element>
+      <element id="library" level="project" name="commons-lang3-3.3.1" />
+    </root>
+  </artifact>
+</component>
