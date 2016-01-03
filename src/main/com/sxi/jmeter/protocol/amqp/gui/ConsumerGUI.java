@@ -79,6 +79,7 @@ public class ConsumerGUI extends AbstractAMQPSamplerGUI {
 
     @Override
     public void modifyTestElement(TestElement te) {
+
         AMQPConsumer sampler = (AMQPConsumer) te;
         sampler.clear();
         configureTestElement(sampler);

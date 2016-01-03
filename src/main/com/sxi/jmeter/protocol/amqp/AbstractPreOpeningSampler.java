@@ -15,8 +15,9 @@ import java.util.concurrent.TimeoutException;
 
 public abstract class AbstractPreOpeningSampler extends AbstractSampler implements ThreadListener {
 
-    public static final String DEFAULT_SERVER_QUEUE = "olt.logon_request-rpc";
-    public static final String DEFAULT_REPLYTO_QUEUE = "amq.rabbitmq.reply-to";
+    public static final String DEFAULT_LOGIN_QUEUE = "olt.logon_request-rpc";
+    public static final String DEFAULT_REPLY_TO_QUEUE = "amq.rabbitmq.reply-to";
+    public static final String DEFAULT_ORDER_REQUEST_QUEUE = "olt.order_request";
     public static final String DEFAULT_ORDER_RESPONSE_QUEUE = "olt.order_response";
 
     public static final int DEFAULT_PORT = 5672;
@@ -28,7 +29,7 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
-    protected static final String VIRUTAL_HOST = "AMQPSampler.VirtualHost";
+    protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
     protected static final String PORT = "AMQPSampler.Port";
     protected static final String SSL = "AMQPSampler.SSL";
@@ -41,19 +42,19 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
 
     private static final int DEFAULT_HEARTBEAT = 1;
 
-    private final static String SERVER_QUEUE = "AMQPSampler.ServerQueue";
-    private final static String REPLYTO_QUEUE = "AMQPSampler.ReplyToQueue";
+    private final static String LOGIN_QUEUE = "AMQPSampler.ServerQueue";
+    private final static String LOGIN_REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
+    private final static String ORDER_REQUEST_QUEUE = "AMQPSampler.OrderRequestQueue";
     private final static String ORDER_RESPONSE_QUEUE = "AMQPSampler.OrderResponseQueue";
     private static final String ROUTING_KEY = "AMQPSampler.RoutingKey";
     private static final String STOCK_ID = "AMQPSampler.StockId";
     private static final String STOCK_AMOUNT = "AMQPSampler.StockAmount";
 
-    private final static String MOBILE_DEVICEID = "Mobile.DeviceId";
-    private final static String MOBILE_USERID = "Mobile.UserId";
+    private final static String MOBILE_DEVICE_ID = "Mobile.DeviceId";
+    private final static String MOBILE_USER_ID = "Mobile.UserId";
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
-
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
@@ -75,17 +76,13 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         log.info(channel==null?"channel is null":"channel is not null");
 
         if(channel == null) {
-
             factory.setPort(getPortAsInt());
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
-
             connection = factory.newConnection();
             Channel ch = connection.createChannel();
-
             setChannel(ch);
-
         }
 
         return true;
@@ -99,29 +96,20 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         return this.getName();
     }
 
-    protected int getTimeoutAsInt() {
-        if (getPropertyAsInt(TIMEOUT) < 1) {
-            return DEFAULT_TIMEOUT;
-        }
-        return getPropertyAsInt(TIMEOUT);
-    }
-
     public String getTimeout() {
         return getPropertyAsString(TIMEOUT, DEFAULT_TIMEOUT_STRING);
     }
-
 
     public void setTimeout(String s) {
         setProperty(TIMEOUT, s);
     }
 
-
     public String getVirtualHost() {
-        return getPropertyAsString(VIRUTAL_HOST);
+        return getPropertyAsString(VIRTUAL_HOST);
     }
 
     public void setVirtualHost(String name) {
-        setProperty(VIRUTAL_HOST, name);
+        setProperty(VIRTUAL_HOST, name);
     }
 
     public String getHost() {
@@ -131,7 +119,6 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
     public void setHost(String name) {
         setProperty(HOST, name);
     }
-
 
     public String getPort() {
         return getPropertyAsString(PORT);
@@ -148,18 +135,13 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         return getPropertyAsInt(PORT);
     }
 
-    public void setConnectionSSL(String content) {
-        setProperty(SSL, content);
-    }
-
     public void setConnectionSSL(Boolean value) {
         setProperty(SSL, value.toString());
     }
 
-    public boolean connectionSSL() {
+    public boolean isConnectionSSL() {
         return getPropertyAsBoolean(SSL);
     }
-
 
     public String getUsername() {
         return getPropertyAsString(USERNAME);
@@ -169,7 +151,6 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         setProperty(USERNAME, name);
     }
 
-
     public String getPassword() {
         return getPropertyAsString(PASSWORD);
     }
@@ -178,31 +159,31 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         setProperty(PASSWORD, name);
     }
 
-    public String getMobileDeviceid() {
-        return getPropertyAsString(MOBILE_DEVICEID,"ANDROID");
+    public String getMobileDeviceId() {
+        return getPropertyAsString(MOBILE_DEVICE_ID,"ANDROID");
     }
 
-    public void setMobileDeviceid(String deviceId) {
-        setProperty(MOBILE_DEVICEID, deviceId);
+    public void setMobileDeviceId(String deviceId) {
+        setProperty(MOBILE_DEVICE_ID, deviceId);
     }
 
-    public String getServerQueue() {
-        return getPropertyAsString(SERVER_QUEUE, DEFAULT_SERVER_QUEUE);
+    public String getLoginQueue() {
+        return getPropertyAsString(LOGIN_QUEUE, DEFAULT_LOGIN_QUEUE);
     }
 
-    public void setServerQueue(String queue) {
-        setProperty(SERVER_QUEUE, queue);
+    public void setLoginQueue(String queue) {
+        setProperty(LOGIN_QUEUE, queue);
     }
 
-    public String getReplytoQueue() {
-        return getPropertyAsString(REPLYTO_QUEUE, DEFAULT_REPLYTO_QUEUE);
+    public String getLoginReplyToQueue() {
+        return getPropertyAsString(LOGIN_REPLY_TO_QUEUE, DEFAULT_REPLY_TO_QUEUE);
     }
 
-    public void setReplytoQueue(String queue) {
-        setProperty(REPLYTO_QUEUE, queue);
+    public void setLoginReplyToQueue(String queue) {
+        setProperty(LOGIN_REPLY_TO_QUEUE, queue);
     }
 
-   public String getOrderResponseQueue() {
+    public String getOrderResponseQueue() {
         return getPropertyAsString(ORDER_RESPONSE_QUEUE, DEFAULT_ORDER_RESPONSE_QUEUE);
     }
 
@@ -210,7 +191,15 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         setProperty(ORDER_RESPONSE_QUEUE, queue);
     }
 
-   public String getRoutingKey() {
+    public String getOrderRequestQueue() {
+        return getPropertyAsString(ORDER_REQUEST_QUEUE, DEFAULT_ORDER_REQUEST_QUEUE);
+    }
+
+    public void setOrderRequestQueue(String queue) {
+        setProperty(ORDER_REQUEST_QUEUE, queue);
+    }
+
+    public String getRoutingKey() {
         return getPropertyAsString(ROUTING_KEY);
     }
 
@@ -225,7 +214,8 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
     public void setStockId(String id) {
         setProperty(STOCK_ID, id);
     }
-   public String getStockAmount() {
+
+    public String getStockAmount() {
         return getPropertyAsString(STOCK_AMOUNT);
     }
 
@@ -241,7 +231,6 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         setProperty(MOBILE_APP_VERSION, appVersion);
     }
 
-
     public String getMobilePassword() {
         return getPropertyAsString(MOBILE_PASSWORD);
     }
@@ -255,11 +244,11 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
     }
 
     public void setMobileUserid(String userid) {
-        setProperty(MOBILE_USERID, userid);
+        setProperty(MOBILE_USER_ID, userid);
     }
 
     public String getMobileUserid() {
-        return getPropertyAsString(MOBILE_USERID);
+        return getPropertyAsString(MOBILE_USER_ID);
     }
 
     public void setMobileType(String mobileType) {

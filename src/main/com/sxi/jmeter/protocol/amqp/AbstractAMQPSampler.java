@@ -2,7 +2,6 @@ package com.sxi.jmeter.protocol.amqp;
 
 import com.rabbitmq.client.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.AbstractSampler implements ThreadListener {
-
 
     public static final String DEFAULT_EXCHANGE_STRING = "";
     public static final boolean DEFAULT_EXCHANGE_DURABLE = true;
@@ -78,7 +76,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
 
             setChannel(channel);
 
-            //TODO: Break out queue binding
             boolean queueConfigured = (getQueue() != null && !getQueue().isEmpty());
 
             log.info("queueConfigured:"+queueConfigured);
@@ -89,7 +86,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
                     +"\n\t routing key: " + getRoutingKey()
                     +"\n\t arguments: " + getQueueArguments()
             );
-
 
             if(queueConfigured) {
                 if (getQueueRedeclare()) {
@@ -135,9 +131,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     protected abstract Channel getChannel();
     protected abstract void setChannel(Channel channel);
 
-    /**
-     * @return a string for the sampleResult Title
-     */
     protected String getTitle() {
         return this.getName();
     }
@@ -153,11 +146,9 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsString(TIMEOUT, DEFAULT_TIMEOUT_STRING);
     }
 
-
     public void setTimeout(String s) {
         setProperty(TIMEOUT, s);
     }
-
 
     public String getExchange() {
         return getPropertyAsString(EXCHANGE,DEFAULT_EXCHANGE_STRING);
@@ -167,7 +158,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         setProperty(EXCHANGE, name);
     }
 
-
     public boolean getExchangeDurable() {
         return getPropertyAsBoolean(EXCHANGE_DURABLE,DEFAULT_EXCHANGE_DURABLE);
     }
@@ -176,7 +166,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         setProperty(EXCHANGE_DURABLE, durable);
     }
 
-
     public String getExchangeType() {
         return getPropertyAsString(EXCHANGE_TYPE);
     }
@@ -184,7 +173,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     public void setExchangeType(String name) {
         setProperty(EXCHANGE_TYPE, name);
     }
-
 
     public Boolean getExchangeRedeclare() {
         return getPropertyAsBoolean(EXCHANGE_REDECLARE,DEFAULT_EXCHANGE_REDECLARE);
@@ -202,7 +190,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         setProperty(QUEUE, name);
     }
 
-
     public String getRoutingKey() {
         return getPropertyAsString(ROUTING_KEY);
     }
@@ -210,7 +197,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     public void setRoutingKey(String name) {
         setProperty(ROUTING_KEY, name);
     }
-
 
     public String getVirtualHost() {
         return getPropertyAsString(VIRUTAL_HOST);
@@ -236,7 +222,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsInt(MESSAGE_TTL);
     }
 
-
     public String getMessageExpires() {
         return getPropertyAsString(MESSAGE_EXPIRES);
     }
@@ -252,7 +237,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsInt(MESSAGE_EXPIRES);
     }
 
-
     public String getHost() {
         return getPropertyAsString(HOST);
     }
@@ -260,7 +244,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     public void setHost(String name) {
         setProperty(HOST, name);
     }
-
 
     public String getPort() {
         return getPropertyAsString(PORT);
@@ -289,7 +272,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsBoolean(SSL);
     }
 
-
     public String getUsername() {
         return getPropertyAsString(USERNAME);
     }
@@ -297,7 +279,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     public void setUsername(String name) {
         setProperty(USERNAME, name);
     }
-
 
     public String getPassword() {
         return getPropertyAsString(PASSWORD);
@@ -307,9 +288,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         setProperty(PASSWORD, name);
     }
 
-    /**
-     * @return the whether or not the queue is durable
-     */
     public String getQueueDurable() {
         return getPropertyAsString(QUEUE_DURABLE);
     }
@@ -326,9 +304,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsBoolean(QUEUE_DURABLE);
     }
 
-    /**
-     * @return the whether or not the queue is exclusive
-     */
     public String getQueueExclusive() {
         return getPropertyAsString(QUEUE_EXCLUSIVE);
     }
@@ -345,9 +320,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
         return getPropertyAsBoolean(QUEUE_EXCLUSIVE);
     }
 
-    /**
-     * @return the whether or not the queue should auto delete
-     */
     public String getQueueAutoDelete() {
         return getPropertyAsString(QUEUE_AUTO_DELETE);
     }
@@ -363,7 +335,6 @@ public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.Abs
     public boolean queueAutoDelete(){
         return getPropertyAsBoolean(QUEUE_AUTO_DELETE);
     }
-
 
     public Boolean getQueueRedeclare() {
         return getPropertyAsBoolean(QUEUE_REDECLARE);

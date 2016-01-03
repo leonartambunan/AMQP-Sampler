@@ -15,9 +15,9 @@ import java.util.concurrent.TimeoutException;
 
 public abstract class AbstractMarketInfoSampler extends AbstractSampler implements ThreadListener {
 
-    public static final String DEFAULT_SERVER_QUEUE = "olt.logon_request-rpc";
-    public static final String DEFAULT_REPLYTO_QUEUE = "amq.rabbitmq.reply-to";
-    public static final String DEFAULT_MARKETINFO_QUEUE = "olt.marketinfo";
+    public static final String DEFAULT_LOGIN_QUEUE = "olt.logon_request-rpc";
+    public static final String DEFAULT_REPLY_TO_QUEUE = "amq.rabbitmq.reply-to";
+    public static final String DEFAULT_MARKET_INFO_QUEUE = "olt.market-info";
 
     public static final int DEFAULT_PORT = 5672;
     public static final String DEFAULT_PORT_STRING = Integer.toString(DEFAULT_PORT);
@@ -27,7 +27,7 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
-    protected static final String VIRUTAL_HOST = "AMQPSampler.VirtualHost";
+    protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
     protected static final String PORT = "AMQPSampler.Port";
     protected static final String SSL = "AMQPSampler.SSL";
@@ -40,13 +40,13 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
 
     private static final int DEFAULT_HEARTBEAT = 1;
 
-    private final static String SERVER_QUEUE = "AMQPSampler.ServerQueue";
-    private final static String REPLYTO_QUEUE = "AMQPSampler.ReplyToQueue";
+    private final static String LOGIN_QUEUE = "AMQPSampler.ServerQueue";
+    private final static String REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
     private final static String MARKET_INFO_QUEUE = "AMQPSampler.MarketInfoQueue";
     private static final String ROUTING_KEY = "AMQPSampler.RoutingKey";
 
-    private final static String MOBILE_DEVICEID = "Mobile.DeviceId";
-    private final static String MOBILE_USERID = "Mobile.UserId";
+    private final static String MOBILE_DEVICE_ID = "Mobile.DeviceId";
+    private final static String MOBILE_USER_ID = "Mobile.UserId";
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
@@ -96,29 +96,20 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         return this.getName();
     }
 
-    protected int getTimeoutAsInt() {
-        if (getPropertyAsInt(TIMEOUT) < 1) {
-            return DEFAULT_TIMEOUT;
-        }
-        return getPropertyAsInt(TIMEOUT);
-    }
-
     public String getTimeout() {
         return getPropertyAsString(TIMEOUT, DEFAULT_TIMEOUT_STRING);
     }
-
 
     public void setTimeout(String s) {
         setProperty(TIMEOUT, s);
     }
 
-
     public String getVirtualHost() {
-        return getPropertyAsString(VIRUTAL_HOST);
+        return getPropertyAsString(VIRTUAL_HOST);
     }
 
     public void setVirtualHost(String name) {
-        setProperty(VIRUTAL_HOST, name);
+        setProperty(VIRTUAL_HOST, name);
     }
 
     public String getHost() {
@@ -128,7 +119,6 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
     public void setHost(String name) {
         setProperty(HOST, name);
     }
-
 
     public String getPort() {
         return getPropertyAsString(PORT);
@@ -145,18 +135,13 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         return getPropertyAsInt(PORT);
     }
 
-    public void setConnectionSSL(String content) {
-        setProperty(SSL, content);
-    }
-
     public void setConnectionSSL(Boolean value) {
         setProperty(SSL, value.toString());
     }
 
-    public boolean connectionSSL() {
+    public boolean isConnectionSSL() {
         return getPropertyAsBoolean(SSL);
     }
-
 
     public String getUsername() {
         return getPropertyAsString(USERNAME);
@@ -166,7 +151,6 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         setProperty(USERNAME, name);
     }
 
-
     public String getPassword() {
         return getPropertyAsString(PASSWORD);
     }
@@ -175,32 +159,32 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         setProperty(PASSWORD, name);
     }
 
-    public String getMobileDeviceid() {
-        return getPropertyAsString(MOBILE_DEVICEID,"ANDROID");
+    public String getMobileDeviceId() {
+        return getPropertyAsString(MOBILE_DEVICE_ID,"ANDROID");
     }
 
-    public void setMobileDeviceid(String deviceId) {
-        setProperty(MOBILE_DEVICEID, deviceId);
+    public void setMobileDeviceId(String deviceId) {
+        setProperty(MOBILE_DEVICE_ID, deviceId);
     }
 
     public String getServerQueue() {
-        return getPropertyAsString(SERVER_QUEUE, DEFAULT_SERVER_QUEUE);
+        return getPropertyAsString(LOGIN_QUEUE, DEFAULT_LOGIN_QUEUE);
     }
 
     public void setServerQueue(String queue) {
-        setProperty(SERVER_QUEUE, queue);
+        setProperty(LOGIN_QUEUE, queue);
     }
 
-    public String getReplytoQueue() {
-        return getPropertyAsString(REPLYTO_QUEUE, DEFAULT_REPLYTO_QUEUE);
+    public String getReplyToQueue() {
+        return getPropertyAsString(REPLY_TO_QUEUE, DEFAULT_REPLY_TO_QUEUE);
     }
 
-    public void setReplytoQueue(String queue) {
-        setProperty(REPLYTO_QUEUE, queue);
+    public void setReplyToQueue(String queue) {
+        setProperty(REPLY_TO_QUEUE, queue);
     }
 
    public String getMarketInfoQueue() {
-        return getPropertyAsString(MARKET_INFO_QUEUE, DEFAULT_MARKETINFO_QUEUE);
+        return getPropertyAsString(MARKET_INFO_QUEUE, DEFAULT_MARKET_INFO_QUEUE);
     }
 
     public void setMarketInfoQueue(String queue) {
@@ -237,11 +221,11 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
     }
 
     public void setMobileUserid(String userid) {
-        setProperty(MOBILE_USERID, userid);
+        setProperty(MOBILE_USER_ID, userid);
     }
 
     public String getMobileUserid() {
-        return getPropertyAsString(MOBILE_USERID);
+        return getPropertyAsString(MOBILE_USER_ID);
     }
 
     public void setMobileType(String mobileType) {

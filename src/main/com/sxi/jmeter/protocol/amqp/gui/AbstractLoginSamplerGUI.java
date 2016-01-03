@@ -13,18 +13,9 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField serverQueue = new JLabeledTextField("Server Queue");
-    protected JLabeledTextField replyToQueue = new JLabeledTextField("Reply Queue");
-//    protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
+    protected JLabeledTextField serverQueue = new JLabeledTextField("Login Queue");
+    protected JLabeledTextField replyToQueue = new JLabeledTextField("ReplyTo Queue");
     protected JLabeledTextField virtualHost = new JLabeledTextField("Virtual Host");
-//    protected JLabeledTextField messageTTL = new JLabeledTextField("Message TTL");
-//    protected JLabeledTextField messageExpires = new JLabeledTextField("Expires");
-//    protected JLabeledChoice exchangeType = new JLabeledChoice("Exchange Type", new String[]{ "direct", "topic", "headers", "fanout"});
-//    private final JCheckBox exchangeDurable = new JCheckBox("Durable", AbstractLoginSampler.DEFAULT_EXCHANGE_DURABLE);
-//    private final JCheckBox queueDurable = new JCheckBox("Durable", true);
-//    private final JCheckBox queueRedeclare = new JCheckBox("Redeclare", AbstractLoginSampler.DEFAULT_QUEUE_REDECLARE);
-//    private final JCheckBox queueExclusive = new JCheckBox("Exclusive", true);
-//    private final JCheckBox queueAutoDelete = new JCheckBox("Auto Delete", true);
 
     protected JLabeledTextField host = new JLabeledTextField("Host");
     protected JLabeledTextField port = new JLabeledTextField("Port");
@@ -32,13 +23,13 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
     private final JCheckBox SSL = new JCheckBox("SSL", false);
+    protected JLabeledTextField authenticatedConnectionVarName = new JLabeledTextField("Authenticated Connection Variable Name");
 
     protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile Userid");
     protected JLabeledTextField mobilePassword = new JLabeledTextField("Mobile Password");
     protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Deviceid");
     protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
     protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Ver.");
-
 
     protected abstract void setMainPanel(JPanel panel);
 
@@ -54,7 +45,8 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         port.setText(sampler.getPort());
         username.setText(sampler.getUsername());
         password.setText(sampler.getPassword());
-        SSL.setSelected(sampler.connectionSSL());
+        SSL.setSelected(sampler.isConnectionSSL());
+        authenticatedConnectionVarName.setText(sampler.getAuthenticatedConnectionVarName());
 
         mobileAppVersion.setText(sampler.getMobileAppVersion());
         mobileDeviceId.setText(sampler.getMobileDeviceid());
@@ -82,14 +74,13 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         username.setText("guest");
         password.setText("guest");
         SSL.setSelected(false);
-
+        authenticatedConnectionVarName.setText("AUTH_CON");
 
         mobileAppVersion.setText("3.0");
         mobileDeviceId.setText("5f6d41cd63257be");
         mobilePassword.setText("pass");
         mobileDeviceType.setText("ANDROID");
         mobileUserId.setText("test");
-
 
     }
 
@@ -103,12 +94,6 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         configureTestElement(sampler);
 
         sampler.setVirtualHost(virtualHost.getText());
-        sampler.setMobileAppVersion(mobileAppVersion.getText());
-        sampler.setMobileDeviceid(mobileDeviceId.getText());
-        sampler.setMobilePassword(mobilePassword.getText());
-        sampler.setMobileType(mobileDeviceType.getText());
-        sampler.setMobileUserid(mobileUserId.getText());
-        sampler.setMobileType(mobileDeviceType.getText());
 
         sampler.setTimeout(timeout.getText());
 
@@ -117,6 +102,13 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         sampler.setUsername(username.getText());
         sampler.setPassword(password.getText());
         sampler.setConnectionSSL(SSL.isSelected());
+        sampler.setAuthenticatedConnectionVarName(authenticatedConnectionVarName.getText());
+
+        sampler.setMobileAppVersion(mobileAppVersion.getText());
+        sampler.setMobileDeviceid(mobileDeviceId.getText());
+        sampler.setMobilePassword(mobilePassword.getText());
+        sampler.setMobileType(mobileDeviceType.getText());
+        sampler.setMobileUserid(mobileUserId.getText());
 
         sampler.setServerQueue(serverQueue.getText());
         sampler.setReplytoQueue(replyToQueue.getText());
@@ -228,6 +220,9 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         gridBagConstraints.gridy = 5;
         serverSettings.add(timeout, gridBagConstraints);
 
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        serverSettings.add(authenticatedConnectionVarName, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 0;

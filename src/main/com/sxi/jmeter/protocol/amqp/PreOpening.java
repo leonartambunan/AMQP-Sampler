@@ -51,7 +51,7 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
         result.setSuccessful(false);
         result.setResponseCode("500");
 
-        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+getMobileDeviceid()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
+        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+ getMobileDeviceId()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
 
         trace("Trimegah RPC Market Info sample()");
 
@@ -60,13 +60,13 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
             initChannel();
 
             if (loginConsumer == null) {
-                log.info("Creating rpc loginConsumer");
+                log.info("Creating rpc login Consumer");
                 loginConsumer = new QueueingConsumer(channel);
             }
 
-            log.info("Starting basic loginConsumer.. Queue:"+getServerQueue());
+            log.info("Starting basic login Consumer.. Queue:"+ getLoginQueue());
 
-            loginConsumerTag = channel.basicConsume(getServerQueue(), true, loginConsumer);
+            loginConsumerTag = channel.basicConsume(getLoginQueue(), true, loginConsumer);
 
 
         } catch (Exception ex) {
@@ -94,11 +94,12 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
 
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
 
+                //TODO SEND ORDER REQUEST HERE
 
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 1);
-                calendar.set(Calendar.MINUTE, 1);
-                calendar.set(Calendar.SECOND, 1);
+                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(getScheduleHour()));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(getScheduleMinute()));
+                calendar.set(Calendar.SECOND, Integer.parseInt(getScheduleSecond()));
                 Date time = calendar.getTime();
 
                 Timer timer = new Timer();
@@ -107,7 +108,6 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
 
                 for(;;) {
                     Thread.sleep(50);
-
                     if (preOpeningProcessStarted) {
                         result.sampleStart();
                         break;
@@ -198,13 +198,13 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
         return getPropertyAsInt(RECEIVE_TIMEOUT);
     }
 
-    public String getReceiveTimeout() {
-        return getPropertyAsString(RECEIVE_TIMEOUT, DEFAULT_TIMEOUT_STRING);
-    }
-
-    public void setReceiveTimeout(String s) {
-        setProperty(RECEIVE_TIMEOUT, s);
-    }
+//    public String getReceiveTimeout() {
+//        return getPropertyAsString(RECEIVE_TIMEOUT, DEFAULT_TIMEOUT_STRING);
+//    }
+//
+//    public void setReceiveTimeout(String s) {
+//        setProperty(RECEIVE_TIMEOUT, s);
+//    }
 
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();

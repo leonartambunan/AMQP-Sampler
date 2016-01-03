@@ -21,24 +21,11 @@ import java.util.concurrent.TimeoutException;
 
 public class Login extends AbstractLoginSampler implements Interruptible, TestStateListener {
 
-//    private static final int DEFAULT_PREFETCH_COUNT = 0; // unlimited
-
-    //public static final String DEFAULT_PREFETCH_COUNT_STRING = Integer.toString(DEFAULT_PREFETCH_COUNT);
-
     private static final long serialVersionUID = 7480863561320459099L;
-
     private static final Logger log = LoggingManager.getLoggerForClass();
-
-//    private static final String PREFETCH_COUNT = "AMQPConsumer.PrefetchCount";
     private static final String RECEIVE_TIMEOUT = "AMQPConsumer.ReceiveTimeout";
-
-//    private final static String MESSAGE_ROUTING_KEY = "AMQPPublisher.MessageRoutingKey";
-//    private final static String MESSAGE_TYPE = "AMQPPublisher.MessageType";
-//    private final static String REPLY_TO_QUEUE = "AMQPPublisher.ReplyToQueue";
-//    private final static String CONTENT_TYPE = "AMQPPublisher.ContentType";
-//    private final static String CORRELATION_ID = "AMQPPublisher.CorrelationId";
-//    private final static String MESSAGE_ID = "AMQPPublisher.MessageId";
     private final static String HEADERS = "AMQPPublisher.Headers";
+    private static final Object SUCCESSFUL_LOGIN = "Success";
 
     private transient Channel channel;
     private transient QueueingConsumer consumer;
@@ -83,12 +70,6 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
 
         senderThread.start();
 
-//        try {
-//            senderThread.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         Delivery delivery;
 
         try {
@@ -102,15 +83,26 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
 
             LogonResponse logonResponse = LogonResponse.parseFrom(delivery.getBody());
 
-            result.setResponseMessage(logonResponse.getStatus());
+            //TODO How the authenticated connection passed to next request.
+            //TODO Success string of logon status
 
-            result.setResponseData(logonResponse.toString(), null);
+            if (SUCCESSFUL_LOGIN.equals(logonResponse.getStatus())) {
 
-            result.setDataType(SampleResult.TEXT);
+                if (!"".equals(getAuthenticatedConnectionVarName())) {
+                    saveConnectionToJMeterVariable();
+                }
 
-            result.setResponseCodeOK();
+                result.setResponseMessage(logonResponse.getStatus());
 
-            result.setSuccessful(true);
+                result.setResponseData(logonResponse.toString(), null);
+
+                result.setDataType(SampleResult.TEXT);
+
+                result.setResponseCodeOK();
+
+                result.setSuccessful(true);
+
+            }
 
         } catch (ShutdownSignalException e) {
             consumer = null;
@@ -122,27 +114,27 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
         } catch (ConsumerCancelledException e) {
             consumer = null;
             consumerTag = null;
-            log.warn("AMQP RPC Login consumer failed to consume", e);
+            log.warn("Trimegah RPC Login consumer failed to consume", e);
             result.setResponseCode("300");
             result.setResponseMessage(e.getMessage());
             interrupt();
         } catch (InterruptedException e) {
             consumer = null;
             consumerTag = null;
-            log.info("interuppted while attempting to consume RPC Login ");
+            log.info("Interrupted while attempting to consume RPC Login ");
             result.setResponseCode("200");
             result.setResponseMessage(e.getMessage());
         } catch (IOException e) {
             consumer = null;
             consumerTag = null;
-            log.warn("AMQP RPC Login consumer failed to consume", e);
+            log.warn("Trimegah RPC Login consumer failed to consume", e);
             result.setResponseCode("100");
             result.setResponseMessage(e.getMessage());
         } finally {
             result.sampleEnd();
         }
 
-        trace("AMQP RPC Login.sample ended");
+        trace("Trimegah RPC Login.sample ended");
 
         return result;
     }
@@ -180,16 +172,6 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
         return getPropertyAsInt(RECEIVE_TIMEOUT);
     }
 
-    public String getReceiveTimeout() {
-        return getPropertyAsString(RECEIVE_TIMEOUT, DEFAULT_TIMEOUT_STRING);
-    }
-
-
-    public void setReceiveTimeout(String s) {
-        setProperty(RECEIVE_TIMEOUT, s);
-    }
-
-
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
     }
@@ -197,7 +179,6 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
     public void setHeaders(Arguments headers) {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
-
 
     @Override
     public boolean interrupt() {
@@ -277,6 +258,8 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
                 log.info("Publishing message to Queue:"+getServerQueue());
 
                 channel.basicPublish("", getServerQueue(), props, logonReq.toByteArray());
+
+                //TODO how about ack ? Is it a mandatory ?
 
             } catch (Exception e) {
                 e.printStackTrace();

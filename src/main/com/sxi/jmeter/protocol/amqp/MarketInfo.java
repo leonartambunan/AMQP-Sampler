@@ -42,7 +42,8 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
     private transient QueueingConsumer marketInfoConsumer;
     private transient String loginConsumerTag;
     private transient String marketInfoConsumerTag;
-    private boolean marketInfoProcessStarted;
+
+    protected static boolean MARKET_INFO_PROCESS_STARTED;
 
     @Override
     public SampleResult sample(Entry entry) {
@@ -52,7 +53,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
         result.setSuccessful(false);
         result.setResponseCode("500");
 
-        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+getMobileDeviceid()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
+        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+ getMobileDeviceId()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
 
         trace("Trimegah RPC Market Info sample()");
 
@@ -95,11 +96,10 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
 
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
 
-
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 1);
-                calendar.set(Calendar.MINUTE, 1);
-                calendar.set(Calendar.SECOND, 1);
+                calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(getScheduleHour()));
+                calendar.set(Calendar.MINUTE, Integer.parseInt(getScheduleMinute()));
+                calendar.set(Calendar.SECOND, Integer.parseInt(getScheduleSecond()));
                 Date time = calendar.getTime();
 
                 Timer timer = new Timer();
@@ -109,14 +109,11 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
                 for(;;) {
                     Thread.sleep(50);
 
-                    if (marketInfoProcessStarted) {
+                    if (MARKET_INFO_PROCESS_STARTED) {
                         result.sampleStart();
                         break;
                     }
                 }
-
-                //TODO Listen to Market Info Queue
-
 
                 marketInfoConsumer = new QueueingConsumer(channel);
 
@@ -284,7 +281,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
         public void run() {
             System.out.format("Market Info Process starts");
 
-            marketInfoProcessStarted = true;
+            MARKET_INFO_PROCESS_STARTED = true;
 
             timer.cancel(); //Terminate the timer thread
         }

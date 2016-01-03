@@ -26,8 +26,9 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
     protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Ver.");
 
-    protected JLabeledTextField serverQueue = new JLabeledTextField("Server Queue");
-    protected JLabeledTextField replyToQueue = new JLabeledTextField("Reply-To Queue");
+    protected JLabeledTextField loginQueue = new JLabeledTextField("Login Queue");
+    protected JLabeledTextField loginReplyToQueue = new JLabeledTextField("Login ReplyTo Queue");
+    protected JLabeledTextField orderRequestQueue = new JLabeledTextField("Order Request Queue");
     protected JLabeledTextField orderResponseQueue = new JLabeledTextField("Order Response Queue");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
@@ -54,17 +55,18 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         port.setText(sampler.getPort());
         username.setText(sampler.getUsername());
         password.setText(sampler.getPassword());
-        SSL.setSelected(sampler.connectionSSL());
+        SSL.setSelected(sampler.isConnectionSSL());
 
         mobileAppVersion.setText(sampler.getMobileAppVersion());
-        mobileDeviceId.setText(sampler.getMobileDeviceid());
+        mobileDeviceId.setText(sampler.getMobileDeviceId());
         mobilePassword.setText(sampler.getMobilePassword());
         mobileDeviceType.setText(sampler.getMobileType());
         mobileUserId.setText(sampler.getMobileUserid());
 
-        serverQueue.setText(sampler.getServerQueue());
-        replyToQueue.setText(sampler.getReplytoQueue());
+        loginQueue.setText(sampler.getLoginQueue());
+        loginReplyToQueue.setText(sampler.getLoginReplyToQueue());
         orderResponseQueue.setText(sampler.getOrderResponseQueue());
+        orderRequestQueue.setText(sampler.getOrderRequestQueue());
         routingKey.setText(sampler.getRoutingKey());
         stockId.setText(sampler.getStockId());
         stockAmount.setText(sampler.getStockAmount());
@@ -90,9 +92,10 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         mobileDeviceType.setText("ANDROID");
         mobileUserId.setText("test");
 
-        serverQueue.setText(AbstractPreOpeningSampler.DEFAULT_SERVER_QUEUE);
-        replyToQueue.setText(AbstractPreOpeningSampler.DEFAULT_REPLYTO_QUEUE);
+        loginQueue.setText(AbstractPreOpeningSampler.DEFAULT_LOGIN_QUEUE);
+        loginReplyToQueue.setText(AbstractPreOpeningSampler.DEFAULT_REPLY_TO_QUEUE);
         orderResponseQueue.setText(AbstractPreOpeningSampler.DEFAULT_ORDER_RESPONSE_QUEUE);
+        orderRequestQueue.setText(AbstractPreOpeningSampler.DEFAULT_ORDER_REQUEST_QUEUE);
         routingKey.setText("");
 
         stockId.setText("");
@@ -124,14 +127,15 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         sampler.setConnectionSSL(SSL.isSelected());
 
         sampler.setMobileAppVersion(mobileAppVersion.getText());
-        sampler.setMobileDeviceid(mobileDeviceId.getText());
+        sampler.setMobileDeviceId(mobileDeviceId.getText());
         sampler.setMobilePassword(mobilePassword.getText());
         sampler.setMobileType(mobileDeviceType.getText());
         sampler.setMobileUserid(mobileUserId.getText());
 
-        sampler.setServerQueue(serverQueue.getText());
-        sampler.setReplytoQueue(replyToQueue.getText());
+        sampler.setLoginQueue(loginQueue.getText());
+        sampler.setLoginReplyToQueue(loginReplyToQueue.getText());
         sampler.setOrderResponseQueue(orderResponseQueue.getText());
+        sampler.setOrderRequestQueue(orderRequestQueue.getText());
         sampler.setRoutingKey(routingKey.getText());
 
         sampler.setStockId(stockId.getText());
@@ -182,18 +186,22 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        queueSettings.add(serverQueue, gridBagConstraints);
+        queueSettings.add(loginQueue, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        queueSettings.add(replyToQueue, gridBagConstraints);
+        queueSettings.add(loginReplyToQueue, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        queueSettings.add(orderResponseQueue, gridBagConstraints);
+        queueSettings.add(orderRequestQueue, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        queueSettings.add(orderResponseQueue, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
         queueSettings.add(routingKey, gridBagConstraints);
 
         JPanel mobileSettings = new JPanel(new GridBagLayout());
@@ -283,7 +291,7 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         commonPanel.add(serverSettings, gridBagConstraintsCommon);
 
         JPanel scheduleSetting = new JPanel(new GridBagLayout());
-        scheduleSetting.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Market Info Schedule"));
+        scheduleSetting.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Market Info Scheduled Time"));
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

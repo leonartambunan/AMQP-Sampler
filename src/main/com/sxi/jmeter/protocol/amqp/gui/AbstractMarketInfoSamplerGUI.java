@@ -26,8 +26,8 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
     protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Ver.");
 
-    protected JLabeledTextField serverQueue = new JLabeledTextField("Server Queue");
-    protected JLabeledTextField replyToQueue = new JLabeledTextField("Reply-To Queue");
+    protected JLabeledTextField loginQueue = new JLabeledTextField("Login Queue");
+    protected JLabeledTextField loginReplyToQueue = new JLabeledTextField("Login ReplyTo Queue");
     protected JLabeledTextField marketInfoQueue = new JLabeledTextField("Market Info Queue");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
@@ -52,16 +52,16 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
         port.setText(sampler.getPort());
         username.setText(sampler.getUsername());
         password.setText(sampler.getPassword());
-        SSL.setSelected(sampler.connectionSSL());
+        SSL.setSelected(sampler.isConnectionSSL());
 
         mobileAppVersion.setText(sampler.getMobileAppVersion());
-        mobileDeviceId.setText(sampler.getMobileDeviceid());
+        mobileDeviceId.setText(sampler.getMobileDeviceId());
         mobilePassword.setText(sampler.getMobilePassword());
         mobileDeviceType.setText(sampler.getMobileType());
         mobileUserId.setText(sampler.getMobileUserid());
 
-        serverQueue.setText(sampler.getServerQueue());
-        replyToQueue.setText(sampler.getReplytoQueue());
+        loginQueue.setText(sampler.getServerQueue());
+        loginReplyToQueue.setText(sampler.getReplyToQueue());
         marketInfoQueue.setText(sampler.getMarketInfoQueue());
         routingKey.setText(sampler.getRoutingKey());
 
@@ -89,9 +89,9 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
         mobileDeviceType.setText("ANDROID");
         mobileUserId.setText("test");
 
-        serverQueue.setText(AbstractMarketInfoSampler.DEFAULT_SERVER_QUEUE);
-        replyToQueue.setText(AbstractMarketInfoSampler.DEFAULT_REPLYTO_QUEUE);
-        marketInfoQueue.setText(AbstractMarketInfoSampler.DEFAULT_MARKETINFO_QUEUE);
+        loginQueue.setText(AbstractMarketInfoSampler.DEFAULT_LOGIN_QUEUE);
+        loginReplyToQueue.setText(AbstractMarketInfoSampler.DEFAULT_REPLY_TO_QUEUE);
+        marketInfoQueue.setText(AbstractMarketInfoSampler.DEFAULT_MARKET_INFO_QUEUE);
         routingKey.setText("");
 
         scheduledHour.setText("10");
@@ -120,13 +120,13 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
         sampler.setConnectionSSL(SSL.isSelected());
 
         sampler.setMobileAppVersion(mobileAppVersion.getText());
-        sampler.setMobileDeviceid(mobileDeviceId.getText());
+        sampler.setMobileDeviceId(mobileDeviceId.getText());
         sampler.setMobilePassword(mobilePassword.getText());
         sampler.setMobileType(mobileDeviceType.getText());
         sampler.setMobileUserid(mobileUserId.getText());
 
-        sampler.setServerQueue(serverQueue.getText());
-        sampler.setReplytoQueue(replyToQueue.getText());
+        sampler.setServerQueue(loginQueue.getText());
+        sampler.setReplyToQueue(loginReplyToQueue.getText());
         sampler.setMarketInfoQueue(marketInfoQueue.getText());
         sampler.setRoutingKey(routingKey.getText());
 
@@ -175,11 +175,11 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        queueSettings.add(serverQueue, gridBagConstraints);
+        queueSettings.add(loginQueue, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        queueSettings.add(replyToQueue, gridBagConstraints);
+        queueSettings.add(loginReplyToQueue, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;

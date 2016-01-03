@@ -5,6 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
+import org.apache.jmeter.threads.JMeterVariables;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
@@ -21,30 +22,30 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     public static final int DEFAULT_PORT = 5672;
     public static final String DEFAULT_PORT_STRING = Integer.toString(DEFAULT_PORT);
 
-    public static final int DEFAULT_TIMEOUT = 60000;
+    public static final int DEFAULT_TIMEOUT = 90000;
     public static final String DEFAULT_TIMEOUT_STRING = Integer.toString(DEFAULT_TIMEOUT);
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
-    protected static final String VIRUTAL_HOST = "AMQPSampler.VirtualHost";
+    protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
     protected static final String PORT = "AMQPSampler.Port";
     protected static final String SSL = "AMQPSampler.SSL";
     protected static final String USERNAME = "AMQPSampler.Username";
     protected static final String PASSWORD = "AMQPSampler.Password";
     private static final String TIMEOUT = "AMQPSampler.Timeout";
+    private static final String AUTHENTICATED_CONNECTION_VAR_NAME= "AMQPSampler.AuthenticatedConnectionVariableName";
 
     private static final int DEFAULT_HEARTBEAT = 1;
 
-    private final static String SERVER_QUEUE = "AMQPSampler.ServerQueue";
-    private final static String REPLYTO_QUEUE = "AMQPSampler.ReplyToQueue";
+    private final static String LOGIN_QUEUE = "AMQPSampler.ServerQueue";
+    private final static String REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
 
     private final static String MOBILE_DEVICEID = "Mobile.DeviceId";
     private final static String MOBILE_USERID = "Mobile.UserId";
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
-
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
@@ -73,6 +74,7 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
             factory.setPassword(getPassword());
 
             connection = factory.newConnection();
+
             Channel ch = connection.createChannel();
 
             setChannel(ch);
@@ -89,29 +91,20 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
         return this.getName();
     }
 
-    protected int getTimeoutAsInt() {
-        if (getPropertyAsInt(TIMEOUT) < 1) {
-            return DEFAULT_TIMEOUT;
-        }
-        return getPropertyAsInt(TIMEOUT);
-    }
-
     public String getTimeout() {
         return getPropertyAsString(TIMEOUT, DEFAULT_TIMEOUT_STRING);
     }
-
 
     public void setTimeout(String s) {
         setProperty(TIMEOUT, s);
     }
 
-
     public String getVirtualHost() {
-        return getPropertyAsString(VIRUTAL_HOST);
+        return getPropertyAsString(VIRTUAL_HOST);
     }
 
     public void setVirtualHost(String name) {
-        setProperty(VIRUTAL_HOST, name);
+        setProperty(VIRTUAL_HOST, name);
     }
 
     public String getHost() {
@@ -121,7 +114,6 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     public void setHost(String name) {
         setProperty(HOST, name);
     }
-
 
     public String getPort() {
         return getPropertyAsString(PORT);
@@ -138,18 +130,20 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
         return getPropertyAsInt(PORT);
     }
 
-    public void setConnectionSSL(String content) {
-        setProperty(SSL, content);
-    }
-
     public void setConnectionSSL(Boolean value) {
         setProperty(SSL, value.toString());
     }
 
-    public boolean connectionSSL() {
+    public boolean isConnectionSSL() {
         return getPropertyAsBoolean(SSL);
     }
+    public void setAuthenticatedConnectionVarName(String name) {
+        setProperty(AUTHENTICATED_CONNECTION_VAR_NAME, name);
+    }
 
+    public String getAuthenticatedConnectionVarName() {
+        return getPropertyAsString(AUTHENTICATED_CONNECTION_VAR_NAME,"");
+    }
 
     public String getUsername() {
         return getPropertyAsString(USERNAME);
@@ -158,7 +152,6 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     public void setUsername(String name) {
         setProperty(USERNAME, name);
     }
-
 
     public String getPassword() {
         return getPropertyAsString(PASSWORD);
@@ -177,19 +170,19 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     }
 
     public String getServerQueue() {
-        return getPropertyAsString(SERVER_QUEUE,DEFAULT_SERVER_QUEUE);
+        return getPropertyAsString(LOGIN_QUEUE,DEFAULT_SERVER_QUEUE);
     }
 
     public void setServerQueue(String queue) {
-        setProperty(SERVER_QUEUE, queue);
+        setProperty(LOGIN_QUEUE, queue);
     }
 
     public String getReplytoQueue() {
-        return getPropertyAsString(REPLYTO_QUEUE,DEFAULT_REPLY_QUEUE);
+        return getPropertyAsString(REPLY_TO_QUEUE,DEFAULT_REPLY_QUEUE);
     }
 
     public void setReplytoQueue(String queue) {
-        setProperty(REPLYTO_QUEUE, queue);
+        setProperty(REPLY_TO_QUEUE, queue);
     }
 
     public String getMobileAppVersion() {
@@ -199,7 +192,6 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     public void setMobileAppVersion(String appVersion) {
         setProperty(MOBILE_APP_VERSION, appVersion);
     }
-
 
     public String getMobilePassword() {
         return getPropertyAsString(MOBILE_PASSWORD);
@@ -243,6 +235,14 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
 
     @Override
     public void threadStarted() {
+
+    }
+
+    protected void saveConnectionToJMeterVariable() {
+        org.apache.jmeter.threads.JMeterContext jMeterContext = org.apache.jmeter.threads.JMeterContextService.getContext();
+        JMeterVariables vars = jMeterContext.getVariables();
+        vars.putObject(getAuthenticatedConnectionVarName(), connection);
+        jMeterContext.setVariables(vars);
 
     }
 
