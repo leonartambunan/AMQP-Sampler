@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-public abstract class AMQPSampler extends AbstractSampler implements ThreadListener {
+public abstract class AbstractAMQPSampler extends org.apache.jmeter.samplers.AbstractSampler implements ThreadListener {
 
 
     public static final String DEFAULT_EXCHANGE_STRING = "";
@@ -28,9 +28,6 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
 
     public static final int DEFAULT_TIMEOUT = 60000;
     public static final String DEFAULT_TIMEOUT_STRING = Integer.toString(DEFAULT_TIMEOUT);
-
-    public static final int DEFAULT_ITERATIONS = 1;
-    public static final String DEFAULT_ITERATIONS_STRING = Integer.toString(DEFAULT_ITERATIONS);
 
     private static final Logger log = LoggingManager.getLoggerForClass();
 
@@ -48,7 +45,6 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     protected static final String USERNAME = "AMQPSampler.Username";
     protected static final String PASSWORD = "AMQPSampler.Password";
     private static final String TIMEOUT = "AMQPSampler.Timeout";
-    private static final String ITERATIONS = "AMQPSampler.Iterations";
     private static final String MESSAGE_TTL = "AMQPSampler.MessageTTL";
     private static final String MESSAGE_EXPIRES = "AMQPSampler.MessageExpires";
     private static final String QUEUE_DURABLE = "AMQPSampler.QueueDurable";
@@ -60,7 +56,7 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
     private transient ConnectionFactory factory;
     private transient Connection connection;
 
-    protected AMQPSampler(){
+    protected AbstractAMQPSampler(){
         factory = new ConnectionFactory();
         factory.setRequestedHeartbeat(DEFAULT_HEARTBEAT);
     }
@@ -162,16 +158,6 @@ public abstract class AMQPSampler extends AbstractSampler implements ThreadListe
         setProperty(TIMEOUT, s);
     }
 
-    public String getIterations() {
-        return getPropertyAsString(ITERATIONS, DEFAULT_ITERATIONS_STRING);
-    }
-
-    public void setIterations(String s) {
-        setProperty(ITERATIONS, s);
-    }
-    public int getIterationsAsInt() {
-        return getPropertyAsInt(ITERATIONS);
-    }
 
     public String getExchange() {
         return getPropertyAsString(EXCHANGE,DEFAULT_EXCHANGE_STRING);

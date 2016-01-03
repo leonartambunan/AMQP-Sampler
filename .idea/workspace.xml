@@ -28,171 +28,142 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="AMQPConsumer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.75">
-              <caret line="320" column="31" selection-start-line="320" selection-start-column="31" selection-end-line="320" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AMQPSamplerGui.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AMQPConsumerGui.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AMQPSampler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.75">
-              <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5871#5872#0" expanded="true" />
-                <element signature="e#5908#5909#0" expanded="true" />
-                <element signature="e#6120#6121#0" expanded="true" />
-                <element signature="e#6195#6196#0" expanded="true" />
-                <element signature="e#6236#6237#0" expanded="true" />
-                <element signature="e#6275#6276#0" expanded="true" />
-                <element signature="e#6312#6313#0" expanded="true" />
-                <element signature="e#6393#6394#0" expanded="true" />
-                <element signature="e#6436#6437#0" expanded="true" />
-                <element signature="e#6478#6479#0" expanded="true" />
-                <element signature="e#6516#6517#0" expanded="true" />
-                <element signature="e#6567#6568#0" expanded="true" />
-                <element signature="e#6602#6603#0" expanded="true" />
-                <element signature="e#6678#6679#0" expanded="true" />
-                <element signature="e#6722#6723#0" expanded="true" />
-                <element signature="e#6765#6766#0" expanded="true" />
-                <element signature="e#6809#6810#0" expanded="true" />
-                <element signature="e#6895#6896#0" expanded="true" />
-                <element signature="e#6950#6951#0" expanded="true" />
-                <element signature="e#7004#7005#0" expanded="true" />
-                <element signature="e#7044#7045#0" expanded="true" />
-                <element signature="e#7101#7102#0" expanded="true" />
-                <element signature="e#7149#7150#0" expanded="true" />
-                <element signature="e#7197#7198#0" expanded="true" />
-                <element signature="e#7390#7391#0" expanded="true" />
-                <element signature="e#7446#7447#0" expanded="true" />
-                <element signature="e#7478#7479#0" expanded="true" />
-                <element signature="e#7527#7528#0" expanded="true" />
-                <element signature="e#7568#7569#0" expanded="true" />
-                <element signature="e#7608#7609#0" expanded="true" />
-                <element signature="e#7646#7647#0" expanded="true" />
-                <element signature="e#7701#7702#0" expanded="true" />
-                <element signature="e#7747#7748#0" expanded="true" />
-                <element signature="e#7793#7794#0" expanded="true" />
-                <element signature="e#7832#7833#0" expanded="true" />
-                <element signature="e#7888#7889#0" expanded="true" />
-                <element signature="e#7935#7936#0" expanded="true" />
-                <element signature="e#7982#7983#0" expanded="true" />
-                <element signature="e#8020#8021#0" expanded="true" />
-                <element signature="e#8075#8076#0" expanded="true" />
-                <element signature="e#8121#8122#0" expanded="true" />
-                <element signature="e#8167#8168#0" expanded="true" />
-                <element signature="e#8391#8392#0" expanded="true" />
-                <element signature="e#8450#8451#0" expanded="true" />
-                <element signature="e#8500#8501#0" expanded="true" />
-                <element signature="e#8550#8551#0" expanded="true" />
-                <element signature="e#8776#8777#0" expanded="true" />
-                <element signature="e#8824#8825#0" expanded="true" />
-                <element signature="e#8864#8865#0" expanded="true" />
-                <element signature="e#8903#8904#0" expanded="true" />
-                <element signature="e#8935#8936#0" expanded="true" />
-                <element signature="e#8983#8984#0" expanded="true" />
-                <element signature="e#9023#9024#0" expanded="true" />
-                <element signature="e#9062#9063#0" expanded="true" />
-                <element signature="e#9280#9281#0" expanded="true" />
-                <element signature="e#9321#9322#0" expanded="true" />
-                <element signature="e#9372#9373#0" expanded="true" />
-                <element signature="e#9422#9423#0" expanded="true" />
-                <element signature="e#9460#9461#0" expanded="true" />
-                <element signature="e#9508#9509#0" expanded="true" />
-                <element signature="e#9544#9545#0" expanded="true" />
-                <element signature="e#9596#9597#0" expanded="true" />
-                <element signature="e#9640#9641#0" expanded="true" />
-                <element signature="e#9683#9684#0" expanded="true" />
-                <element signature="e#9719#9720#0" expanded="true" />
-                <element signature="e#9771#9772#0" expanded="true" />
-                <element signature="e#9815#9816#0" expanded="true" />
-                <element signature="e#9858#9859#0" expanded="true" />
-                <element signature="e#9968#9969#0" expanded="true" />
-                <element signature="e#10025#10026#0" expanded="true" />
-                <element signature="e#10076#10077#0" expanded="true" />
-                <element signature="e#10127#10128#0" expanded="true" />
-                <element signature="e#10177#10178#0" expanded="true" />
-                <element signature="e#10237#10238#0" expanded="true" />
-                <element signature="e#10273#10274#0" expanded="true" />
-                <element signature="e#10331#10332#0" expanded="true" />
-                <element signature="e#10445#10446#0" expanded="true" />
-                <element signature="e#10504#10505#0" expanded="true" />
-                <element signature="e#10557#10558#0" expanded="true" />
-                <element signature="e#10610#10611#0" expanded="true" />
-                <element signature="e#10662#10663#0" expanded="true" />
-                <element signature="e#10724#10725#0" expanded="true" />
-                <element signature="e#10762#10763#0" expanded="true" />
-                <element signature="e#10822#10823#0" expanded="true" />
-                <element signature="e#10943#10944#0" expanded="true" />
-                <element signature="e#11004#11005#0" expanded="true" />
-                <element signature="e#11058#11059#0" expanded="true" />
-                <element signature="e#11113#11114#0" expanded="true" />
-                <element signature="e#11166#11167#0" expanded="true" />
-                <element signature="e#11230#11231#0" expanded="true" />
-                <element signature="e#11269#11270#0" expanded="true" />
-                <element signature="e#11331#11332#0" expanded="true" />
-                <element signature="e#11374#11375#0" expanded="true" />
-                <element signature="e#11434#11435#0" expanded="true" />
-                <element signature="e#11488#11489#0" expanded="true" />
-                <element signature="e#11541#11542#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AMQPRpc.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpc.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.06633907">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#7480#7481#0" expanded="true" />
-                <element signature="e#7543#7544#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AMQPPublisher.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AMQPPublisher.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.13267814">
+              <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractPreOpeningSampler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractPreOpeningSampler.java">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="96" column="27" selection-start-line="96" selection-start-column="27" selection-end-line="96" selection-end-column="27" />
+              <caret line="227" column="31" selection-start-line="227" selection-start-column="31" selection-end-line="227" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#6606#6607#0" expanded="true" />
+                <element signature="e#6661#6662#0" expanded="true" />
+                <element signature="e#6785#6786#0" expanded="true" />
+                <element signature="e#6837#6838#0" expanded="true" />
+                <element signature="e#6878#6879#0" expanded="true" />
+                <element signature="e#6919#6920#0" expanded="true" />
+                <element signature="e#6955#6956#0" expanded="true" />
+                <element signature="e#7011#7012#0" expanded="true" />
+                <element signature="e#7060#7061#0" expanded="true" />
+                <element signature="e#7109#7110#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Login.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/Login.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="257" column="27" selection-start-line="257" selection-start-column="27" selection-end-line="257" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MarketInfo.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/MarketInfo.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PreOpening.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/PreOpening.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="204" column="16" selection-start-line="204" selection-start-column="16" selection-end-line="204" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#getReceiveTimeoutAsInt#0;class#PreOpening#0" expanded="false" />
+                <element signature="e#7122#7123#0" expanded="true" />
+                <element signature="e#7169#7170#0" expanded="true" />
+                <element signature="method#interrupt#0;class#PreOpening#0" expanded="false" />
+                <element signature="method#testEnded#0;class#PreOpening#0" expanded="false" />
+                <element signature="method#testEnded#1;class#PreOpening#0" expanded="false" />
+                <element signature="method#testStarted#0;class#PreOpening#0" expanded="false" />
+                <element signature="method#testStarted#1;class#PreOpening#0" expanded="false" />
+                <element signature="method#cleanup#0;class#PreOpening#0" expanded="false" />
+                <element signature="method#initChannel#0;class#PreOpening#0" expanded="false" />
+                <element signature="method#trace#0;class#PreOpening#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractPreOpeningSamplerGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractPreOpeningSamplerGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MarketInfoGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/MarketInfoGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#689#690#0" expanded="true" />
+                <element signature="e#742#743#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractMarketInfoSamplerGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractMarketInfoSamplerGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.5227275">
+              <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PreOpeningGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PreOpeningGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="63" column="31" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#688#689#0" expanded="true" />
+                <element signature="e#740#741#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -203,14 +174,43 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpcSampler.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPRpcSampler.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpc.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpcSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpcLogin.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPRpcSamplerGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPRpcLoginGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPRpcSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractAMQPSamplerGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractAMQPRpcSamplerGui.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/RPCLogin.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractRabbitSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/Publisher.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractRPCSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractAMQPSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractRPCSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/ConsumerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PublisherGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/Login.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractLoginSampler.java" />
+        <option value="C:/Java/jdk1.7/src.zip!/java/util/TimerTask.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractLoginSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/MarketInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/PreOpening.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractMarketInfoSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/MarketInfoGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/LoginGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PreOpeningGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractMarketInfoSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractPreOpeningSamplerGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractPreOpeningSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java" />
       </list>
     </option>
   </component>
@@ -218,6 +218,16 @@
   <component name="JsBuildToolPackageJson" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Bundled (Maven 3)" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-11" />
@@ -250,15 +260,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="AMQP-Sampler" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -337,8 +349,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="artifacts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP_Sampler_jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -346,13 +396,14 @@
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.3900383" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="C:/Java/Libraries/rabbitmq-java-client-bin-3.4.3/rabbitmq-java-client-javadoc-3.4.3.zip!/" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.sxi.jmeter.protocol.amqp" />
+      <recent name="com.sxi.jmeter.protocol.amqp.gui" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\lib" />
@@ -659,31 +710,33 @@
       <workItem from="1451489564821" duration="6000" />
       <workItem from="1451632917364" duration="855000" />
       <workItem from="1451633920912" duration="717000" />
-      <workItem from="1451755983621" duration="3937000" />
+      <workItem from="1451755983621" duration="13251000" />
+      <workItem from="1451792791756" duration="420000" />
+      <workItem from="1451793233791" duration="16986000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23009000" />
+    <option name="totallyTimeSpent" value="49729000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33019978" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955772" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.298274" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28856528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27379555" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26429343" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26429343" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -694,6 +747,31 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33019978" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955772" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28856528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27379555" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26429343" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -715,496 +793,12 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="61" selection-start-line="34" selection-start-column="61" selection-end-line="34" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="100" column="13" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="106" column="57" selection-start-line="102" selection-start-column="16" selection-end-line="106" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="47" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="53" column="48" selection-start-line="53" selection-start-column="48" selection-end-line="53" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="61" selection-start-line="34" selection-start-column="61" selection-end-line="34" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="102" column="35" selection-start-line="102" selection-start-column="35" selection-end-line="102" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="274" column="37" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="48" selection-start-line="58" selection-start-column="48" selection-end-line="58" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
           <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="38" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="274" column="37" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
             <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="3" selection-start-line="20" selection-start-column="3" selection-end-line="20" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1213,138 +807,64 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="146" column="22" selection-start-line="146" selection-start-column="22" selection-end-line="146" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="274" column="37" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractAMQPSamplerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="274" column="37" selection-start-line="274" selection-start-column="37" selection-end-line="274" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/ConsumerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#881#882#0" expanded="false" />
+            <element signature="e#903#904#0" expanded="false" />
+            <element signature="e#1320#1321#0" expanded="false" />
+            <element signature="e#1358#1359#0" expanded="false" />
+            <element signature="e#2947#2948#0" expanded="false" />
+            <element signature="e#3001#3002#0" expanded="false" />
+            <element signature="e#3064#3065#0" expanded="false" />
+            <element signature="e#3097#3098#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PublisherGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1673#1674#0" expanded="false" />
+            <element signature="e#1695#1696#0" expanded="false" />
+            <element signature="e#1786#1787#0" expanded="false" />
+            <element signature="e#1840#1841#0" expanded="false" />
+            <element signature="e#1892#1893#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
+            <element signature="e#3755#3756#0" expanded="false" />
+            <element signature="e#3788#3789#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPSampler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="49" column="70" selection-start-line="49" selection-start-column="70" selection-end-line="49" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1354,7 +874,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="84" column="19" selection-start-line="84" selection-start-column="19" selection-end-line="84" selection-end-column="19" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1363,130 +883,54 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/ConsumerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#881#882#0" expanded="false" />
+            <element signature="e#903#904#0" expanded="false" />
+            <element signature="e#1320#1321#0" expanded="false" />
+            <element signature="e#1358#1359#0" expanded="false" />
+            <element signature="e#2947#2948#0" expanded="false" />
+            <element signature="e#3001#3002#0" expanded="false" />
+            <element signature="e#3064#3065#0" expanded="false" />
+            <element signature="e#3097#3098#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PublisherGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1673#1674#0" expanded="false" />
+            <element signature="e#1695#1696#0" expanded="false" />
+            <element signature="e#1786#1787#0" expanded="false" />
+            <element signature="e#1840#1841#0" expanded="false" />
+            <element signature="e#1892#1893#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
+            <element signature="e#3755#3756#0" expanded="false" />
+            <element signature="e#3788#3789#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPSampler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1496,7 +940,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="263" column="5" selection-start-line="263" selection-start-column="5" selection-end-line="263" selection-end-column="5" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1519,16 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3501292">
           <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPPublisherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.033169534">
-          <caret line="55" column="7" selection-start-line="55" selection-start-column="7" selection-end-line="55" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1560,44 +994,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPSamplerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/id/co/tech/cakra/message/proto/olt/LogonRequest.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3496774">
           <caret line="796" column="36" selection-start-line="796" selection-start-column="36" selection-end-line="796" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AMQPConsumerGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="96" column="27" selection-start-line="96" selection-start-column="27" selection-end-line="96" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.75">
-          <caret line="320" column="31" selection-start-line="320" selection-start-column="31" selection-end-line="320" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1609,121 +1009,332 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPSampler.java">
+    <entry file="jar://C:/Java/Libraries/rabbitmq-java-client-bin-3.4.3/rabbitmq-java-client.src.zip!/com/rabbitmq/client/QueueingConsumer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.75">
-          <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
+        <state vertical-scroll-proportion="1.7936118">
+          <caret line="97" column="11" selection-start-line="97" selection-start-column="11" selection-end-line="97" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5871#5872#0" expanded="true" />
-            <element signature="e#5908#5909#0" expanded="true" />
-            <element signature="e#6120#6121#0" expanded="true" />
-            <element signature="e#6195#6196#0" expanded="true" />
-            <element signature="e#6236#6237#0" expanded="true" />
-            <element signature="e#6275#6276#0" expanded="true" />
-            <element signature="e#6312#6313#0" expanded="true" />
-            <element signature="e#6393#6394#0" expanded="true" />
-            <element signature="e#6436#6437#0" expanded="true" />
-            <element signature="e#6478#6479#0" expanded="true" />
-            <element signature="e#6516#6517#0" expanded="true" />
-            <element signature="e#6567#6568#0" expanded="true" />
-            <element signature="e#6602#6603#0" expanded="true" />
-            <element signature="e#6678#6679#0" expanded="true" />
-            <element signature="e#6722#6723#0" expanded="true" />
-            <element signature="e#6765#6766#0" expanded="true" />
-            <element signature="e#6809#6810#0" expanded="true" />
-            <element signature="e#6895#6896#0" expanded="true" />
-            <element signature="e#6950#6951#0" expanded="true" />
-            <element signature="e#7004#7005#0" expanded="true" />
-            <element signature="e#7044#7045#0" expanded="true" />
-            <element signature="e#7101#7102#0" expanded="true" />
-            <element signature="e#7149#7150#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7390#7391#0" expanded="true" />
-            <element signature="e#7446#7447#0" expanded="true" />
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7527#7528#0" expanded="true" />
-            <element signature="e#7568#7569#0" expanded="true" />
-            <element signature="e#7608#7609#0" expanded="true" />
-            <element signature="e#7646#7647#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#7747#7748#0" expanded="true" />
-            <element signature="e#7793#7794#0" expanded="true" />
-            <element signature="e#7832#7833#0" expanded="true" />
-            <element signature="e#7888#7889#0" expanded="true" />
-            <element signature="e#7935#7936#0" expanded="true" />
-            <element signature="e#7982#7983#0" expanded="true" />
-            <element signature="e#8020#8021#0" expanded="true" />
-            <element signature="e#8075#8076#0" expanded="true" />
-            <element signature="e#8121#8122#0" expanded="true" />
-            <element signature="e#8167#8168#0" expanded="true" />
-            <element signature="e#8391#8392#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8500#8501#0" expanded="true" />
-            <element signature="e#8550#8551#0" expanded="true" />
-            <element signature="e#8776#8777#0" expanded="true" />
-            <element signature="e#8824#8825#0" expanded="true" />
-            <element signature="e#8864#8865#0" expanded="true" />
-            <element signature="e#8903#8904#0" expanded="true" />
-            <element signature="e#8935#8936#0" expanded="true" />
-            <element signature="e#8983#8984#0" expanded="true" />
-            <element signature="e#9023#9024#0" expanded="true" />
-            <element signature="e#9062#9063#0" expanded="true" />
-            <element signature="e#9280#9281#0" expanded="true" />
-            <element signature="e#9321#9322#0" expanded="true" />
-            <element signature="e#9372#9373#0" expanded="true" />
-            <element signature="e#9422#9423#0" expanded="true" />
-            <element signature="e#9460#9461#0" expanded="true" />
-            <element signature="e#9508#9509#0" expanded="true" />
-            <element signature="e#9544#9545#0" expanded="true" />
-            <element signature="e#9596#9597#0" expanded="true" />
-            <element signature="e#9640#9641#0" expanded="true" />
-            <element signature="e#9683#9684#0" expanded="true" />
-            <element signature="e#9719#9720#0" expanded="true" />
-            <element signature="e#9771#9772#0" expanded="true" />
-            <element signature="e#9815#9816#0" expanded="true" />
-            <element signature="e#9858#9859#0" expanded="true" />
-            <element signature="e#9968#9969#0" expanded="true" />
-            <element signature="e#10025#10026#0" expanded="true" />
-            <element signature="e#10076#10077#0" expanded="true" />
-            <element signature="e#10127#10128#0" expanded="true" />
-            <element signature="e#10177#10178#0" expanded="true" />
-            <element signature="e#10237#10238#0" expanded="true" />
-            <element signature="e#10273#10274#0" expanded="true" />
-            <element signature="e#10331#10332#0" expanded="true" />
-            <element signature="e#10445#10446#0" expanded="true" />
-            <element signature="e#10504#10505#0" expanded="true" />
-            <element signature="e#10557#10558#0" expanded="true" />
-            <element signature="e#10610#10611#0" expanded="true" />
-            <element signature="e#10662#10663#0" expanded="true" />
-            <element signature="e#10724#10725#0" expanded="true" />
-            <element signature="e#10762#10763#0" expanded="true" />
-            <element signature="e#10822#10823#0" expanded="true" />
-            <element signature="e#10943#10944#0" expanded="true" />
-            <element signature="e#11004#11005#0" expanded="true" />
-            <element signature="e#11058#11059#0" expanded="true" />
-            <element signature="e#11113#11114#0" expanded="true" />
-            <element signature="e#11166#11167#0" expanded="true" />
-            <element signature="e#11230#11231#0" expanded="true" />
-            <element signature="e#11269#11270#0" expanded="true" />
-            <element signature="e#11331#11332#0" expanded="true" />
-            <element signature="e#11374#11375#0" expanded="true" />
-            <element signature="e#11434#11435#0" expanded="true" />
-            <element signature="e#11488#11489#0" expanded="true" />
-            <element signature="e#11541#11542#0" expanded="true" />
+            <element signature="e#4453#4454#0" expanded="false" />
+            <element signature="e#4514#4515#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPRpc.java">
+    <entry file="jar://$PROJECT_DIR$/lib/protobuf-java-2.6.1.jar!/com/google/protobuf/AbstractMessage.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.06633907">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        <state vertical-scroll-proportion="-6.3268733">
+          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/protobuf-java-2.6.1.jar!/com/google/protobuf/GeneratedMessage.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="46" column="58" selection-start-line="46" selection-start-column="58" selection-end-line="46" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/apache-jmeter-2.11/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/samplers/AbstractSampler.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/apache-jmeter-2.11/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/samplers/gui/AbstractSamplerGui.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PublisherGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="94" column="0" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1673#1674#0" expanded="false" />
+            <element signature="e#1695#1696#0" expanded="false" />
+            <element signature="e#1786#1787#0" expanded="false" />
+            <element signature="e#1840#1841#0" expanded="false" />
+            <element signature="e#1892#1893#0" expanded="false" />
+            <element signature="e#1931#1932#0" expanded="false" />
+            <element signature="e#3755#3756#0" expanded="false" />
+            <element signature="e#3788#3789#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractAMQPSamplerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.7/src.zip!/java/util/TimerTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33292383">
+          <caret line="35" column="22" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/id/co/tech/cakra/message/proto/olt/StockTradeInfo.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/id/co/tech/cakra/message/proto/olt/MFOrderInfo.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-49.127907">
+          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/com/test/LogonTest.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/protobuf-java-2.6.1.jar!/com/google/protobuf/RpcController.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/id/co/tech/cakra/message/proto/olt/LogonResponse.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.20930232">
+          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/ConsumerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.363636">
+          <caret line="102" column="7" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/apache-jmeter-2.11/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/gui/AbstractJMeterGuiComponent.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3501292">
+          <caret line="95" column="19" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractLoginSamplerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.840909">
+          <caret line="135" column="32" selection-start-line="135" selection-start-column="32" selection-end-line="135" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7480#7481#0" expanded="true" />
-            <element signature="e#7543#7544#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/LoginGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="42" selection-start-line="28" selection-start-column="42" selection-end-line="28" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractAMQPSampler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractLoginSampler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="54" selection-start-line="17" selection-start-column="54" selection-end-line="17" selection-end-column="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractMarketInfoSampler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="201" column="35" selection-start-line="201" selection-start-column="20" selection-end-line="201" selection-end-column="35" />
+          <folding>
+            <element signature="e#4525#4526#0" expanded="true" />
+            <element signature="e#4564#4565#0" expanded="true" />
+            <element signature="e#5901#5902#0" expanded="true" />
+            <element signature="e#5949#5950#0" expanded="true" />
+            <element signature="e#5988#5989#0" expanded="true" />
+            <element signature="e#6068#6069#0" expanded="true" />
+            <element signature="e#6117#6118#0" expanded="true" />
+            <element signature="e#6166#6167#0" expanded="true" />
+            <element signature="e#6207#6208#0" expanded="true" />
+            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6346#6347#0" expanded="true" />
+            <element signature="e#6399#6400#0" expanded="true" />
+            <element signature="e#6435#6436#0" expanded="true" />
+            <element signature="e#6490#6491#0" expanded="true" />
+            <element signature="e#6535#6536#0" expanded="true" />
+            <element signature="e#6580#6581#0" expanded="true" />
+            <element signature="e#7448#7449#0" expanded="true" />
+            <element signature="e#7505#7506#0" expanded="true" />
+            <element signature="e#7553#7554#0" expanded="true" />
+            <element signature="e#7601#7602#0" expanded="true" />
+            <element signature="e#7642#7643#0" expanded="true" />
+            <element signature="e#7701#7702#0" expanded="true" />
+            <element signature="e#7753#7754#0" expanded="true" />
+            <element signature="e#7805#7806#0" expanded="true" />
+            <element signature="e#7846#7847#0" expanded="true" />
+            <element signature="e#7905#7906#0" expanded="true" />
+            <element signature="e#7957#7958#0" expanded="true" />
+            <element signature="e#8009#8010#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="257" column="27" selection-start-line="257" selection-start-column="27" selection-end-line="257" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/MarketInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/PreOpening.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="204" column="16" selection-start-line="204" selection-start-column="16" selection-end-line="204" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getReceiveTimeoutAsInt#0;class#PreOpening#0" expanded="false" />
+            <element signature="e#7122#7123#0" expanded="true" />
+            <element signature="e#7169#7170#0" expanded="true" />
+            <element signature="method#interrupt#0;class#PreOpening#0" expanded="false" />
+            <element signature="method#testEnded#0;class#PreOpening#0" expanded="false" />
+            <element signature="method#testEnded#1;class#PreOpening#0" expanded="false" />
+            <element signature="method#testStarted#0;class#PreOpening#0" expanded="false" />
+            <element signature="method#testStarted#1;class#PreOpening#0" expanded="false" />
+            <element signature="method#cleanup#0;class#PreOpening#0" expanded="false" />
+            <element signature="method#initChannel#0;class#PreOpening#0" expanded="false" />
+            <element signature="method#trace#0;class#PreOpening#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/PreOpeningGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="63" column="31" selection-start-line="63" selection-start-column="31" selection-end-line="63" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#688#689#0" expanded="true" />
+            <element signature="e#740#741#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractMarketInfoSamplerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.5227275">
+          <caret line="214" column="0" selection-start-line="214" selection-start-column="0" selection-end-line="214" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AbstractPreOpeningSampler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="227" column="31" selection-start-line="227" selection-start-column="31" selection-end-line="227" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6606#6607#0" expanded="true" />
+            <element signature="e#6661#6662#0" expanded="true" />
+            <element signature="e#6785#6786#0" expanded="true" />
+            <element signature="e#6837#6838#0" expanded="true" />
+            <element signature="e#6878#6879#0" expanded="true" />
+            <element signature="e#6919#6920#0" expanded="true" />
+            <element signature="e#6955#6956#0" expanded="true" />
+            <element signature="e#7011#7012#0" expanded="true" />
+            <element signature="e#7060#7061#0" expanded="true" />
+            <element signature="e#7109#7110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/AbstractPreOpeningSamplerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/gui/MarketInfoGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#689#690#0" expanded="true" />
+            <element signature="e#742#743#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.66339064">
+          <caret line="111" column="0" selection-start-line="111" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/amqp/AMQPPublisher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13267814">
+          <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>

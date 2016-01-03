@@ -16,7 +16,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
-public class AMQPConsumer extends AMQPSampler implements Interruptible, TestStateListener {
+public class AMQPConsumer extends AbstractAMQPSampler implements Interruptible, TestStateListener {
     private static final int DEFAULT_PREFETCH_COUNT = 0; // unlimited
 
     public static final boolean DEFAULT_READ_RESPONSE = true;
@@ -74,12 +74,9 @@ public class AMQPConsumer extends AMQPSampler implements Interruptible, TestStat
          * Perform the sampling
          */
 
-        // aggregate samples.
-        int loop = getIterationsAsInt();
         result.sampleStart(); // Start timing
         QueueingConsumer.Delivery delivery = null;
         try {
-            for (int idx = 0; idx < loop; idx++) {
                 delivery = consumer.nextDelivery(getReceiveTimeoutAsInt());
 
                 if(delivery == null){
@@ -99,15 +96,14 @@ public class AMQPConsumer extends AMQPSampler implements Interruptible, TestStat
 //                            +"\nauto-delete: "+getQueueAutoDelete());
                     result.setSamplerData(response);
                     result.setResponseMessage(response);
-                }
-                else {
+
+                } else {
                     result.setSamplerData("Read response is not required (false).");
                 }
 
                 if(!autoAck()) {
                     channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
                 }
-            }
 
             result.setResponseData("OK", null);
             result.setDataType(SampleResult.TEXT);

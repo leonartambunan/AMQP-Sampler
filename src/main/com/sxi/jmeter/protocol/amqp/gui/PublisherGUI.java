@@ -12,7 +12,7 @@ import org.apache.jorphan.gui.JLabeledTextField;
 
 import com.sxi.jmeter.protocol.amqp.AMQPPublisher;
 
-public class AMQPPublisherGui extends AMQPSamplerGui {
+public class PublisherGUI extends AbstractAMQPSamplerGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class AMQPPublisherGui extends AMQPSamplerGui {
 
     private ArgumentsPanel headers = new ArgumentsPanel("Headers");
 
-    public AMQPPublisherGui(){
+    public PublisherGUI(){
         init();
     }
 
@@ -75,9 +75,6 @@ public class AMQPPublisherGui extends AMQPSamplerGui {
         configureHeaders(sampler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public TestElement createTestElement() {
         AMQPPublisher sampler = new AMQPPublisher();
@@ -85,9 +82,6 @@ public class AMQPPublisherGui extends AMQPSamplerGui {
         return sampler;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void modifyTestElement(TestElement te) {
         AMQPPublisher sampler = (AMQPPublisher) te;

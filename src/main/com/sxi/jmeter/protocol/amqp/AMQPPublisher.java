@@ -2,9 +2,7 @@ package com.sxi.jmeter.protocol.amqp;
 
 import com.rabbitmq.client.AMQP;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.security.*;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
@@ -30,7 +28,7 @@ import com.rabbitmq.client.Channel;
  *
  * However, access to class fields must be synchronized.
  */
-public class AMQPPublisher extends AMQPSampler implements Interruptible {
+public class AMQPPublisher extends AbstractAMQPSampler implements Interruptible {
 
     private static final long serialVersionUID = -8420658040465788497L;
 
@@ -81,39 +79,20 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
          * Perform the sampling
          */
 
-        // aggregate samples.
-        int loop = getIterationsAsInt();
         result.sampleStart(); // Start timing
         try {
             AMQP.BasicProperties messageProperties = getProperties();
             byte[] messageBytes = getMessageBytes();
 
-            //for (int idx = 0; idx < loop; idx++) {
-//                channel.basicPublish(getExchange(), getMessageRoutingKey(), messageProperties, messageBytes);
-//            }
 
-            id.co.tech.cakra.message.proto.olt.LogonRequest logonReq = id.co.tech.cakra.message.proto.olt.LogonRequest
-                    .newBuilder()
-                    .setUserId("test")
-                    .setPassword("pass")
-                    .setDeviceId("5f6d41cd63257be")
-                    .setDeviceType("ANDROID")
-                    .setAppVersion("3.0")
-                    .setIp(InetAddress.getLocalHost().getHostAddress())
-                    .build();
+            channel.basicPublish(getExchange(), getMessageRoutingKey(), messageProperties, messageBytes);
 
-            channel.basicPublish("", getMessageRoutingKey(), messageProperties, logonReq.toByteArray());
 
-            // commit the sample.
             if (getUseTx()) {
                 channel.txCommit();
             }
 
-            /*
-             * Set up the sample result details
-             */
-//            result.setSamplerData(data);
-            result.setSamplerData(logonReq.toString());
+            result.setSamplerData(getMessage());
 
             result.setResponseData(new String(messageBytes), null);
             result.setDataType(SampleResult.TEXT);
@@ -138,9 +117,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
         return getMessage().getBytes();
     }
 
-    /**
-     * @return the message routing key for the sample
-     */
     public String getMessageRoutingKey() {
         return getPropertyAsString(MESSAGE_ROUTING_KEY);
     }
@@ -149,9 +125,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
         setProperty(MESSAGE_ROUTING_KEY, content);
     }
 
-    /**
-     * @return the message for the sample
-     */
     public String getMessage() {
         return getPropertyAsString(MESSAGE);
     }
@@ -160,9 +133,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
         setProperty(MESSAGE, content);
     }
 
-    /**
-     * @return the message type for the sample
-     */
     public String getMessageType() {
         return getPropertyAsString(MESSAGE_TYPE);
     }
@@ -171,9 +141,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
         setProperty(MESSAGE_TYPE, content);
     }
 
-    /**
-     * @return the reply-to queue for the sample
-     */
     public String getReplyToQueue() {
         return getPropertyAsString(REPLY_TO_QUEUE);
     }
@@ -190,9 +157,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
     	setProperty(CONTENT_TYPE, contentType);
     }
     
-    /**
-     * @return the correlation identifier for the sample
-     */
     public String getCorrelationId() {
         return getPropertyAsString(CORRELATION_ID);
     }
@@ -201,9 +165,6 @@ public class AMQPPublisher extends AMQPSampler implements Interruptible {
         setProperty(CORRELATION_ID, content);
     }
 
-    /**
-     * @return the message id for the sample
-     */
     public String getMessageId() {
         return getPropertyAsString(MESSAGE_ID);
     }

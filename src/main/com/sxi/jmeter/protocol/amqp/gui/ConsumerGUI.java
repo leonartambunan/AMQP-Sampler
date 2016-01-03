@@ -10,7 +10,7 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import java.awt.*;
 
 
-public class AMQPConsumerGui extends AMQPSamplerGui {
+public class ConsumerGUI extends AbstractAMQPSamplerGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class AMQPConsumerGui extends AMQPSamplerGui {
 
     private JPanel mainPanel;
 
-    public AMQPConsumerGui(){
+    public ConsumerGUI(){
         init();
     }
 
@@ -60,9 +60,6 @@ public class AMQPConsumerGui extends AMQPSamplerGui {
         autoAck.setSelected(sampler.autoAck());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearGui() {
         super.clearGui();
