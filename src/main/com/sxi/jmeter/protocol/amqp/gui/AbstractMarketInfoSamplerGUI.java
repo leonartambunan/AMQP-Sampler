@@ -1,4 +1,3 @@
-
 package com.sxi.jmeter.protocol.amqp.gui;
 
 import com.sxi.jmeter.protocol.amqp.AbstractMarketInfoSampler;
@@ -14,15 +13,15 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
 
     private static final long serialVersionUID = 1L;
     protected JLabeledTextField virtualHost = new JLabeledTextField("Virtual Host");
-    protected JLabeledTextField host = new JLabeledTextField("Host\t");
-    protected JLabeledTextField port = new JLabeledTextField("Port\t");
-    protected JLabeledTextField timeout = new JLabeledTextField("Timeout\t");
+    protected JLabeledTextField host = new JLabeledTextField("Host");
+    protected JLabeledTextField port = new JLabeledTextField("Port");
+    protected JLabeledTextField timeout = new JLabeledTextField("Timeout");
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
     private final JCheckBox SSL = new JCheckBox("SSL", false);
-    protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile Userid");
+    protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile User ID");
     protected JLabeledTextField mobilePassword = new JLabeledTextField("Mobile Password");
-    protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Deviceid");
+    protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Device ID");
     protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
     protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Ver.");
 
@@ -31,10 +30,9 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField marketInfoQueue = new JLabeledTextField("Market Info Queue");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
-    protected JLabeledTextField scheduledHour = new JLabeledTextField("Hour\t");
-    protected JLabeledTextField scheduledMinute = new JLabeledTextField("Minute\t");
-    protected JLabeledTextField scheduledSecond = new JLabeledTextField("Second\t");
-
+    protected JLabeledTextField scheduledHour = new JLabeledTextField("Hour");
+    protected JLabeledTextField scheduledMinute = new JLabeledTextField("Minute");
+    protected JLabeledTextField scheduledSecond = new JLabeledTextField("Second");
 
     protected abstract void setMainPanel(JPanel panel);
 
@@ -58,9 +56,9 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
         mobileDeviceId.setText(sampler.getMobileDeviceId());
         mobilePassword.setText(sampler.getMobilePassword());
         mobileDeviceType.setText(sampler.getMobileType());
-        mobileUserId.setText(sampler.getMobileUserid());
+        mobileUserId.setText(sampler.getMobileUserId());
 
-        loginQueue.setText(sampler.getServerQueue());
+        loginQueue.setText(sampler.getLoginQueue());
         loginReplyToQueue.setText(sampler.getReplyToQueue());
         marketInfoQueue.setText(sampler.getMarketInfoQueue());
         routingKey.setText(sampler.getRoutingKey());
@@ -123,9 +121,9 @@ public abstract class AbstractMarketInfoSamplerGUI extends AbstractSamplerGui {
         sampler.setMobileDeviceId(mobileDeviceId.getText());
         sampler.setMobilePassword(mobilePassword.getText());
         sampler.setMobileType(mobileDeviceType.getText());
-        sampler.setMobileUserid(mobileUserId.getText());
+        sampler.setMobileUserId(mobileUserId.getText());
 
-        sampler.setServerQueue(loginQueue.getText());
+        sampler.setLoginQueue(loginQueue.getText());
         sampler.setReplyToQueue(loginReplyToQueue.getText());
         sampler.setMarketInfoQueue(marketInfoQueue.getText());
         sampler.setRoutingKey(routingKey.getText());

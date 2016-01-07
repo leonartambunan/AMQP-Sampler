@@ -1,4 +1,3 @@
-
 package com.sxi.jmeter.protocol.amqp.gui;
 
 import com.sxi.jmeter.protocol.amqp.AbstractPreOpeningSampler;
@@ -20,11 +19,11 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
     private final JCheckBox SSL = new JCheckBox("SSL", false);
-    protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile Userid");
+    protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile User ID");
     protected JLabeledTextField mobilePassword = new JLabeledTextField("Mobile Password");
-    protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Deviceid");
+    protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Device ID");
     protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
-    protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Ver.");
+    protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Version");
 
     protected JLabeledTextField loginQueue = new JLabeledTextField("Login Queue");
     protected JLabeledTextField loginReplyToQueue = new JLabeledTextField("Login ReplyTo Queue");
@@ -61,7 +60,7 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         mobileDeviceId.setText(sampler.getMobileDeviceId());
         mobilePassword.setText(sampler.getMobilePassword());
         mobileDeviceType.setText(sampler.getMobileType());
-        mobileUserId.setText(sampler.getMobileUserid());
+        mobileUserId.setText(sampler.getMobileUserId());
 
         loginQueue.setText(sampler.getLoginQueue());
         loginReplyToQueue.setText(sampler.getLoginReplyToQueue());
@@ -130,7 +129,7 @@ public abstract class AbstractPreOpeningSamplerGUI extends AbstractSamplerGui {
         sampler.setMobileDeviceId(mobileDeviceId.getText());
         sampler.setMobilePassword(mobilePassword.getText());
         sampler.setMobileType(mobileDeviceType.getText());
-        sampler.setMobileUserid(mobileUserId.getText());
+        sampler.setMobileUserId(mobileUserId.getText());
 
         sampler.setLoginQueue(loginQueue.getText());
         sampler.setLoginReplyToQueue(loginReplyToQueue.getText());

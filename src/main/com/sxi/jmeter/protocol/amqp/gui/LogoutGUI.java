@@ -1,13 +1,13 @@
 package com.sxi.jmeter.protocol.amqp.gui;
 
-import com.sxi.jmeter.protocol.amqp.Login;
+import com.sxi.jmeter.protocol.amqp.Logout;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.testelement.TestElement;
 
 import javax.swing.*;
 
-public class LoginGUI extends AbstractLoginSamplerGUI {
+public class LogoutGUI extends AbstractLogoutSamplerGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,7 +15,7 @@ public class LoginGUI extends AbstractLoginSamplerGUI {
 
     private ArgumentsPanel headers = new ArgumentsPanel("Headers");
 
-    public LoginGUI(){
+    public LogoutGUI(){
         init();
     }
 
@@ -24,30 +24,31 @@ public class LoginGUI extends AbstractLoginSamplerGUI {
         return this.getClass().getSimpleName();
     }
 
+
     @Override
     public String getStaticLabel() {
-        return "Trimegah Login Sampler";
+        return "Trimegah Logout Sampler";
     }
 
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (!(element instanceof Login)) return;
-        Login sampler = (Login) element;
+        if (!(element instanceof Logout)) return;
+        Logout sampler = (Logout) element;
 
         configureHeaders(sampler);
     }
 
     @Override
     public TestElement createTestElement() {
-        Login sampler = new Login();
+        Logout sampler = new Logout();
         modifyTestElement(sampler);
         return sampler;
     }
 
     @Override
     public void modifyTestElement(TestElement te) {
-        Login sampler = (Login) te;
+        Logout sampler = (Logout) te;
         sampler.clear();
         configureTestElement(sampler);
 
@@ -73,7 +74,7 @@ public class LoginGUI extends AbstractLoginSamplerGUI {
         headers.clearGui();
     }
 
-    private void configureHeaders(Login sampler)
+    private void configureHeaders(Logout sampler)
     {
         Arguments sampleHeaders = sampler.getHeaders();
         if (sampleHeaders != null) {

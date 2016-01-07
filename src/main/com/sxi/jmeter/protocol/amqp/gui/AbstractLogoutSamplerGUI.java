@@ -1,6 +1,6 @@
 package com.sxi.jmeter.protocol.amqp.gui;
 
-import com.sxi.jmeter.protocol.amqp.AbstractLoginSampler;
+import com.sxi.jmeter.protocol.amqp.AbstractLogoutSampler;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
@@ -9,11 +9,11 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
+public abstract class AbstractLogoutSamplerGUI extends AbstractSamplerGui {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField serverQueue = new JLabeledTextField("Login Queue");
+    protected JLabeledTextField serverQueue = new JLabeledTextField("Logout Queue");
     protected JLabeledTextField replyToQueue = new JLabeledTextField("ReplyTo Queue");
     protected JLabeledTextField virtualHost = new JLabeledTextField("Virtual Host");
 
@@ -23,26 +23,17 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
     protected JLabeledTextField username = new JLabeledTextField("Username");
     protected JLabeledTextField password = new JLabeledTextField("Password");
     private final JCheckBox SSL = new JCheckBox("SSL", false);
-    protected JLabeledTextField varNameAuthenticatedCon = new JLabeledTextField("Var Name to store Authenticated Conn");
 
     protected JLabeledTextField mobileUserId = new JLabeledTextField("Mobile User ID");
-    protected JLabeledTextField mobilePassword = new JLabeledTextField("Mobile Password");
-    protected JLabeledTextField mobileDeviceId = new JLabeledTextField("Mobile Device ID");
-    protected JLabeledTextField mobileDeviceType = new JLabeledTextField("Mobile Device Type");
-    protected JLabeledTextField mobileAppVersion = new JLabeledTextField("Mobile App Version");
-
-    @Override
-    public String getStaticLabel() {
-        return "Trimegah Login Sampler";
-    }
+    protected JLabeledTextField sessionID = new JLabeledTextField("Session ID");
 
     protected abstract void setMainPanel(JPanel panel);
 
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (!(element instanceof AbstractLoginSampler)) return;
-        AbstractLoginSampler sampler = (AbstractLoginSampler) element;
+        if (!(element instanceof AbstractLogoutSampler)) return;
+        AbstractLogoutSampler sampler = (AbstractLogoutSampler) element;
 
         virtualHost.setText(sampler.getVirtualHost());
         timeout.setText(sampler.getTimeout());
@@ -51,13 +42,9 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         username.setText(sampler.getUsername());
         password.setText(sampler.getPassword());
         SSL.setSelected(sampler.isConnectionSSL());
-        varNameAuthenticatedCon.setText(sampler.getAuthenticatedConnectionVarName());
 
-        mobileAppVersion.setText(sampler.getMobileAppVersion());
-        mobileDeviceId.setText(sampler.getMobileDeviceId());
-        mobilePassword.setText(sampler.getMobilePassword());
-        mobileDeviceType.setText(sampler.getMobileType());
         mobileUserId.setText(sampler.getMobileUserId());
+        sessionID.setText(sampler.getSessionId());
 
         serverQueue.setText(sampler.getServerQueue());
         replyToQueue.setText(sampler.getReplyToQueue());
@@ -67,24 +54,19 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
     @Override
     public void clearGui() {
 
-        serverQueue.setText(AbstractLoginSampler.DEFAULT_SERVER_QUEUE);
-        replyToQueue.setText(AbstractLoginSampler.DEFAULT_REPLY_QUEUE);
+        serverQueue.setText(AbstractLogoutSampler.DEFAULT_SERVER_QUEUE);
+        replyToQueue.setText(AbstractLogoutSampler.DEFAULT_REPLY_QUEUE);
 
         virtualHost.setText("/");
 
-        timeout.setText(AbstractLoginSampler.DEFAULT_TIMEOUT_STRING);
+        timeout.setText(AbstractLogoutSampler.DEFAULT_TIMEOUT_STRING);
 
         host.setText("localhost");
-        port.setText(AbstractLoginSampler.DEFAULT_PORT_STRING);
+        port.setText(AbstractLogoutSampler.DEFAULT_PORT_STRING);
         username.setText("guest");
         password.setText("guest");
         SSL.setSelected(false);
-        varNameAuthenticatedCon.setText("AUTH_CON");
 
-        mobileAppVersion.setText("3.0");
-        mobileDeviceId.setText("5f6d41cd63257be");
-        mobilePassword.setText("pass");
-        mobileDeviceType.setText("ANDROID");
         mobileUserId.setText("test");
 
     }
@@ -92,7 +74,7 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractLoginSampler sampler = (AbstractLoginSampler) element;
+        AbstractLogoutSampler sampler = (AbstractLogoutSampler) element;
 
         sampler.clear();
 
@@ -107,15 +89,13 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         sampler.setUsername(username.getText());
         sampler.setPassword(password.getText());
         sampler.setConnectionSSL(SSL.isSelected());
-        sampler.setAuthenticatedConnectionVarName(varNameAuthenticatedCon.getText());
 
-        sampler.setMobileAppVersion(mobileAppVersion.getText());
-        sampler.setMobileDeviceId(mobileDeviceId.getText());
-        sampler.setMobilePassword(mobilePassword.getText());
-        sampler.setMobileType(mobileDeviceType.getText());
         sampler.setMobileUserId(mobileUserId.getText());
 
+        sampler.setSessionId(sessionID.getText());
+
         sampler.setServerQueue(serverQueue.getText());
+
         sampler.setReplyToQueue(replyToQueue.getText());
     }
 
@@ -168,19 +148,8 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        mobileSettings.add(mobilePassword, gridBagConstraints);
+        mobileSettings.add(sessionID, gridBagConstraints);
 
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        mobileSettings.add(mobileDeviceId, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        mobileSettings.add(mobileDeviceType, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        mobileSettings.add(mobileAppVersion, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 0;
         gridBagConstraintsCommon.gridy = 0;
@@ -222,14 +191,11 @@ public abstract class AbstractLoginSamplerGUI extends AbstractSamplerGui {
         gridBagConstraints.gridy = 5;
         serverSettings.add(timeout, gridBagConstraints);
 
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        serverSettings.add(varNameAuthenticatedCon, gridBagConstraints);
-
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 0;
         commonPanel.add(serverSettings, gridBagConstraintsCommon);
 
         return commonPanel;
     }
+
 }

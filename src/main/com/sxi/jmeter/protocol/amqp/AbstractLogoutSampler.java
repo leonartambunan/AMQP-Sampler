@@ -5,9 +5,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
-import org.apache.jmeter.threads.JMeterContext;
-import org.apache.jmeter.threads.JMeterContextService;
-import org.apache.jmeter.threads.JMeterVariables;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
@@ -16,10 +13,10 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
-public abstract class AbstractLoginSampler extends AbstractSampler implements ThreadListener {
+public abstract class AbstractLogoutSampler extends AbstractSampler implements ThreadListener {
 
     public static final String DEFAULT_REPLY_QUEUE = "amq.rabbitmq.reply-to";
-    public static final String DEFAULT_SERVER_QUEUE = "olt.logon_request-rpc";
+    public static final String DEFAULT_SERVER_QUEUE = "olt.logout_request-rpc";
 
     public static final int DEFAULT_PORT = 5672;
     public static final String DEFAULT_PORT_STRING = Integer.toString(DEFAULT_PORT);
@@ -36,7 +33,6 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     protected static final String USERNAME = "AMQPSampler.Username";
     protected static final String PASSWORD = "AMQPSampler.Password";
     private static final String TIMEOUT = "AMQPSampler.Timeout";
-    private static final String AUTHENTICATED_CONNECTION_VAR_NAME= "AMQPSampler.AuthenticatedConnectionVariableName";
 
     private static final int DEFAULT_HEARTBEAT = 1;
 
@@ -49,10 +45,12 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
 
+    private final static String SESSION_ID = "Mobile.SessionId";
+
     private transient ConnectionFactory factory;
     private transient Connection connection;
 
-    protected AbstractLoginSampler(){
+    protected AbstractLogoutSampler(){
         factory = new ConnectionFactory();
         factory.setRequestedHeartbeat(DEFAULT_HEARTBEAT);
     }
@@ -140,14 +138,6 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
         return getPropertyAsBoolean(SSL);
     }
 
-    public void setAuthenticatedConnectionVarName(String name) {
-        setProperty(AUTHENTICATED_CONNECTION_VAR_NAME, name);
-    }
-
-    public String getAuthenticatedConnectionVarName() {
-        return getPropertyAsString(AUTHENTICATED_CONNECTION_VAR_NAME,"");
-    }
-
     public String getUsername() {
         return getPropertyAsString(USERNAME);
     }
@@ -216,19 +206,24 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
         return getPropertyAsString(MOBILE_USER_ID);
     }
 
+    public void setSessionId(String id) {
+        setProperty(SESSION_ID, id);
+    }
+
+    public String getSessionId() {
+        return getPropertyAsString(SESSION_ID);
+    }
+
     public void setMobileType(String mobileType) {
         setProperty(MOBILE_TYPE, mobileType);
     }
 
     protected void cleanup() {
-        //Close connection only if the VAR NAME AUTHENTICATED CONNECTION is not set
-        if ("".equals(getAuthenticatedConnectionVarName().trim())) {
-            try {
-                if (connection != null && connection.isOpen())
-                    connection.close();
-            } catch (IOException e) {
-                log.error("Failed to close connection", e);
-            }
+        try {
+            if (connection != null && connection.isOpen())
+                connection.close();
+        } catch (IOException e) {
+            log.error("Failed to close connection", e);
         }
     }
 
@@ -242,14 +237,5 @@ public abstract class AbstractLoginSampler extends AbstractSampler implements Th
     public void threadStarted() {
 
     }
-
-    protected void saveConnectionToJMeterVariable() {
-        JMeterContext jMeterContext = JMeterContextService.getContext();
-        JMeterVariables vars = jMeterContext.getVariables();
-        vars.putObject(getAuthenticatedConnectionVarName(), connection);
-        jMeterContext.setVariables(vars);
-
-    }
-
 
 }

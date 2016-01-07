@@ -2,8 +2,8 @@ package com.sxi.jmeter.protocol.amqp;
 
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
-import id.co.tech.cakra.message.proto.olt.LogonRequest;
-import id.co.tech.cakra.message.proto.olt.LogonResponse;
+import id.co.tech.cakra.message.proto.olt.LogoutRequest;
+import id.co.tech.cakra.message.proto.olt.LogoutResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.Interruptible;
@@ -14,13 +14,11 @@ import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
-public class Login extends AbstractLoginSampler implements Interruptible, TestStateListener {
+public class Logout extends AbstractLogoutSampler implements Interruptible, TestStateListener {
 
     private static final long serialVersionUID = 1L;
     private static final Logger log = LoggingManager.getLoggerForClass();
@@ -32,26 +30,16 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
     private transient QueueingConsumer consumer;
     private transient String consumerTag;
 
-    public LogonRequest logonRequest;
-
+    public LogoutRequest logoutRequest;
 
     @Override
     public SampleResult sample(Entry entry) {
 
-        try {
-            logonRequest = LogonRequest
+            logoutRequest = LogoutRequest
                     .newBuilder()
                     .setUserId(getMobileUserId())
-                    .setPassword(getMobilePassword())
-                    .setDeviceId(getMobileDeviceId())
-                    .setDeviceType(getMobileType())
-                    .setAppVersion(getMobileAppVersion())
-                    .setIp(InetAddress.getLocalHost().getHostAddress())
+                    .setSessionId(getSessionId())
                     .build();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
 
 
         SampleResult result = new SampleResult();
@@ -61,14 +49,14 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
 
         result.setSamplerData(constructNiceString());
 
-        trace("Trimegah Login sample()");
+        trace("Trimegah Logout sample()");
 
         try {
 
             initChannel();
 
             if (consumer == null) {
-                log.info("Creating rpc login consumer");
+                log.info("Creating rpc logout consumer");
                 consumer = new QueueingConsumer(channel);
             }
 
@@ -96,30 +84,25 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
             delivery = consumer.nextDelivery(getReceiveTimeoutAsInt());
 
             if(delivery == null){
-                result.setResponseMessage("Login delivery timed out");
+                result.setResponseMessage("Logout delivery timed out");
                 return result;
             }
 
-            LogonResponse logonResponse = LogonResponse.parseFrom(delivery.getBody());
+            LogoutResponse logoutResponse = LogoutResponse.parseFrom(delivery.getBody());
 
-            System.out.println(logonResponse.toString());
+            System.out.println(logoutResponse.toString());
 
-            result.setResponseData(logonResponse.toString(), null);
-            result.setResponseMessage(logonResponse.toString());
+            result.setResponseData(logoutResponse.toString(), null);
+            result.setResponseMessage(logoutResponse.toString());
 
             //TODO How the authenticated connection passed to next request.
             //TODO Success string of logon status
 
-            if (SUCCESSFUL_LOGIN.equals(logonResponse.getStatus())) {
-
-                if (!"".equals(getAuthenticatedConnectionVarName())) {
-                    saveConnectionToJMeterVariable();
-                }
+            if (SUCCESSFUL_LOGIN.equals(logoutResponse.getStatus())) {
 
                 result.setDataType(SampleResult.TEXT);
                 result.setResponseCodeOK();
                 result.setSuccessful(true);
-
             }
 
         } catch (ShutdownSignalException e) {
@@ -156,7 +139,7 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
             result.sampleEnd();
         }
 
-        trace("RPC Login sample() method ended");
+        trace("RPC Logout sample() method ended");
 
         return result;
     }
@@ -176,7 +159,7 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
                 .append(getVirtualHost())
                 .append("\n----------")
         .append("\n---REQUEST---\n")
-        .append(logonRequest.toString());
+        .append(logoutRequest.toString());
 
         return stringBuffer.toString();
 
@@ -271,9 +254,9 @@ public class Login extends AbstractLoginSampler implements Interruptible, TestSt
                         .replyTo(getReplyToQueue())
                         .build();
 
-                log.info("Publishing login request message to Queue:"+getServerQueue());
+                log.info("Publishing logout request message to Queue:"+getServerQueue());
 
-                channel.basicPublish("", getServerQueue(), props, logonRequest.toByteArray());
+                channel.basicPublish("", getServerQueue(), props, logoutRequest.toByteArray());
 
                 //TODO how about ack ? Is it a mandatory ?
 

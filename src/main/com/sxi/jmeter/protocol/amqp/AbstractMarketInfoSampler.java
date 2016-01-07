@@ -22,7 +22,7 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
     public static final int DEFAULT_PORT = 5672;
     public static final String DEFAULT_PORT_STRING = Integer.toString(DEFAULT_PORT);
 
-    public static final int DEFAULT_TIMEOUT = 60000;
+    public static final int DEFAULT_TIMEOUT = 90000;
     public static final String DEFAULT_TIMEOUT_STRING = Integer.toString(DEFAULT_TIMEOUT);
 
     private static final Logger log = LoggingManager.getLoggerForClass();
@@ -40,7 +40,7 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
 
     private static final int DEFAULT_HEARTBEAT = 1;
 
-    private final static String LOGIN_QUEUE = "AMQPSampler.ServerQueue";
+    private final static String LOGIN_QUEUE = "AMQPSampler.LoginQueue";
     private final static String REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
     private final static String MARKET_INFO_QUEUE = "AMQPSampler.MarketInfoQueue";
     private static final String ROUTING_KEY = "AMQPSampler.RoutingKey";
@@ -50,7 +50,6 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
-
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
@@ -69,7 +68,7 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
             channel = null;
         }
 
-        log.info(channel==null?"channel is null":"channel is not null");
+        log.info(channel==null?"channel is null, we are going to create one for you":"channel is not null");
 
         if(channel == null) {
 
@@ -77,7 +76,6 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
-
             connection = factory.newConnection();
             Channel ch = connection.createChannel();
 
@@ -167,11 +165,11 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         setProperty(MOBILE_DEVICE_ID, deviceId);
     }
 
-    public String getServerQueue() {
+    public String getLoginQueue() {
         return getPropertyAsString(LOGIN_QUEUE, DEFAULT_LOGIN_QUEUE);
     }
 
-    public void setServerQueue(String queue) {
+    public void setLoginQueue(String queue) {
         setProperty(LOGIN_QUEUE, queue);
     }
 
@@ -207,7 +205,6 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         setProperty(MOBILE_APP_VERSION, appVersion);
     }
 
-
     public String getMobilePassword() {
         return getPropertyAsString(MOBILE_PASSWORD);
     }
@@ -220,11 +217,11 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
         return getPropertyAsString(MOBILE_TYPE);
     }
 
-    public void setMobileUserid(String userid) {
-        setProperty(MOBILE_USER_ID, userid);
+    public void setMobileUserId(String userId) {
+        setProperty(MOBILE_USER_ID, userId);
     }
 
-    public String getMobileUserid() {
+    public String getMobileUserId() {
         return getPropertyAsString(MOBILE_USER_ID);
     }
 
@@ -258,17 +255,17 @@ public abstract class AbstractMarketInfoSampler extends AbstractSampler implemen
 
     protected void cleanup() {
         try {
-            //getChannel().close();   // closing the connection will close the channel if it's still open
             if(connection != null && connection.isOpen())
                 connection.close();
         } catch (IOException e) {
-            log.error("Failed to close connection", e);
+            e.printStackTrace();
+            log.error("AbstractMarketInfoSampler Failed to close connection", e);
         }
     }
 
     @Override
     public void threadFinished() {
-        log.info("LoginSampler.threadFinished called");
+        log.info("AbstractMarketInfoSampler.threadFinished called");
         cleanup();
     }
 

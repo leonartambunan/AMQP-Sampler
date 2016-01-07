@@ -1,11 +1,10 @@
 package com.sxi.jmeter.protocol.amqp;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.*;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
-import com.rabbitmq.client.ShutdownSignalException;
+import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
+import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
 import id.co.tech.cakra.message.proto.olt.OrderInfoResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.Entry;
@@ -15,8 +14,11 @@ import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
+import org.apache.log.format.SyslogFormatter;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -35,25 +37,58 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
 
     //    private final static String MESSAGE_ROUTING_KEY = "AMQPPublisher.MessageRoutingKey";
     private final static String HEADERS = "AMQPPublisher.Headers";
-    private static final String POSITIVE_LOGON_STATUS = "Success";
+    private static final String POSITIVE_LOGON_STATUS = "OK";
 
     private transient Channel channel;
     private transient QueueingConsumer loginConsumer;
     private transient QueueingConsumer orderStatusConsumer;
     private transient String loginConsumerTag;
     private boolean preOpeningProcessStarted;
+    public LogonRequest logonRequest;
+    public NewOLTOrder newOLTOrder;
 
     @Override
     public SampleResult sample(Entry entry) {
+
+
+        try {
+            logonRequest = LogonRequest
+                    .newBuilder()
+                    .setUserId(getMobileUserId())
+                    .setPassword(getMobilePassword())
+                    .setDeviceId(getMobileDeviceId())
+                    .setDeviceType(getMobileType())
+                    .setAppVersion(getMobileAppVersion())
+                    .setIp(InetAddress.getLocalHost().getHostAddress())
+                    .build();
+
+
+            newOLTOrder = NewOLTOrder
+                    .newBuilder()
+                    .setOrderTime(System.currentTimeMillis())
+                    .setBuySell("BUY") //TODO REVISIT
+                    .setInputBy("ME")
+                    .setClientCode("JM")
+                    .setOrdQty(Double.parseDouble(getStockAmount()))
+                    .setOrdPrice(3000)
+                    .setClOrderRef("CLORDERREF")
+                    .setBoard("BOARD")
+                    .setTimeInForce("TIMEINFORCE")
+                    .setInsvtType("INSVTYPE")
+                    .build();
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         SampleResult result = new SampleResult();
         result.setSampleLabel(getName());
         result.setSuccessful(false);
         result.setResponseCode("500");
+        result.setSampleLabel(getTitle());
+        result.setSamplerData(constructNiceString());
 
-        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+ getMobileDeviceId()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
-
-        trace("Trimegah RPC Market Info sample()");
+        trace("PreOpening sample() method started ");
 
         try {
 
@@ -64,19 +99,20 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
                 loginConsumer = new QueueingConsumer(channel);
             }
 
-            log.info("Starting basic login Consumer.. Queue:"+ getLoginQueue());
+            log.info("Starting basicConsume to Login ReplyTo Queue:"+ getLoginReplyToQueue());
 
-            loginConsumerTag = channel.basicConsume(getLoginQueue(), true, loginConsumer);
+            loginConsumerTag = channel.basicConsume(getLoginReplyToQueue(), true, loginConsumer);
 
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error("Failed to initialize channel", ex);
             result.setResponseMessage(ex.toString());
             return result;
         }
 
-        result.setSampleLabel(getTitle());
-
+        Thread senderThread = new Thread(new LoginMessagePublisher());
+        senderThread.start();
 
         Delivery loginDelivery;
         Delivery orderResponseDelivery;
@@ -86,7 +122,7 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
             loginDelivery = loginConsumer.nextDelivery(getReceiveTimeoutAsInt());
 
             if(loginDelivery == null){
-                result.setResponseMessage("loginDelivery timed out");
+                result.setResponseMessage("Login Delivery timed out");
                 return result;
             }
 
@@ -114,17 +150,18 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
                     }
                 }
 
-
                 orderStatusConsumer = new QueueingConsumer(channel);
 
-                log.info("Starting basic order Info .. Queue:"+getOrderResponseQueue());
+                log.info("Starting basicConsume to Order Queue:"+getOrderResponseQueue());
 
                 channel.basicConsume(getOrderResponseQueue(),true,orderStatusConsumer);
+
+                new Thread(new NewOrderMessagePublisher()).start();
 
                 orderResponseDelivery = orderStatusConsumer.nextDelivery(getReceiveTimeoutAsInt());
 
                 if(orderResponseDelivery == null){
-                    result.setResponseMessage("Order timed out");
+                    result.setResponseMessage("Order response timed out");
                     return result;
                 }
 
@@ -146,7 +183,7 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -154,7 +191,7 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("300");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -162,21 +199,21 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.info("interuppted while attempting to consume RPC Market Info ");
+            log.info(e.getMessage());
             result.setResponseCode("200");
             result.setResponseMessage(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("100");
             result.setResponseMessage(e.getMessage());
         } finally {
             result.sampleEnd();
         }
 
-        trace("AMQP Market Info sample ended");
+        trace("PreOpening sample() method ended");
 
         return result;
     }
@@ -197,14 +234,6 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
         }
         return getPropertyAsInt(RECEIVE_TIMEOUT);
     }
-
-//    public String getReceiveTimeout() {
-//        return getPropertyAsString(RECEIVE_TIMEOUT, DEFAULT_TIMEOUT_STRING);
-//    }
-//
-//    public void setReceiveTimeout(String s) {
-//        setProperty(RECEIVE_TIMEOUT, s);
-//    }
 
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
@@ -267,6 +296,74 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
         log.debug(tn + " " + tl + " " + s + " " + th);
     }
 
+    private String constructNiceString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("---MQ SERVER---")
+                .append("\nIP \t:")
+                .append(getHost())
+                .append("\nPort\t:")
+                .append(getPort())
+                .append("\nUsername\t:")
+                .append(getUsername())
+                .append("\nPassword\t:")
+                .append(getPassword())
+                .append("\nVirtual Host\t:")
+                .append(getVirtualHost())
+                .append("\n----------")
+                .append("\n---REQUEST---\n")
+                .append(logonRequest.toString());
+
+        return stringBuilder.toString();
+
+    }
+
+
+    class LoginMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getLoginReplyToQueue())
+                        .build();
+
+                log.info("Publishing login request message to Queue:"+getLoginQueue());
+
+                channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
+
+                //TODO how about ack ? Is it a mandatory ?
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class NewOrderMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getOrderResponseQueue())
+                        .build();
+
+                log.info("Publishing new order request message to Queue:"+getOrderRequestQueue());
+
+                channel.basicPublish("", getOrderRequestQueue(), props, newOLTOrder.toByteArray());
+
+                //TODO how about ack ? Is it a mandatory ?
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     class ScheduledExecutionTask extends TimerTask {
         Timer timer;
         public ScheduledExecutionTask(Timer timer) {
@@ -274,7 +371,7 @@ public class PreOpening extends AbstractPreOpeningSampler implements Interruptib
         }
 
         public void run() {
-            System.out.format("Preopening Process starts");
+            System.out.format("PreOpening process starts");
             preOpeningProcessStarted = true;
             timer.cancel(); //Terminate the timer thread
         }

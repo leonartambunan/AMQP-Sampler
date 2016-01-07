@@ -1,10 +1,8 @@
 package com.sxi.jmeter.protocol.amqp;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConsumerCancelledException;
-import com.rabbitmq.client.QueueingConsumer;
+import com.rabbitmq.client.*;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
-import com.rabbitmq.client.ShutdownSignalException;
+import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
 import id.co.tech.cakra.message.proto.olt.StockTradeInfo;
 import org.apache.jmeter.config.Arguments;
@@ -17,6 +15,8 @@ import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -35,7 +35,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
 
     //    private final static String MESSAGE_ROUTING_KEY = "AMQPPublisher.MessageRoutingKey";
     private final static String HEADERS = "AMQPPublisher.Headers";
-    private static final String POSITIVE_LOGON_STATUS = "Success";
+    private static final String POSITIVE_LOGON_STATUS = "OK";
 
     private transient Channel channel;
     private transient QueueingConsumer loginConsumer;
@@ -44,41 +44,57 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
     private transient String marketInfoConsumerTag;
 
     protected static boolean MARKET_INFO_PROCESS_STARTED;
+    public LogonRequest logonRequest;
 
     @Override
     public SampleResult sample(Entry entry) {
+
+        try {
+            logonRequest = LogonRequest
+                    .newBuilder()
+                    .setUserId(getMobileUserId())
+                    .setPassword(getMobilePassword())
+                    .setDeviceId(getMobileDeviceId())
+                    .setDeviceType(getMobileType())
+                    .setAppVersion(getMobileAppVersion())
+                    .setIp(InetAddress.getLocalHost().getHostAddress())
+                    .build();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         SampleResult result = new SampleResult();
         result.setSampleLabel(getName());
         result.setSuccessful(false);
         result.setResponseCode("500");
+        result.setSampleLabel(getTitle());
+        result.setSamplerData(constructNiceString());
 
-        result.setSamplerData("User:"+getMobileUserid()+", Password:"+getMobilePassword()+",DeviceId:"+ getMobileDeviceId()+",DeviceType:"+getMobileType()+",AppVersion:"+getMobileAppVersion());
-
-        trace("Trimegah RPC Market Info sample()");
+        trace("Trimegah Market Info sample()");
 
         try {
 
             initChannel();
 
             if (loginConsumer == null) {
-                log.info("Creating rpc loginConsumer");
+                log.info("Creating rpc login consumer");
                 loginConsumer = new QueueingConsumer(channel);
             }
 
-            log.info("Starting basic loginConsumer.. Queue:"+getServerQueue());
+            log.info("Starting basicConsume to Login ReplyTo Queue:"+ getReplyToQueue());
 
-            loginConsumerTag = channel.basicConsume(getServerQueue(), true, loginConsumer);
-
+            loginConsumerTag = channel.basicConsume(getReplyToQueue(), true, loginConsumer);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             log.error("Failed to initialize channel", ex);
             result.setResponseMessage(ex.toString());
             return result;
         }
 
-        result.setSampleLabel(getTitle());
+        Thread senderThread = new Thread(new LoginMessagePublisher());
 
+        senderThread.start();
 
         Delivery loginDelivery;
         Delivery marketInfoDelivery;
@@ -94,6 +110,8 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
 
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
 
+            System.out.println(logonResponse.toString());
+
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
 
                 Calendar calendar = Calendar.getInstance();
@@ -106,9 +124,10 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
                 ScheduledExecutionTask thread = new ScheduledExecutionTask(timer);
                 timer.schedule(thread, time);
 
+                log.info("WAITING FOR SCHEDULE STARTED");
+
                 for(;;) {
                     Thread.sleep(50);
-
                     if (MARKET_INFO_PROCESS_STARTED) {
                         result.sampleStart();
                         break;
@@ -117,14 +136,14 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
 
                 marketInfoConsumer = new QueueingConsumer(channel);
 
-                log.info("Starting basic marketinfoConsumer.. Queue:"+getMarketInfoQueue());
+                log.info("Starting basicConsume to Market Info Queue:"+getMarketInfoQueue());
 
                 marketInfoConsumerTag = channel.basicConsume(getMarketInfoQueue(),true,marketInfoConsumer);
 
                 marketInfoDelivery = marketInfoConsumer.nextDelivery(getReceiveTimeoutAsInt());
 
                 if(marketInfoDelivery == null){
-                    result.setResponseMessage("marketInfoDelivery timed out");
+                    result.setResponseMessage("MarketInfo delivery time out");
                     return result;
                 }
 
@@ -146,7 +165,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -154,7 +173,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("300");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -162,21 +181,21 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.info("interuppted while attempting to consume RPC Market Info ");
+            log.info(e.getMessage());
             result.setResponseCode("200");
             result.setResponseMessage(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn("AMQP RPC Market Info loginConsumer failed to consume", e);
+            log.warn(e.getMessage());
             result.setResponseCode("100");
             result.setResponseMessage(e.getMessage());
         } finally {
             result.sampleEnd();
         }
 
-        trace("AMQP Market Info sample ended");
+        trace("Market Info sample() method ended");
 
         return result;
     }
@@ -250,6 +269,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
                 channel.basicCancel(loginConsumerTag);
             }
         } catch(IOException e) {
+            e.printStackTrace();
             log.error("Couldn't safely cancel the sample " + loginConsumerTag, e);
         }
 
@@ -270,7 +290,50 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
         log.debug(tn + " " + tl + " " + s + " " + th);
     }
 
+    private String constructNiceString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("---MQ SERVER---")
+                .append("\nIP \t:")
+                .append(getHost())
+                .append("\nPort\t:")
+                .append(getPort())
+                .append("\nUsername\t:")
+                .append(getUsername())
+                .append("\nPassword\t:")
+                .append(getPassword())
+                .append("\nVirtual Host\t:")
+                .append(getVirtualHost())
+                .append("\n----------")
+                .append("\n---REQUEST---\n")
+                .append(logonRequest.toString());
 
+        return stringBuilder.toString();
+
+    }
+
+    class LoginMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getReplyToQueue())
+                        .build();
+
+                log.info("Publishing login request message to Queue:"+getLoginQueue());
+
+                channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
+
+                //TODO how about ack ? Is it a mandatory ?
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
     class ScheduledExecutionTask extends TimerTask {
         Timer timer;
@@ -279,6 +342,7 @@ public class MarketInfo extends AbstractMarketInfoSampler implements Interruptib
         }
 
         public void run() {
+
             System.out.format("Market Info Process starts");
 
             MARKET_INFO_PROCESS_STARTED = true;

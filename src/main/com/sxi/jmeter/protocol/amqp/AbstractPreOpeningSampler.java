@@ -17,8 +17,8 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
 
     public static final String DEFAULT_LOGIN_QUEUE = "olt.logon_request-rpc";
     public static final String DEFAULT_REPLY_TO_QUEUE = "amq.rabbitmq.reply-to";
-    public static final String DEFAULT_ORDER_REQUEST_QUEUE = "olt.order_request";
-    public static final String DEFAULT_ORDER_RESPONSE_QUEUE = "olt.order_response";
+    public static final String DEFAULT_ORDER_REQUEST_QUEUE = "oms.order_request-rpc";
+    public static final String DEFAULT_ORDER_RESPONSE_QUEUE = "amq.rabbitmq.reply-to";
 
     public static final int DEFAULT_PORT = 5672;
 
@@ -86,6 +86,7 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         }
 
         return true;
+
     }
 
     protected abstract Channel getChannel();
@@ -243,11 +244,11 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
         return getPropertyAsString(MOBILE_TYPE);
     }
 
-    public void setMobileUserid(String userid) {
-        setProperty(MOBILE_USER_ID, userid);
+    public void setMobileUserId(String userId) {
+        setProperty(MOBILE_USER_ID, userId);
     }
 
-    public String getMobileUserid() {
+    public String getMobileUserId() {
         return getPropertyAsString(MOBILE_USER_ID);
     }
 
@@ -285,13 +286,13 @@ public abstract class AbstractPreOpeningSampler extends AbstractSampler implemen
             if(connection != null && connection.isOpen())
                 connection.close();
         } catch (IOException e) {
-            log.error("Failed to close connection", e);
+            log.error("AbstractPreOpeningSampler Failed to close connection", e);
         }
     }
 
     @Override
     public void threadFinished() {
-        log.info("LoginSampler.threadFinished called");
+        log.info("AbstractPreOpeningSampler.threadFinished called");
         cleanup();
     }
 
