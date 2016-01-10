@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact name="AMQP-Sampler:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/AMQP_Sampler_jar</output-path>
+    <output-path>C:/Java/apache-jmeter-2.11/lib/ext</output-path>
     <root id="root">
       <element id="archive" name="AMQP-Sampler.jar">
         <element id="module-output" name="AMQP-Sampler" />
