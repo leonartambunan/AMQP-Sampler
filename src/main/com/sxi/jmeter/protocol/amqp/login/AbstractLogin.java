@@ -5,8 +5,10 @@ import com.rabbitmq.client.*;
 import com.sxi.jmeter.protocol.amqp.constants.Trimegah;
 import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
+import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
+import org.apache.jmeter.testelement.property.TestElementProperty;
 import org.apache.jmeter.threads.JMeterContext;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
@@ -24,8 +26,6 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
 
     public static final String DEFAULT_LOGON_REPLY_TO_QUEUE = "amq.rabbitmq.reply-to";
     public static final String DEFAULT_LOGON_REQUEST_QUEUE = "olt.logon_request-rpc";
-
-    public static final Logger log = LoggingManager.getLoggerForClass();
 
     protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
@@ -55,6 +55,8 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     public LogonRequest logonRequest;
 
     public static final String SUCCESSFUL_LOGIN = "OK";
+
+    public static final Logger log = LoggingManager.getLoggerForClass();
 
     protected AbstractLogin(){
         factory = new ConnectionFactory();
@@ -158,7 +160,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getVirtualHost() {
-        return getPropertyAsString(VIRTUAL_HOST);
+        return getPropertyAsString(VIRTUAL_HOST,"/");
     }
 
     public void setVirtualHost(String name) {
@@ -166,7 +168,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getHost() {
-        return getPropertyAsString(HOST);
+        return getPropertyAsString(HOST,"172.16.1.76");
     }
 
     public void setHost(String name) {
@@ -174,7 +176,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getPort() {
-        return getPropertyAsString(PORT);
+        return getPropertyAsString(PORT,"5672");
     }
 
     public void setPort(String name) {
@@ -201,11 +203,11 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getAuthenticatedConnectionVarName() {
-        return getPropertyAsString(AUTHENTICATED_CONNECTION_VAR_NAME,"");
+        return getPropertyAsString(AUTHENTICATED_CONNECTION_VAR_NAME,"AUTH_CON");
     }
 
     public String getUsername() {
-        return getPropertyAsString(USERNAME);
+        return getPropertyAsString(USERNAME,"guest");
     }
 
     public void setUsername(String name) {
@@ -213,7 +215,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getPassword() {
-        return getPropertyAsString(PASSWORD);
+        return getPropertyAsString(PASSWORD,"guest");
     }
 
     public void setPassword(String name) {
@@ -221,7 +223,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getMobileDeviceId() {
-        return getPropertyAsString(MOBILE_DEVICE_ID,"ANDROID");
+        return getPropertyAsString(MOBILE_DEVICE_ID,"a18632d8bde899bc");
     }
 
     public void setMobileDeviceId(String deviceId) {
@@ -260,7 +262,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getMobilePassword() {
-        return getPropertyAsString(MOBILE_PASSWORD);
+        return getPropertyAsString(MOBILE_PASSWORD,"password");
     }
 
     public void setMobilePassword(String password) {
@@ -268,7 +270,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getMobileType() {
-        return getPropertyAsString(MOBILE_TYPE);
+        return getPropertyAsString(MOBILE_TYPE,"ANDROID");
     }
 
     public void setMobileUserId(String userId) {
@@ -276,7 +278,7 @@ public abstract class AbstractLogin extends AbstractSampler implements ThreadLis
     }
 
     public String getMobileUserId() {
-        return getPropertyAsString(MOBILE_USER_ID);
+        return getPropertyAsString(MOBILE_USER_ID,"test9");
     }
 
     public void setMobileType(String mobileType) {

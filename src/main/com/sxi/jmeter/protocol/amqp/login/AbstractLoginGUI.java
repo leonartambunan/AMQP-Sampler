@@ -1,6 +1,7 @@
 package com.sxi.jmeter.protocol.amqp.login;
 
 import com.sxi.jmeter.protocol.amqp.constants.Trimegah;
+import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
 import org.apache.jmeter.testelement.TestElement;
