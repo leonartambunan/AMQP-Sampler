@@ -31,8 +31,15 @@ public abstract class AbstractPreOpeningGUI extends AbstractSamplerGui {
     protected JLabeledTextField orderResponseQueue = new JLabeledTextField("Order Response Queue");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
-    protected JLabeledTextField stockId = new JLabeledTextField("Stock ID");
-    protected JLabeledTextField stockAmount = new JLabeledTextField("Amount");
+    protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
+    protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
+    protected JLabeledTextField orderPrice = new JLabeledTextField("Order Price");
+    protected JLabeledTextField board = new JLabeledTextField("Board");
+    protected JLabeledTextField investorType = new JLabeledTextField("Investor Type");
+    protected JLabeledTextField buySell = new JLabeledTextField("Buy/Sell (B/S)");
+    protected JLabeledTextField clientCode = new JLabeledTextField("Client Code");
+    protected JLabeledTextField timeInForce = new JLabeledTextField("Time in Force");
+    protected JLabeledTextField orderPeriod = new JLabeledTextField("Order Period");
 
     protected JLabeledTextField scheduledHour = new JLabeledTextField("Hour");
     protected JLabeledTextField scheduledMinute = new JLabeledTextField("Minute");
@@ -67,8 +74,16 @@ public abstract class AbstractPreOpeningGUI extends AbstractSamplerGui {
         orderResponseQueue.setText(sampler.getOrderResponseQueue());
         orderRequestQueue.setText(sampler.getOrderRequestQueue());
         routingKey.setText(sampler.getRoutingKey());
-        stockId.setText(sampler.getStockId());
-        stockAmount.setText(sampler.getStockAmount());
+
+        stockCode.setText(sampler.getStockCode());
+        orderQty.setText(sampler.getStockAmount());
+        orderPrice.setText(sampler.getOrderPrice());
+        board.setText(sampler.getBoard());
+        investorType.setText(sampler.getInvestorType());
+        timeInForce.setText(sampler.getTimeInForce());
+        clientCode.setText(sampler.getClientCode());
+        buySell.setText(sampler.getBuySell());
+        orderPeriod.setText(sampler.getOrderPeriod());
 
         scheduledHour.setText(sampler.getScheduleHour());
         scheduledMinute.setText(sampler.getScheduleMinute());
@@ -98,8 +113,15 @@ public abstract class AbstractPreOpeningGUI extends AbstractSamplerGui {
         orderRequestQueue.setText(AbstractPreOpening.DEFAULT_ORDER_REQUEST_QUEUE);
         routingKey.setText("");
 
-        stockId.setText("TEST");
-        stockAmount.setText("1");
+        stockCode.setText("TRIM");
+        orderQty.setText("1");
+        orderPrice.setText("");
+        board.setText("RG");
+        investorType.setText("");
+        timeInForce.setText("0");
+        clientCode.setText("");
+        buySell.setText("B");
+        orderPeriod.setText("");
 
         scheduledHour.setText("10");
         scheduledMinute.setText("0");
@@ -138,14 +160,19 @@ public abstract class AbstractPreOpeningGUI extends AbstractSamplerGui {
         sampler.setOrderRequestQueue(orderRequestQueue.getText());
         sampler.setRoutingKey(routingKey.getText());
 
-        sampler.setStockId(stockId.getText());
-        sampler.setStockAmount(stockAmount.getText());
+        sampler.setStockCode(stockCode.getText());
+        sampler.setStockAmount(orderQty.getText());
+        sampler.setOrderPrice(orderPrice.getText());
+        sampler.setBoard(board.getText());
+        sampler.setInvestorType(investorType.getText());
+        sampler.setTimeInForce(timeInForce.getText());
+        sampler.setClientCode(clientCode.getText());
+        sampler.setBuySell(buySell.getText());
+        sampler.setOrderPeriod(orderPeriod.getText());
 
         sampler.setScheduleHour(scheduledHour.getText());
         sampler.setScheduleMinute(scheduledMinute.getText());
         sampler.setScheduleSecond(scheduledSecond.getText());
-
-
     }
 
     protected void init() {
@@ -233,18 +260,40 @@ public abstract class AbstractPreOpeningGUI extends AbstractSamplerGui {
         mobilePanel.add(mobileSettings);
         commonPanel.add(mobilePanel, gridBagConstraintsCommon);
 
-
         JPanel orderSettings = new JPanel(new GridBagLayout());
         orderSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Order"));
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        orderSettings.add(stockId, gridBagConstraints);
+        orderSettings.add(stockCode, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        orderSettings.add(stockAmount, gridBagConstraints);
+        orderSettings.add(orderQty, gridBagConstraints);
 
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        orderSettings.add(orderPrice, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        orderSettings.add(buySell, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        orderSettings.add(investorType, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        orderSettings.add(clientCode, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        orderSettings.add(board, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        orderSettings.add(timeInForce, gridBagConstraints);
 
         JPanel queuePanel = new VerticalPanel();
         queuePanel.add(queueSettings);

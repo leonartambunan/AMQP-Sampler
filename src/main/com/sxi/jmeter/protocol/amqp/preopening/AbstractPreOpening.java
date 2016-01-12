@@ -39,8 +39,15 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     private final static String ORDER_REQUEST_QUEUE = "AMQPSampler.OrderRequestQueue";
     private final static String ORDER_RESPONSE_QUEUE = "AMQPSampler.OrderResponseQueue";
     private static final String ROUTING_KEY = "AMQPSampler.RoutingKey";
-    private static final String STOCK_ID = "AMQPSampler.StockId";
-    private static final String STOCK_AMOUNT = "AMQPSampler.StockAmount";
+    private static final String STOCK_CODE = "AMQPSampler.StockId";
+    private static final String ORDER_QTY = "AMQPSampler.StockAmount";
+    private static final String BUY_SELL = "AMQPSampler.BurOrSell";
+    private static final String BOARD = "AMQPSampler.Board";
+    private static final String TIME_IN_FORCE= "AMQPSampler.TimeInForce";
+    private static final String INVESTOR_TYPE= "AMQPSampler.InvestorType";
+    private static final String ORDER_PRICE = "AMQPSampler.OrderPrice";
+    private static final String CLIENT_CODE= "AMQPSampler.ClientCode";
+    private static final String ORDER_PERIOD= "AMQPSampler.OrderPeriod";
 
     private final static String MOBILE_DEVICE_ID = "Mobile.DeviceId";
     private final static String MOBILE_USER_ID = "Mobile.UserId";
@@ -200,20 +207,75 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
         setProperty(ROUTING_KEY, key);
     }
 
-    public String getStockId() {
-        return getPropertyAsString(STOCK_ID);
+    public String getStockCode() {
+        return getPropertyAsString(STOCK_CODE);
     }
 
-    public void setStockId(String id) {
-        setProperty(STOCK_ID, id);
+    public void setStockCode(String id) {
+        setProperty(STOCK_CODE, id);
     }
+
+    public String getInvestorType() {
+        return getPropertyAsString(INVESTOR_TYPE);
+    }
+
+    public void setInvestorType(String id) {
+        setProperty(INVESTOR_TYPE, id);
+    }
+
+    public String getOrderPrice() {
+        return getPropertyAsString(ORDER_PRICE);
+    }
+
+    public void setOrderPrice(String id) {
+        setProperty(ORDER_PRICE, id);
+    }
+
+    public String getBuySell() {
+        return getPropertyAsString(BUY_SELL);
+    }
+
+    public void setBuySell(String id) {
+        setProperty(BUY_SELL, id);
+    }
+
+    public String getBoard() {
+        return getPropertyAsString(BOARD);
+    }
+
+    public void setBoard(String id) {
+        setProperty(BOARD, id);
+    }
+    public String getTimeInForce() {
+        return getPropertyAsString(TIME_IN_FORCE);
+    }
+
+    public void setTimeInForce(String id) {
+        setProperty(TIME_IN_FORCE, id);
+    }
+    public String getClientCode() {
+        return getPropertyAsString(CLIENT_CODE);
+    }
+
+    public void setClientCode(String id) {
+        setProperty(CLIENT_CODE, id);
+    }
+
+    public String getOrderPeriod() {
+        return getPropertyAsString(ORDER_PERIOD);
+    }
+
+    public void setOrderPeriod(String id) {
+        setProperty(ORDER_PERIOD, id);
+    }
+
 
     public String getStockAmount() {
-        return getPropertyAsString(STOCK_AMOUNT);
+        return getPropertyAsString(ORDER_QTY);
     }
 
     public void setStockAmount(String amount) {
-        setProperty(STOCK_AMOUNT, amount);
+        setProperty(ORDER_QTY, amount);
     }
 
     public String getMobileAppVersion() {

@@ -127,7 +127,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 ScheduledExecutionTask thread = new ScheduledExecutionTask(timer, scheduleLatch);
                 timer.schedule(thread, time);
 
-                log.info("WAITING FOR SCHEDULE STARTED");
+                log.info("WAITING FOR SCHEDULE TO START");
 
                 scheduleLatch.await();
 
@@ -172,6 +172,9 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                     result.setResponseData("Time out occurred", null);
                     result.setDataType(SampleResult.TEXT);
                 }
+            } else {
+                result.setResponseData("Login Failed",null);
+                result.setResponseMessage("Login Failed");
             }
 
         } catch (ShutdownSignalException e) {

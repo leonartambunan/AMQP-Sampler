@@ -13,7 +13,14 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
     private static final long serialVersionUID = 1L;
 
     protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
-    protected JLabeledTextField stockQty = new JLabeledTextField("Stock Qty");
+    protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
+    protected JLabeledTextField orderPrice = new JLabeledTextField("Order Price");
+    protected JLabeledTextField board = new JLabeledTextField("Board");
+    protected JLabeledTextField investorType = new JLabeledTextField("Investor Type");
+    protected JLabeledTextField buySell = new JLabeledTextField("Buy/Sell (B/S)");
+    protected JLabeledTextField clientCode = new JLabeledTextField("Client Code");
+    protected JLabeledTextField timeInForce = new JLabeledTextField("Time in Force (0,1,6)");
+    protected JLabeledTextField orderPeriod = new JLabeledTextField("Order Period");
 
     @Override
     public String getStaticLabel() {
@@ -29,15 +36,29 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         AbstractNewOrder sampler = (AbstractNewOrder) element;
 
         stockCode.setText(sampler.getStockCode());
-        stockQty.setText(sampler.getStockQty());
+        orderQty.setText(sampler.getOrderQty());
+        orderPrice.setText(sampler.getOrderPrice());
+        board.setText(sampler.getBoard());
+        investorType.setText(sampler.getInvestorType());
+        timeInForce.setText(sampler.getTimeInForce());
+        clientCode.setText(sampler.getClientCode());
+        buySell.setText(sampler.getBuySell());
+        orderPeriod.setText(sampler.getOrderPeriod());
 
     }
 
     @Override
     public void clearGui() {
 
-        stockCode.setText("");
-        stockQty.setText("1");
+        stockCode.setText("TRIM");
+        orderQty.setText("1");
+        orderPrice.setText("");
+        board.setText("RG");
+        investorType.setText("");
+        timeInForce.setText("0");
+        clientCode.setText("");
+        buySell.setText("B");
+        orderPeriod.setText("");
 
     }
 
@@ -51,7 +72,15 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         configureTestElement(sampler);
 
         sampler.setStockCode(stockCode.getText());
-        sampler.setStockQty(stockQty.getText());
+        sampler.setOrderQty(orderQty.getText());
+        sampler.setOrderPrice(orderPrice.getText());
+        sampler.setBoard(board.getText());
+        sampler.setInvestorType(investorType.getText());
+        sampler.setTimeInForce(timeInForce.getText());
+        sampler.setClientCode(clientCode.getText());
+        sampler.setBuySell(buySell.getText());
+        sampler.setOrderPeriod(orderPeriod.getText());
+
     }
 
     protected void init() {
@@ -95,31 +124,35 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        orderSettings.add(stockQty, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 2;
-//        serverSettings.add(port, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 1;
-//        gridBagConstraints.gridy = 2;
-//        serverSettings.add(SSL, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 3;
-//        serverSettings.add(username, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 4;
-//        serverSettings.add(password, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 5;
-//        serverSettings.add(timeout, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 6;
-//        serverSettings.add(varNameAuthenticatedCon, gridBagConstraints);
+        orderSettings.add(orderQty, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        orderSettings.add(buySell, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        orderSettings.add(clientCode, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        orderSettings.add(board, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        orderSettings.add(investorType, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 6;
+        orderSettings.add(buySell, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        orderSettings.add(timeInForce, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 8;
+        orderSettings.add(orderPeriod, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

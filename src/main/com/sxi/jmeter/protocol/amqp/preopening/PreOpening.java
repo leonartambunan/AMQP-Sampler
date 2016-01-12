@@ -36,8 +36,8 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
 
     private static final String RECEIVE_TIMEOUT = "AMQPConsumer.ReceiveTimeout";
 
-    //    private final static String MESSAGE_ROUTING_KEY = "AMQPPublisher.MessageRoutingKey";
     private final static String HEADERS = "AMQPPublisher.Headers";
+
     private static final String POSITIVE_LOGON_STATUS = "OK";
 
     private transient Channel channel;
@@ -68,16 +68,16 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             newOLTOrder = NewOLTOrder
                     .newBuilder()
                     .setOrderTime(System.currentTimeMillis())
-                    .setBuySell("BUY") //TODO REVISIT
-                    .setInputBy("ME")
-                    .setClientCode("JM")
+                    .setBuySell(getBuySell())
+                    .setInputBy("JMETER")
+                    .setClientCode(getClientCode())
                     .setOrdQty(Double.parseDouble(getStockAmount()))
-                    .setOrdPrice(3000)
-                    .setClOrderRef("CLORDERREF")
-                    .setBoard("BOARD")
-                    .setTimeInForce("TIMEINFORCE")
-                    .setInsvtType("INSVTYPE")
-                    .setStockCode("FMI")
+                    .setOrdPrice(Double.valueOf(getOrderPrice()))
+                    .setClOrderRef("ST"+ System.currentTimeMillis())
+                    .setBoard(getBoard())
+                    .setTimeInForce(getTimeInForce())
+                    .setInsvtType(getInvestorType())
+                    .setStockCode(getStockCode())
                     .build();
 
         } catch (UnknownHostException e) {
