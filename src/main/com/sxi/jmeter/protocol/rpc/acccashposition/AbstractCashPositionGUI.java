@@ -1,6 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.acccashposition;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
@@ -8,7 +8,7 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractCashPositionGUI extends AbstractLoginGUI{
+public abstract class AbstractCashPositionGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,33 +27,33 @@ public abstract class AbstractCashPositionGUI extends AbstractLoginGUI{
 
     @Override
     public void configure(TestElement element) {
-        super.configure(element);
-        if (!(element instanceof AbstractCashPosition)) return;
-        AbstractCashPosition sampler = (AbstractCashPosition) element;
 
+        super.configure(element);
+
+        if (!(element instanceof AbstractCashPosition)) return;
+
+        AbstractCashPosition sampler = (AbstractCashPosition) element;
         sessionId.setText(sampler.getSessionId());
         accNo.setText(sampler.getAccNo());
         requestQueue.setText(sampler.getRequestQueue());
         responseQueue.setText(sampler.getResponseQueue());
-
     }
 
     @Override
     public void clearGui() {
-
         sessionId.setText("");
-        accNo.setText("1");
-        requestQueue.setText("");
+        accNo.setText("");
+        requestQueue.setText("olt.acc_cash_pos_request-rpc");
         responseQueue.setText("");
-
     }
 
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractCashPosition sampler = (AbstractCashPosition) element;
+        super.modifyTestElement(element);
 
-        sampler.clear();
+        AbstractCashPosition sampler = (AbstractCashPosition) element;
+        //sampler.clear();
 
         configureTestElement(sampler);
 
@@ -64,19 +64,6 @@ public abstract class AbstractCashPositionGUI extends AbstractLoginGUI{
 
     }
 
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
-    }
 
     protected Component makeCommonPanel() {
 

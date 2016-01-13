@@ -1,16 +1,9 @@
 package com.sxi.jmeter.protocol.rpc.login;
 
-import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
-import org.apache.jmeter.gui.util.VerticalPanel;
-import org.apache.jmeter.samplers.gui.AbstractSamplerGui;
-import org.apache.jmeter.testelement.TestElement;
-import org.apache.jorphan.gui.JLabeledTextField;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 
-import javax.swing.*;
-import java.awt.*;
-
-public abstract class AbstractLoginGUI extends AbstractSamplerGui {
-
+public abstract class AbstractLoginGUI extends AbstractRabbitGUI {
+/*
     private static final long serialVersionUID = 1L;
 
     protected JLabeledTextField serverQueue = new JLabeledTextField("Login Queue");
@@ -233,5 +226,5 @@ public abstract class AbstractLoginGUI extends AbstractSamplerGui {
         commonPanel.add(serverSettings, gridBagConstraintsCommon);
 
         return commonPanel;
-    }
+    }*/
 }

@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.persistwatchlist;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractAddWatchList extends AbstractLogin implements ThreadListener {
+public abstract class AbstractAddWatchList extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "WatchList.RequestQueue";
     private final static String RESPONSE_QUEUE = "WatchList.ResponseQueue";

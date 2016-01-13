@@ -1,14 +1,21 @@
 package com.sxi.jmeter.protocol.async.amendorder;
 
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
 import org.apache.jmeter.testelement.ThreadListener;
 
-public abstract class AbstractAmendOrder extends AbstractLogin implements ThreadListener {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-    private final static String EXCHANGE_NAME = "Order.ExchangeName";
+public abstract class AbstractAmendOrder extends AbstractRabbitSampler  {
+
+    private final static String REQUEST_QUEUE = "Order.RequestExchangeName";
+    private final static String RESPONSE_EXCHANGE = "Order.ResponseExchangeName";
     private final static String ROUTING_KEY = "Order.RoutingKey";
 
     private final static String STOCK_CODE = "Order.StockCode";
+    private final static String ORDER_ID = "Order.OrderID";
     private final static String ORDER_QTY = "Order.StockQty";
     private final static String ORDER_PRICE = "Order.Price";
     private final static String BOARD = "Order.Board";
@@ -30,12 +37,20 @@ public abstract class AbstractAmendOrder extends AbstractLogin implements Thread
         setProperty(ROUTING_KEY, name);
     }
 
-    public String getExchangeName() {
-        return getPropertyAsString(EXCHANGE_NAME,"olt.amend_olt_order_request");
+    public String getRequestQueue() {
+        return getPropertyAsString(REQUEST_QUEUE,"olt.amend_olt_order_request");
     }
 
-    public void setExchangeName(String name) {
-        setProperty(EXCHANGE_NAME, name);
+    public void setRequestQueue(String name) {
+        setProperty(REQUEST_QUEUE, name);
+    }
+
+    public String getResponseExchange() {
+        return getPropertyAsString(RESPONSE_EXCHANGE,"olt.order_reply");
+    }
+
+    public void setResponseExchange(String name) {
+        setProperty(RESPONSE_EXCHANGE, name);
     }
 
     public String getStockCode() {
@@ -44,6 +59,14 @@ public abstract class AbstractAmendOrder extends AbstractLogin implements Thread
 
     public void setStockCode(String name) {
         setProperty(STOCK_CODE, name);
+    }
+
+    public String getOrderId() {
+        return getPropertyAsString(ORDER_ID);
+    }
+
+    public void setOrderId(String name) {
+        setProperty(ORDER_ID, name);
     }
 
     public String getOrderQty() {return getPropertyAsString(ORDER_QTY);}
@@ -57,7 +80,6 @@ public abstract class AbstractAmendOrder extends AbstractLogin implements Thread
     public void setOrderPrice(String name) {
         setProperty(ORDER_PRICE, name);
     }
-
 
     public String getBoard() {return getPropertyAsString(BOARD);}
 
@@ -91,6 +113,16 @@ public abstract class AbstractAmendOrder extends AbstractLogin implements Thread
 
     public void setClientCode(String name) {
         setProperty(CLIENT_CODE, name);
+    }
+
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public Date getOrderPeriodAsDate() {
+        try {
+            return sdf.parse(getPropertyAsString(ORDER_PERIOD));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getOrderPeriod() {return getPropertyAsString(ORDER_PERIOD);}

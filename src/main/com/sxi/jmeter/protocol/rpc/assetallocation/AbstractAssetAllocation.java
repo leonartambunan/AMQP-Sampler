@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.assetallocation;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractAssetAllocation extends AbstractLogin implements ThreadListener {
+public abstract class AbstractAssetAllocation extends AbstractRabbitSampler {
     private final static String REQUEST_QUEUE = "AssetAllocation.RequestQueue";
     private final static String RESPONSE_QUEUE = "AssetAllocation.ResponseQueue";
     private final static String SESSION_ID = "AssetAllocation.SessionId";
@@ -21,6 +20,8 @@ public abstract class AbstractAssetAllocation extends AbstractLogin implements T
         setProperty(SESSION_ID, name);
     }
 
+    public int getRequestTypeAsInt() {return Integer.valueOf(getPropertyAsString(REQUEST_TYPE));}
+
     public String getRequestType() {return getPropertyAsString(REQUEST_TYPE);}
 
     public void setRequestType(String name) {
@@ -36,7 +37,7 @@ public abstract class AbstractAssetAllocation extends AbstractLogin implements T
     }
 
     public String getRequestQueue() {
-        return getPropertyAsString(REQUEST_QUEUE,"olt.asset_allocation_request-rpc");
+        return getPropertyAsString(REQUEST_QUEUE,"olt.asset_alloc_request-rpc");
     }
 
     public void setRequestQueue(String name) {

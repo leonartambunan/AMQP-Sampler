@@ -1,19 +1,19 @@
 package com.sxi.jmeter.protocol.async.amendorder;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
+public abstract class AbstractAmendOrderGUI extends AbstractRabbitGUI{
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
-    protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
+    protected JLabeledTextField requestExchangeName = new JLabeledTextField("Request Queue");
+    protected JLabeledTextField responseExchangeName = new JLabeledTextField("Response Exchange");
+//    protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
     protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
     protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
@@ -39,8 +39,9 @@ public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
         if (!(element instanceof AbstractAmendOrder)) return;
         AbstractAmendOrder sampler = (AbstractAmendOrder) element;
 
-        exchangeName.setText(sampler.getExchangeName());
-        routingKey.setText(sampler.getRoutingKey());
+        responseExchangeName.setText(sampler.getResponseExchange());
+        requestExchangeName.setText(sampler.getRequestQueue());
+//        routingKey.setText(sampler.getRoutingKey());
 
         stockCode.setText(sampler.getStockCode());
         orderQty.setText(sampler.getOrderQty());
@@ -56,7 +57,6 @@ public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
 
     @Override
     public void clearGui() {
-
         stockCode.setText("TRIM");
         orderQty.setText("1");
         orderPrice.setText("");
@@ -66,22 +66,23 @@ public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
         clientCode.setText("");
         buySell.setText("B");
         orderPeriod.setText("");
-        exchangeName.setText("");
-        routingKey.setText("");
-
+        requestExchangeName.setText("olt.amend_olt_order_request");
+        responseExchangeName.setText("olt.order_reply");
+//        routingKey.setText("");
     }
 
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractAmendOrder sampler = (AbstractAmendOrder) element;
+        super.modifyTestElement(element);
 
-        sampler.clear();
+        AbstractAmendOrder sampler = (AbstractAmendOrder) element;
 
         configureTestElement(sampler);
 
-        sampler.setExchangeName(exchangeName.getText());
-        sampler.setRoutingKey(routingKey.getText());
+        sampler.setRequestQueue(requestExchangeName.getText());
+        sampler.setResponseExchange(responseExchangeName.getText());
+//        sampler.setRoutingKey(routingKey.getText());
 
         sampler.setStockCode(stockCode.getText());
         sampler.setOrderQty(orderQty.getText());
@@ -93,20 +94,6 @@ public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
         sampler.setBuySell(buySell.getText());
         sampler.setOrderPeriod(orderPeriod.getText());
 
-    }
-
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
     }
 
     protected Component makeCommonPanel() {
@@ -126,17 +113,22 @@ public abstract class AbstractAmendOrderGUI extends AbstractLoginGUI{
         gridBagConstraints.anchor = GridBagConstraints.WEST;
         gridBagConstraints.weightx = 0.5;
 
-
         JPanel queueSettings = new JPanel(new GridBagLayout());
         queueSettings.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Order Queues"));
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        queueSettings.add(exchangeName, gridBagConstraints);
+
+        queueSettings.add(requestExchangeName, gridBagConstraints);
+
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        queueSettings.add(routingKey, gridBagConstraints);
+        queueSettings.add(responseExchangeName, gridBagConstraints);
+
+//        gridBagConstraints.gridx = 0;
+//        gridBagConstraints.gridy = 2;
+//        queueSettings.add(responseExchangeName, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 0;
         gridBagConstraintsCommon.gridy = 1;

@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.getwatchlist;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractGetWatchList extends AbstractLogin implements ThreadListener {
+public abstract class AbstractGetWatchList extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "WatchList.RequestQueue";
     private final static String RESPONSE_QUEUE = "WatchList.ResponseQueue";
@@ -30,7 +29,7 @@ public abstract class AbstractGetWatchList extends AbstractLogin implements Thre
     }
 
     public String getRequestQueue() {
-        return getPropertyAsString(REQUEST_QUEUE,"olt.get_watchlist_request-rpc");
+        return getPropertyAsString(REQUEST_QUEUE);
     }
 
     public void setRequestQueue(String name) {

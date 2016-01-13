@@ -1,16 +1,15 @@
 package com.sxi.jmeter.protocol.rpc.assetallocation;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractAssetAllocationGUI extends AbstractLoginGUI{
+public abstract class AbstractAssetAllocationGUI extends AbstractRabbitGUI {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
     protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
     protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
     protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
@@ -28,9 +27,10 @@ public abstract class AbstractAssetAllocationGUI extends AbstractLoginGUI{
         super.configure(element);
         if (!(element instanceof AbstractAssetAllocation)) return;
         AbstractAssetAllocation sampler = (AbstractAssetAllocation) element;
-
         sessionId.setText(sampler.getSessionId());
         requestType.setText(sampler.getRequestType());
+        requestQueue.setText(sampler.getRequestQueue());
+        responseQueue.setText(sampler.getResponseQueue());
 
     }
 
@@ -39,36 +39,41 @@ public abstract class AbstractAssetAllocationGUI extends AbstractLoginGUI{
 
         sessionId.setText("");
         requestType.setText("1");
+        requestQueue.setText("olt.asset_alloc_request-rpc");
 
     }
 
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractAssetAllocation sampler = (AbstractAssetAllocation) element;
+        super.modifyTestElement(element);
 
-        sampler.clear();
+        AbstractAssetAllocation sampler = (AbstractAssetAllocation) element;
 
         configureTestElement(sampler);
 
         sampler.setSessionId(sessionId.getText());
         sampler.setRequestType(requestType.getText());
 
+        sampler.setRequestQueue(requestQueue.getText());
+        sampler.setResponseQueue(responseQueue.getText());
+
+
     }
 
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
-    }
+//    protected void init() {
+//        setLayout(new BorderLayout(0, 5));
+//        setBorder(makeBorder());
+//        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
+//
+//        JPanel mainPanel = new VerticalPanel();
+//
+//        mainPanel.add(makeCommonPanel());
+//
+//        add(mainPanel);
+//
+//        setMainPanel(mainPanel);
+//    }
 
     protected Component makeCommonPanel() {
 

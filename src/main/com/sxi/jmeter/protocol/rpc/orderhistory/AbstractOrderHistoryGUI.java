@@ -1,6 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.orderhistory;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
@@ -8,7 +8,7 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractOrderHistoryGUI extends AbstractLoginGUI{
+public abstract class AbstractOrderHistoryGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
     protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
@@ -47,7 +47,7 @@ public abstract class AbstractOrderHistoryGUI extends AbstractLoginGUI{
         accNo.setText("");
         startDate.setText("");
         endDate.setText("");
-        requestQueue.setText("");
+        requestQueue.setText("olt.order_his_request-rpc");
         responseQueue.setText("");
 
     }
@@ -55,9 +55,9 @@ public abstract class AbstractOrderHistoryGUI extends AbstractLoginGUI{
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractOrderHistory sampler = (AbstractOrderHistory) element;
+        super.modifyTestElement(element);
 
-        sampler.clear();
+        AbstractOrderHistory sampler = (AbstractOrderHistory) element;
 
         configureTestElement(sampler);
 
@@ -70,20 +70,20 @@ public abstract class AbstractOrderHistoryGUI extends AbstractLoginGUI{
 
     }
 
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
-    }
-
+//    protected void init() {
+//        setLayout(new BorderLayout(0, 5));
+//        setBorder(makeBorder());
+//        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
+//
+//        JPanel mainPanel = new VerticalPanel();
+//
+//        mainPanel.add(makeCommonPanel());
+//
+//        add(mainPanel);
+//
+//        setMainPanel(mainPanel);
+//    }
+//
     protected Component makeCommonPanel() {
 
         JPanel commonPanel = (JPanel) super.makeCommonPanel();

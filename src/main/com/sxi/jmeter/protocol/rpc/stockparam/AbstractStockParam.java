@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.stockparam;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractStockParam extends AbstractLogin implements ThreadListener {
+public abstract class AbstractStockParam extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "StockParam.RequestQueue";
     private final static String RESPONSE_QUEUE = "StockParam.OrderResponseQueue";

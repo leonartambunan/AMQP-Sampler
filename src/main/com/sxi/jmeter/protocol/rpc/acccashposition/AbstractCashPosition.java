@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.acccashposition;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractCashPosition extends AbstractLogin implements ThreadListener {
+public abstract class AbstractCashPosition extends AbstractRabbitSampler {
     private final static String REQUEST_QUEUE = "CashPosition.RequestQueue";
     private final static String RESPONSE_QUEUE = "CashPosition.OrderResponseQueue";
     private final static String SESSION_ID = "CashPosition.SessionId";

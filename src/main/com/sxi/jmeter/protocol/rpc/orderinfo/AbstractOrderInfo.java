@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.orderinfo;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractOrderInfo extends AbstractLogin implements ThreadListener {
+public abstract class AbstractOrderInfo extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "OrderInfo.RequestQueue";
     private final static String RESPONSE_QUEUE = "OrderInfo.ResponseQueue";

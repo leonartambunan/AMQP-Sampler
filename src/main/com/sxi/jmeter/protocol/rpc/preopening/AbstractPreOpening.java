@@ -68,11 +68,11 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
         Channel channel = getChannel();
 
         if(channel != null && !channel.isOpen()){
-            log.warn("channel " + channel.getChannelNumber() + " closed unexpectedly: ", channel.getCloseReason());
+            trace("channel " + channel.getChannelNumber() + " closed unexpectedly: " + channel.getCloseReason());
             channel = null;
         }
 
-        log.info(channel==null?"channel is null, we are going to create one for you":"channel is not null");
+        trace(channel==null?"channel is null, we are going to create one for you":"channel is not null");
 
         if(channel == null) {
             factory.setPort(getPortAsInt());
@@ -340,13 +340,13 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
             if(connection != null && connection.isOpen())
                 connection.close();
         } catch (IOException e) {
-            log.error("AbstractPreOpeningSampler Failed to close connection", e);
+            trace("AbstractPreOpeningSampler Failed to close connection");
         }
     }
 
     @Override
     public void threadFinished() {
-        log.info("AbstractPreOpeningSampler.threadFinished called");
+        trace("AbstractPreOpeningSampler.threadFinished called");
         cleanup();
     }
 
@@ -354,5 +354,10 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public void threadStarted() {
 
     }
-
+    public void trace(String s) {
+        String tl = getTitle();
+//        String tn = Thread.currentThread().getName();
+//        String th = this.toString();
+        log.info(tl + "\t- " + s);
+    }
 }

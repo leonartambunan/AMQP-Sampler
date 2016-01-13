@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.accstockposition;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractStockPosition extends AbstractLogin implements ThreadListener {
+public abstract class AbstractStockPosition extends AbstractRabbitSampler {
     private final static String REQUEST_QUEUE = "StockPosition.RequestQueue";
     private final static String RESPONSE_QUEUE = "StockPosition.OrderResponseQueue";
     private final static String SESSION_ID = "StockPosition.SessionId";

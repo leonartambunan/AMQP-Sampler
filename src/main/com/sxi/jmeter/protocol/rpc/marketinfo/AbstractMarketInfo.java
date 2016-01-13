@@ -59,11 +59,11 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
         Channel channel = getChannel();
 
         if(channel != null && !channel.isOpen()){
-            log.warn("channel " + channel.getChannelNumber() + " closed unexpectedly: ", channel.getCloseReason());
+            trace("channel " + channel.getChannelNumber() + " closed unexpectedly: " + channel.getCloseReason());
             channel = null;
         }
 
-        log.info(channel==null?"channel is null, we are going to create one for you":"channel is not null");
+        trace(channel==null?"channel is null, we are going to create one for you":"channel is not null");
 
         if(channel == null) {
 
@@ -254,13 +254,13 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
                 connection.close();
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("AbstractMarketInfoSampler Failed to close connection", e);
+            trace("Failed to close connection");
         }
     }
 
     @Override
     public void threadFinished() {
-        log.info("AbstractMarketInfoSampler.threadFinished called");
+        trace("threadFinished()");
         cleanup();
     }
 
@@ -269,4 +269,10 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
 
     }
 
+    public void trace(String s) {
+        String tl = getTitle();
+//        String tn = Thread.currentThread().getName();
+//        String th = this.toString();
+        log.info(tl + "\t- " + s);
+    }
 }

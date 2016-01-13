@@ -1,13 +1,16 @@
 package com.sxi.jmeter.protocol.async.neworder;
 
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
 import org.apache.jmeter.testelement.ThreadListener;
 
-public abstract class AbstractNewOrder extends AbstractLogin implements ThreadListener {
+public abstract class AbstractNewOrder extends AbstractRabbitSampler  {
 
-    private final static String EXCHANGE_NAME = "Order.ExchangeName";
+    private final static String REQUEST_QUEUE = "Order.ExchangeName";
+    private final static String RESPONSE_EXCHANGE = "Order.ResponseExchangeName";
     private final static String ROUTING_KEY = "Order.RoutingKey";
 
+    private final static String SESSION_ID = "Order.SessionId";
     private final static String STOCK_CODE = "Order.StockCode";
     private final static String ORDER_QTY = "Order.StockQty";
     private final static String ORDER_PRICE = "Order.Price";
@@ -30,13 +33,30 @@ public abstract class AbstractNewOrder extends AbstractLogin implements ThreadLi
         setProperty(ROUTING_KEY, name);
     }
 
-    public String getExchangeName() {
-        return getPropertyAsString(EXCHANGE_NAME,"olt.new_olt_order");
+    public String getSessionId() {
+        return getPropertyAsString(SESSION_ID);
     }
 
-    public void setExchangeName(String name) {
-        setProperty(EXCHANGE_NAME, name);
+    public void setSessionId(String name) {
+        setProperty(SESSION_ID, name);
     }
+
+    public String getRequestQueue() {
+        return getPropertyAsString(REQUEST_QUEUE,"olt.new_olt_order");
+    }
+
+    public void setRequestQueue(String name) {
+        setProperty(REQUEST_QUEUE, name);
+    }
+
+    public String getResponseExchange() {
+        return getPropertyAsString(RESPONSE_EXCHANGE,"olt.order_reply");
+    }
+
+    public void setResponseExchange(String name) {
+        setProperty(RESPONSE_EXCHANGE, name);
+    }
+
     public String getStockCode() {
         return getPropertyAsString(STOCK_CODE);
     }
@@ -57,13 +77,11 @@ public abstract class AbstractNewOrder extends AbstractLogin implements ThreadLi
         setProperty(ORDER_PRICE, name);
     }
 
-
     public String getBoard() {return getPropertyAsString(BOARD);}
 
     public void setBoard(String name) {
         setProperty(BOARD, name);
     }
-
 
     public String getInvestorType() {return getPropertyAsString(INVESTOR_TYPE);}
 
@@ -71,20 +89,17 @@ public abstract class AbstractNewOrder extends AbstractLogin implements ThreadLi
         setProperty(INVESTOR_TYPE, name);
     }
 
-
     public String getTimeInForce() {return getPropertyAsString(TIME_IN_FORCE);}
 
     public void setTimeInForce(String name) {
         setProperty(TIME_IN_FORCE, name);
     }
 
-
     public String getBuySell() {return getPropertyAsString(BUY_SELL);}
 
     public void setBuySell(String name) {
         setProperty(BUY_SELL, name);
     }
-
 
     public String getClientCode() {return getPropertyAsString(CLIENT_CODE);}
 
@@ -97,7 +112,6 @@ public abstract class AbstractNewOrder extends AbstractLogin implements ThreadLi
     public void setOrderPeriod(String name) {
         setProperty(ORDER_PERIOD, name);
     }
-
 
 
 }

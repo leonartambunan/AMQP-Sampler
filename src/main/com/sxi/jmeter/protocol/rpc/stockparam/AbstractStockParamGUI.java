@@ -1,14 +1,15 @@
 package com.sxi.jmeter.protocol.rpc.stockparam;
 
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Calendar;
 
-public abstract class AbstractStockParamGUI extends AbstractLoginGUI{
+public abstract class AbstractStockParamGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -46,7 +47,7 @@ public abstract class AbstractStockParamGUI extends AbstractLoginGUI{
         sessionId.setText("");
         mktId.setText("1");
         board.setText("RG");
-        requestQueue.setText("");
+        requestQueue.setText("olt.stock_param_request-rpc");
         responseQueue.setText("");
 
     }
@@ -54,9 +55,9 @@ public abstract class AbstractStockParamGUI extends AbstractLoginGUI{
     @Override
     public void modifyTestElement(TestElement element) {
 
-        AbstractStockParam sampler = (AbstractStockParam) element;
+        super.modifyTestElement(element);
 
-        sampler.clear();
+        AbstractStockParam sampler = (AbstractStockParam) element;
 
         configureTestElement(sampler);
 
@@ -69,19 +70,19 @@ public abstract class AbstractStockParamGUI extends AbstractLoginGUI{
 
     }
 
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
-    }
+//    protected void init() {
+//        setLayout(new BorderLayout(0, 5));
+//        setBorder(makeBorder());
+//        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
+//
+//        JPanel mainPanel = new VerticalPanel();
+//
+//        mainPanel.add(makeCommonPanel());
+//
+//        add(mainPanel);
+//
+//        setMainPanel(mainPanel);
+//    }
 
     protected Component makeCommonPanel() {
 

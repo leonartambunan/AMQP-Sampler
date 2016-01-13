@@ -13,8 +13,6 @@ import org.apache.jmeter.samplers.Interruptible;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -32,14 +30,9 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
 
     private static final long serialVersionUID = 7480863561320459099L;
 
-    private static final Logger log = LoggingManager.getLoggerForClass();
-
     private static final String RECEIVE_TIMEOUT = "AMQPConsumer.ReceiveTimeout";
-
     private final static String HEADERS = "AMQPPublisher.Headers";
-
     private static final String POSITIVE_LOGON_STATUS = "OK";
-
     private transient Channel channel;
     private transient QueueingConsumer loginConsumer;
     private transient QueueingConsumer orderStatusConsumer;
@@ -98,18 +91,18 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             initChannel();
 
             if (loginConsumer == null) {
-                log.info("Creating rpc login Consumer");
+                trace("Creating rpc login Consumer");
                 loginConsumer = new QueueingConsumer(channel);
             }
 
-            log.info("Starting basicConsume to Login ReplyTo Queue:"+ getLoginReplyToQueue());
+            trace("Starting basicConsume to Login ReplyTo Queue:"+ getLoginReplyToQueue());
 
             loginConsumerTag = channel.basicConsume(getLoginReplyToQueue(), true, loginConsumer);
 
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.error("Failed to initialize channel", ex);
+            trace("Failed to initialize channel");
             result.setResponseMessage(ex.toString());
             return result;
         }
@@ -145,14 +138,13 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                 ScheduledExecutionTask thread = new ScheduledExecutionTask(timer,latch);
                 timer.schedule(thread, time);
 
-
                 latch.await();
 
                 result.sampleStart();
 
                 orderStatusConsumer = new QueueingConsumer(channel);
 
-                log.info("Starting basicConsume to Order Queue:"+getOrderResponseQueue());
+                trace("Starting basicConsume to Order Queue:"+getOrderResponseQueue());
 
                 channel.basicConsume(getOrderResponseQueue(),true,orderStatusConsumer);
 
@@ -183,7 +175,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -191,7 +183,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("300");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -199,14 +191,14 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.info(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("200");
             result.setResponseMessage(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("100");
             result.setResponseMessage(e.getMessage());
         } finally {
@@ -277,7 +269,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             }
 
         } catch(IOException e) {
-            log.error("Couldn't safely cancel the sample " + loginConsumerTag, e);
+            trace("Couldn't safely cancel the sample " + loginConsumerTag);
         }
 
         super.cleanup();
@@ -290,12 +282,6 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
         return ret;
     }
 
-    private void trace(String s) {
-        String tl = getTitle();
-        String tn = Thread.currentThread().getName();
-        String th = this.toString();
-        log.debug(tn + " " + tl + " " + s + " " + th);
-    }
 
     private String constructNiceString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -330,11 +316,9 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                         .replyTo(getLoginReplyToQueue())
                         .build();
 
-                log.info("Publishing login request message to Queue:"+getLoginQueue());
+                trace("Publishing login request message to Queue:"+getLoginQueue());
 
                 channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
-
-                //TODO how about ack ? Is it a mandatory ?
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -353,7 +337,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                         .replyTo(getOrderResponseQueue())
                         .build();
 
-                log.info("Publishing new neworder request message to Queue:"+getOrderRequestQueue());
+                trace("Publishing new neworder request message to Queue:"+getOrderRequestQueue());
 
                 channel.basicPublish("", getOrderRequestQueue(), props, newOLTOrder.toByteArray());
 

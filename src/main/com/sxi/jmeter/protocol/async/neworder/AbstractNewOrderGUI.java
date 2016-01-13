@@ -1,20 +1,22 @@
 package com.sxi.jmeter.protocol.async.neworder;
 
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
+public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
+    protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
+    protected JLabeledTextField responseExchange = new JLabeledTextField("Response Exchange");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
+    protected JLabeledTextField sessionId = new JLabeledTextField("Session ID");
     protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
     protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
 
@@ -28,7 +30,7 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
 
     @Override
     public String getStaticLabel() {
-        return "Trimegah New Order Sampler";
+        return "Trimegah New Order Async Sampler";
     }
 
     protected abstract void setMainPanel(JPanel panel);
@@ -39,7 +41,8 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         if (!(element instanceof AbstractNewOrder)) return;
         AbstractNewOrder sampler = (AbstractNewOrder) element;
 
-        exchangeName.setText(sampler.getExchangeName());
+        requestQueue.setText(sampler.getRequestQueue());
+        responseExchange.setText(sampler.getResponseExchange());
         routingKey.setText(sampler.getRoutingKey());
 
         stockCode.setText(sampler.getStockCode());
@@ -51,12 +54,12 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         clientCode.setText(sampler.getClientCode());
         buySell.setText(sampler.getBuySell());
         orderPeriod.setText(sampler.getOrderPeriod());
+        sessionId.setText(sampler.getSessionId());
 
     }
 
     @Override
     public void clearGui() {
-
         stockCode.setText("TRIM");
         orderQty.setText("1");
         orderPrice.setText("");
@@ -66,22 +69,21 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         clientCode.setText("");
         buySell.setText("B");
         orderPeriod.setText("");
-
-        exchangeName.setText("");
+        requestQueue.setText("olt.new_olt_order");
+        responseExchange.setText("olt.order_reply");
         routingKey.setText("");
-
     }
 
     @Override
     public void modifyTestElement(TestElement element) {
+        super.modifyTestElement(element);
 
         AbstractNewOrder sampler = (AbstractNewOrder) element;
 
-        sampler.clear();
-
         configureTestElement(sampler);
 
-        sampler.setExchangeName(exchangeName.getText());
+        sampler.setRequestQueue(requestQueue.getText());
+        sampler.setResponseExchange(responseExchange.getText());
         sampler.setRoutingKey(routingKey.getText());
 
         sampler.setStockCode(stockCode.getText());
@@ -93,21 +95,8 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         sampler.setClientCode(clientCode.getText());
         sampler.setBuySell(buySell.getText());
         sampler.setOrderPeriod(orderPeriod.getText());
+        sampler.setSessionId(sessionId.getText());
 
-    }
-
-    protected void init() {
-        setLayout(new BorderLayout(0, 5));
-        setBorder(makeBorder());
-        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-
-        JPanel mainPanel = new VerticalPanel();
-
-        mainPanel.add(makeCommonPanel());
-
-        add(mainPanel);
-
-        setMainPanel(mainPanel);
     }
 
     protected Component makeCommonPanel() {
@@ -134,10 +123,18 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        queueSettings.add(exchangeName, gridBagConstraints);
+        queueSettings.add(requestQueue, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        queueSettings.add(responseExchange, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
         queueSettings.add(routingKey, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        queueSettings.add(sessionId, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 0;
         gridBagConstraintsCommon.gridy = 1;
@@ -181,6 +178,10 @@ public abstract class AbstractNewOrderGUI extends AbstractLoginGUI{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
         orderSettings.add(orderPeriod, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        orderSettings.add(orderPrice, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

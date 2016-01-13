@@ -51,6 +51,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
     @Override
     public SampleResult sample(Entry entry) {
+        trace("sample()");
 
         try {
             logonRequest = LogonRequest
@@ -73,24 +74,23 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
         result.setSampleLabel(getTitle());
         result.setSamplerData(constructNiceString());
 
-        trace("Trimegah Market Info sample()");
 
         try {
 
             initChannel();
 
             if (loginConsumer == null) {
-                log.info("Creating rpc login consumer");
+                trace("Creating rpc login consumer");
                 loginConsumer = new QueueingConsumer(channel);
             }
 
-            log.info("Starting basicConsume to Login ReplyTo Queue:"+ getReplyToQueue());
+            trace("Starting basicConsume to Login ReplyTo Queue:"+ getReplyToQueue());
 
             loginConsumerTag = channel.basicConsume(getReplyToQueue(), true, loginConsumer);
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            log.error("Failed to initialize channel", ex);
+            trace("Failed to initialize channel " + ex.getMessage());
             result.setResponseMessage(ex.toString());
             result.setResponseData(ex.getLocalizedMessage(),null);
             return result;
@@ -127,7 +127,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 ScheduledExecutionTask thread = new ScheduledExecutionTask(timer, scheduleLatch);
                 timer.schedule(thread, time);
 
-                log.info("WAITING FOR SCHEDULE TO START");
+                trace("WAITING FOR SCHEDULE TO START");
 
                 scheduleLatch.await();
 
@@ -142,18 +142,13 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 marketInfoConsumer = new DefaultConsumer(channel) {
                     @Override
                     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                        log.info(new String(body));
-
-//                        Builder msgBuilder = DFMessage.newBuilder();
-//                        msgBuilder.mergeFrom(body);
-//                        DFMessage data = msgBuilder.build();
-//                        TradeDetailData tradeDetailData = data.getTradeDetailData();
+                        trace(new String(body));
 
                         result.setResponseMessage(new String(body));
 
                         result.setResponseData(new String(body), null);
 
-                        result.setDataType(SampleResult.BINARY);
+                        result.setDataType(SampleResult.TEXT);
 
                         result.setResponseCodeOK();
 
@@ -181,7 +176,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -189,7 +184,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("300");
             result.setResponseMessage(e.getMessage());
             interrupt();
@@ -197,21 +192,21 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.info(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("200");
             result.setResponseMessage(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             loginConsumer = null;
             loginConsumerTag = null;
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             result.setResponseCode("100");
             result.setResponseMessage(e.getLocalizedMessage());
         } finally {
             result.sampleEnd();
         }
 
-        trace("Market Info sample() method ended");
+        trace("sample() ended");
 
         return result;
     }
@@ -280,7 +275,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
             }
 
         } catch(IOException e) {
-            log.warn(e.getMessage());
+            trace(e.getMessage());
             e.printStackTrace();
         }
 
@@ -292,13 +287,6 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
         boolean ret = super.initChannel();
         channel.basicQos(2);
         return ret;
-    }
-
-    private void trace(String s) {
-        String tl = getTitle();
-        String tn = Thread.currentThread().getName();
-        String th = this.toString();
-        log.debug(tn + " " + tl + " " + s + " " + th);
     }
 
     private String constructNiceString() {
@@ -333,7 +321,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                         .replyTo(getReplyToQueue())
                         .build();
 
-                log.info("Publishing login request message to Queue:"+getLoginQueue());
+                trace("Publishing login request message to Queue:"+getLoginQueue());
 
                 channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
 
