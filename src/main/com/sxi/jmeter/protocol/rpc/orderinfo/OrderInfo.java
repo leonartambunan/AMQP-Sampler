@@ -4,29 +4,31 @@ import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.OrderInfoRequest;
 import id.co.tech.cakra.message.proto.olt.OrderInfoResponse;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class OrderInfo extends AbstractOrderInfo {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
-    private final static String HEADERS = "AMQPPublisher.Headers";
 
     private OrderInfoRequest orderInfoRequest;
+
     private transient String orderInfoConsumerTag;
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
+    private static String correlationID;
+
     public void makeRequest()  {
+
+        correlationID = UUID.randomUUID().toString();
 
         orderInfoRequest = OrderInfoRequest
                 .newBuilder()
@@ -42,24 +44,33 @@ public class OrderInfo extends AbstractOrderInfo {
             DefaultConsumer orderInfoConsumer = new DefaultConsumer(getChannel()) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+                    trace("Message received <--");
+                    trace("["+correlationID +"] <-> ["+properties.getCorrelationId()+"]");
+
                     trace(new String(body));
-                    OrderInfoResponse response = OrderInfoResponse.parseFrom(body);
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
+
+                    if (correlationID.equals(properties.getCorrelationId())) {
+                        OrderInfoResponse response = null;
+                        try {response = OrderInfoResponse.parseFrom(body); } catch(Exception e) {e.printStackTrace();}
+                        //result.setResponseMessage(new String(body));
+                        result.setResponseData(response==null?new String(body):response.toString(), null);
+                        result.setResponseCodeOK();
+                        result.setSuccessful(true);
+                        latch.countDown();
+                    } else {
+                        trace("No correlation message");
+                    }
                 }
             };
 
-
             trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+
             orderInfoConsumerTag = getChannel().basicConsume(getResponseQueue(), true, orderInfoConsumer);
 
             new Thread(new OrderInfoMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();
@@ -101,14 +112,13 @@ public class OrderInfo extends AbstractOrderInfo {
         }
     }
 
+    private final static String HEADERS = "AMQPPublisher.Headers";
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
     }
-
     public void setHeaders(Arguments headers) {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
-
 
     public void cleanup() {
 
@@ -134,6 +144,7 @@ public class OrderInfo extends AbstractOrderInfo {
                 AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
                         .builder()
                         .replyTo(getResponseQueue())
+                        .correlationId(correlationID)
                         .build();
 
                 trace("Publishing order info request message to Queue:"+ getRequestQueue());

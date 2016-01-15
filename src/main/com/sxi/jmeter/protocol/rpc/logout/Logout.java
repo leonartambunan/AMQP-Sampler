@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class Logout extends AbstractLogout {
@@ -44,7 +45,6 @@ public class Logout extends AbstractLogout {
                     LogonResponse response = LogonResponse.parseFrom(body);
                     result.setResponseMessage(new String(body));
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -57,7 +57,7 @@ public class Logout extends AbstractLogout {
 
             new Thread(new LogoutMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

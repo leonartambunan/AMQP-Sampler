@@ -59,7 +59,7 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
         Channel channel = getChannel();
 
         if(channel != null && !channel.isOpen()){
-            trace("channel " + channel.getChannelNumber() + " closed unexpectedly: " + channel.getCloseReason());
+            trace("channel " + channel.getChannelNumber() + " closed unexpectedly: ");
             channel = null;
         }
 
@@ -71,6 +71,11 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
+
+            if (isConnectionSSL()) {
+                factory.useSslProtocol("TLS");
+            }
+
             connection = factory.newConnection();
             Channel ch = connection.createChannel();
 

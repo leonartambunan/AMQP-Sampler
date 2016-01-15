@@ -1,7 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.accinfo;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
@@ -11,9 +10,9 @@ import java.awt.*;
 public abstract class AbstractAccountInfoGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
-    protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
-    protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
-    protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
+    private JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
+    private JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
+    private JLabeledTextField sessionId = new JLabeledTextField("Session Id");
 
     @Override
     public String getStaticLabel() {
@@ -56,20 +55,6 @@ public abstract class AbstractAccountInfoGUI extends AbstractRabbitGUI {
         sampler.setResponseQueue(responseQueue.getText());
 
     }
-
-//    protected void init() {
-//        setLayout(new BorderLayout(0, 5));
-//        setBorder(makeBorder());
-//        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-//
-//        JPanel mainPanel = new VerticalPanel();
-//
-//        mainPanel.add(makeCommonPanel());
-//
-//        add(mainPanel);
-//
-//        setMainPanel(mainPanel);
-//    }
 
     protected Component makeCommonPanel() {
 

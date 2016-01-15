@@ -19,6 +19,7 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
     protected JLabeledTextField sessionId = new JLabeledTextField("Session ID");
     protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
     protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
+//    protected JLabeledTextField orderRef = new JLabeledTextField("Order Ref");
 
     protected JLabeledTextField orderPrice = new JLabeledTextField("Order Price");
     protected JLabeledTextField board = new JLabeledTextField("Board");
@@ -55,11 +56,15 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
         buySell.setText(sampler.getBuySell());
         orderPeriod.setText(sampler.getOrderPeriod());
         sessionId.setText(sampler.getSessionId());
+//        orderRef.setText(sampler.getOrderRef());
 
     }
 
     @Override
     public void clearGui() {
+
+        super.clearGui();
+
         stockCode.setText("TRIM");
         orderQty.setText("1");
         orderPrice.setText("");
@@ -96,6 +101,7 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
         sampler.setBuySell(buySell.getText());
         sampler.setOrderPeriod(orderPeriod.getText());
         sampler.setSessionId(sessionId.getText());
+//        sampler.setOrderRef(orderRef.getText());
 
     }
 
@@ -182,6 +188,10 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
         orderSettings.add(orderPrice, gridBagConstraints);
+
+//        gridBagConstraints.gridx = 0;
+//        gridBagConstraints.gridy = 10;
+//        orderSettings.add(orderRef, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

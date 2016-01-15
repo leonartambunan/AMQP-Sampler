@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class StockPosition extends AbstractStockPosition{
@@ -54,7 +55,6 @@ public class StockPosition extends AbstractStockPosition{
                     }
 
                     result.setResponseData(sb.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -67,7 +67,7 @@ public class StockPosition extends AbstractStockPosition{
 
             new Thread(new StockPositionMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

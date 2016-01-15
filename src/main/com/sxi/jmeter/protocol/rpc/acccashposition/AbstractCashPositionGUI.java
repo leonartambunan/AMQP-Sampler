@@ -12,11 +12,11 @@ public abstract class AbstractCashPositionGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
-    protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
+    private JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
+    private JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
 
-    protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
-    protected JLabeledTextField accNo = new JLabeledTextField("Acc No");
+    private JLabeledTextField sessionId = new JLabeledTextField("Session Id");
+    private JLabeledTextField accNo = new JLabeledTextField("Acc No");
 
     @Override
     public String getStaticLabel() {

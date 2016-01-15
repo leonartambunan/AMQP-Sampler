@@ -17,7 +17,7 @@ public abstract class AbstractStockParamGUI extends AbstractRabbitGUI {
     protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
 
     protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
-    protected JLabeledTextField mktId = new JLabeledTextField("Marketing Id");
+    protected JLabeledTextField mktId = new JLabeledTextField("Market Id");
     protected JLabeledTextField board = new JLabeledTextField("Board");
 
     @Override
@@ -45,7 +45,7 @@ public abstract class AbstractStockParamGUI extends AbstractRabbitGUI {
     public void clearGui() {
 
         sessionId.setText("");
-        mktId.setText("1");
+        mktId.setText("IDX");
         board.setText("RG");
         requestQueue.setText("olt.stock_param_request-rpc");
         responseQueue.setText("");
@@ -69,20 +69,6 @@ public abstract class AbstractStockParamGUI extends AbstractRabbitGUI {
         sampler.setResponseQueue(responseQueue.getText());
 
     }
-
-//    protected void init() {
-//        setLayout(new BorderLayout(0, 5));
-//        setBorder(makeBorder());
-//        add(makeTitlePanel(), BorderLayout.NORTH); // Add the standard title
-//
-//        JPanel mainPanel = new VerticalPanel();
-//
-//        mainPanel.add(makeCommonPanel());
-//
-//        add(mainPanel);
-//
-//        setMainPanel(mainPanel);
-//    }
 
     protected Component makeCommonPanel() {
 

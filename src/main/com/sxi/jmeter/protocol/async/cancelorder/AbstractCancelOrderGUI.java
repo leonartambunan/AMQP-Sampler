@@ -14,11 +14,11 @@ public abstract class AbstractCancelOrderGUI extends AbstractRabbitGUI{
 
     protected JLabeledTextField requestExchangeName = new JLabeledTextField("Request Queue");
     protected JLabeledTextField responseExchangeName = new JLabeledTextField("Response Exchange");
-//    protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
+    protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
+    protected JLabeledTextField sessionId = new JLabeledTextField("Session ID");
 
     protected JLabeledTextField orderRef = new JLabeledTextField("Order Ref");
     protected JLabeledTextField orderId = new JLabeledTextField("Order Id");
-
 
     @Override
     public String getStaticLabel() {
@@ -35,8 +35,8 @@ public abstract class AbstractCancelOrderGUI extends AbstractRabbitGUI{
 
         requestExchangeName.setText(sampler.getRequestQueue());
         responseExchangeName.setText(sampler.getResponseExchange());
-        //routingKey.setText(sampler.getRoutingKey());
-
+        routingKey.setText(sampler.getRoutingKey());
+        sessionId.setText(sampler.getSessionId());
         orderRef.setText(sampler.getOrderRef());
         orderId.setText(sampler.getOrderId());
 
@@ -49,7 +49,8 @@ public abstract class AbstractCancelOrderGUI extends AbstractRabbitGUI{
         orderId.setText("1");
         requestExchangeName.setText("olt.cancel_olt_order_request");
         responseExchangeName.setText("olt.order_reply");
-        //routingKey.setText("");
+        routingKey.setText("");
+
     }
 
     @Override
@@ -63,7 +64,8 @@ public abstract class AbstractCancelOrderGUI extends AbstractRabbitGUI{
 
         sampler.setRequestQueue(requestExchangeName.getText());
         sampler.setResponseExchange(responseExchangeName.getText());
-//        sampler.setRoutingKey(routingKey.getText());
+        sampler.setRoutingKey(routingKey.getText());
+        sampler.setSessionId(sessionId.getText());
 
         sampler.setOrderRef(orderRef.getText());
         sampler.setOrderId(orderId.getText());
@@ -95,12 +97,15 @@ public abstract class AbstractCancelOrderGUI extends AbstractRabbitGUI{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         queueSettings.add(requestExchangeName, gridBagConstraints);
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 1;
-//        queueSettings.add(routingKey, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         queueSettings.add(responseExchangeName, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        queueSettings.add(routingKey, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        queueSettings.add(sessionId, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 0;
         gridBagConstraintsCommon.gridy = 1;

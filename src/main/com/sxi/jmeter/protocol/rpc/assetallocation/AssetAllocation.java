@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AssetAllocation extends AbstractAssetAllocation implements Interruptible, TestStateListener {
@@ -46,7 +47,6 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
                     AssetAllocationResponse response = AssetAllocationResponse.parseFrom(body);
                     result.setResponseMessage(new String(body));
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -59,7 +59,7 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
 
             new Thread(new CashPositionPublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

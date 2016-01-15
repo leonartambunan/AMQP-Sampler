@@ -12,12 +12,12 @@ public abstract class AbstractAddWatchListGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
-    protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
+    private JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
+    private JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
 
-    protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
-    protected JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
-    protected JLabeledTextField bindingKey = new JLabeledTextField("Binding Key");
+    private JLabeledTextField sessionId = new JLabeledTextField("Session Id");
+    private JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
+    private JLabeledTextField bindingKey = new JLabeledTextField("Binding Key");
 
     @Override
     public String getStaticLabel() {

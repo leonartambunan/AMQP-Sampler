@@ -45,9 +45,7 @@ public class SubscribeOrderGUI extends AbstractSubscribeOrderGUI {
         SubscribeOrder sampler = (SubscribeOrder) te;
         sampler.clear();
         configureTestElement(sampler);
-
         super.modifyTestElement(sampler);
-
         sampler.setHeaders((Arguments) headers.createTestElement());
     }
 

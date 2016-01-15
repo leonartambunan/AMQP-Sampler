@@ -3,10 +3,7 @@ package com.sxi.jmeter.protocol.rpc.preopening;
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
-import id.co.tech.cakra.message.proto.olt.LogonRequest;
-import id.co.tech.cakra.message.proto.olt.LogonResponse;
-import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
-import id.co.tech.cakra.message.proto.olt.OrderInfoResponse;
+import id.co.tech.cakra.message.proto.olt.*;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.Interruptible;
@@ -37,14 +34,18 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
     private transient QueueingConsumer loginConsumer;
     private transient QueueingConsumer orderStatusConsumer;
     private transient String loginConsumerTag;
-    public LogonRequest logonRequest;
-    public NewOLTOrder newOLTOrder;
+    private LogonRequest logonRequest;
+    //    private NewOLTOrder newOLTOrder;
+    OLTMessage request;
+    private static String orderRef = null;
+    private static String sessionId = null;
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
     @Override
     public SampleResult sample(Entry entry) {
 
+        orderRef = ""+System.currentTimeMillis();
 
         try {
             logonRequest = LogonRequest
@@ -56,23 +57,6 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                     .setAppVersion(getMobileAppVersion())
                     .setIp(InetAddress.getLocalHost().getHostAddress())
                     .build();
-
-
-            newOLTOrder = NewOLTOrder
-                    .newBuilder()
-                    .setOrderTime(System.currentTimeMillis())
-                    .setBuySell(getBuySell())
-                    .setInputBy("JMETER")
-                    .setClientCode(getClientCode())
-                    .setOrdQty(Double.parseDouble(getStockAmount()))
-                    .setOrdPrice(Double.valueOf(getOrderPrice()))
-                    .setClOrderRef("ST"+ System.currentTimeMillis())
-                    .setBoard(getBoard())
-                    .setTimeInForce(getTimeInForce())
-                    .setInsvtType(getInvestorType())
-                    .setStockCode(getStockCode())
-                    .build();
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -125,6 +109,8 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
 
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
+
+                sessionId = logonResponse.getSessionId();
 
                 //TODO SEND ORDER REQUEST HERE
 
@@ -284,23 +270,21 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
 
 
     private String constructNiceString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("---MQ SERVER---")
-                .append("\nIP \t:")
-                .append(getHost())
-                .append("\nPort\t:")
-                .append(getPort())
-                .append("\nUsername\t:")
-                .append(getUsername())
-                .append("\nPassword\t:")
-                .append(getPassword())
-                .append("\nVirtual Host\t:")
-                .append(getVirtualHost())
-                .append("\n----------")
-                .append("\n---REQUEST---\n")
-                .append(logonRequest.toString());
 
-        return stringBuilder.toString();
+        return "---MQ SERVER---" +
+                "\nIP \t:" +
+                getHost() +
+                "\nPort\t:" +
+                getPort() +
+                "\nUsername\t:" +
+                getUsername() +
+                "\nPassword\t:" +
+                getPassword() +
+                "\nVirtual Host\t:" +
+                getVirtualHost() +
+                "\n----------" +
+                "\n---REQUEST---\n" +
+                logonRequest.toString();
 
     }
 
@@ -331,17 +315,37 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
         @Override
         public void run() {
 
+            NewOLTOrder contentRequest = NewOLTOrder
+                    .newBuilder()
+                    .setOrderTime(System.currentTimeMillis())
+                    .setBuySell(getBuySell())
+                    .setInputBy(getMobileUserId())
+                    .setClientCode(getClientCode())
+                    .setOrdQty(Double.valueOf(getStockAmount()))
+                    .setOrdPrice(Double.valueOf(getOrderPrice()))
+                    .setClOrderRef(orderRef)
+                    .setBoard(getBoard())
+                    .setStockCode(getStockCode())
+                    .setTimeInForce(getTimeInForce())
+                    .setInsvtType(getInvestorType())
+                    .setOrderTime(System.currentTimeMillis())
+                    .build();
+
+            request = OLTMessage.newBuilder()
+                    .setSessionId(sessionId)
+                    .setNewOLTOrder(contentRequest)
+                    .setType(OLTMessage.Type.NEW_OLT_ORDER)
+                    .build();
+
             try {
                 AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
                         .builder()
                         .replyTo(getOrderResponseQueue())
                         .build();
 
-                trace("Publishing new neworder request message to Queue:"+getOrderRequestQueue());
+                trace("Publishing new order request message to Queue:"+getOrderRequestQueue());
 
-                channel.basicPublish("", getOrderRequestQueue(), props, newOLTOrder.toByteArray());
-
-                //TODO how about ack ? Is it a mandatory ?
+                channel.basicPublish("", getOrderRequestQueue(), props, request.toByteArray());
 
             } catch (Exception e) {
                 e.printStackTrace();

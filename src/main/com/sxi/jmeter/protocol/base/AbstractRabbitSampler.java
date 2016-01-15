@@ -60,6 +60,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public SampleResult result = new SampleResult();
     public static final Logger log = LoggingManager.getLoggerForClass();
 
+
     protected AbstractRabbitSampler(){
         factory = new ConnectionFactory();
         factory.setRequestedHeartbeat(Trimegah.HEARTBEAT);
@@ -96,6 +97,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
         makeRequest();
 
         result.sampleEnd();
+        result.setDataType(SampleResult.TEXT);
 
         trace("sample() ended");
 
@@ -107,7 +109,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
         trace("initChannel() factory "+(factory==null?"null":"not null")+", connection "+(connection==null?"null":"not null")+ ", channel "+(channel==null?"null":"not null"));
 
         if(channel != null && !channel.isOpen()){
-            trace("Channel " + channel.getChannelNumber() + " closed unexpectedly: " + channel.getCloseReason());
+            trace("Channel " + channel.getChannelNumber() + " closed unexpectedly: ");
             channel = null;
         }
 
@@ -118,6 +120,11 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
+
+            if (isConnectionSSL()) {
+                factory.useSslProtocol("TLS");
+            }
+
             connection = factory.newConnection();
             channel  = connection.createChannel();
             channel.basicQos(2);
@@ -171,11 +178,9 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
         QueueingConsumer.Delivery delivery = loginConsumer.nextDelivery(Long.valueOf(getTimeout()));
 
         if (delivery != null) {
-
             trace("Response to login request received <-- ");
             trace(new String(delivery.getBody()));
             response = LogonResponse.parseFrom(delivery.getBody());
-
         }
 
         return response;
@@ -320,8 +325,19 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
         trace("cleanup()");
 
-        //Close connection only if the VAR NAME AUTHENTICATED CONNECTION is not set
-        //if ("".equals(getAuthenticatedConnectionVarName().trim())) {
+        try {
+            if (loginConsumerTag != null && getChannel()!=null && getChannel().isOpen()) {
+                getChannel().basicCancel(loginConsumerTag);
+            }
+        } catch(IOException e) {
+            trace("Couldn't safely cancel the sample " + loginConsumerTag+ " " +  e.getMessage());
+        }
+    }
+
+    protected void terminateConnection() {
+
+        trace("terminateConnection()");
+
         try {
             if (connection != null && connection.isOpen())
                 connection.close();
@@ -329,9 +345,6 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             e.printStackTrace();
             trace("Failed to close connection");
         }
-        //} else {
-        //saveConnectionToJMeterVariable();
-        //}
     }
 
     @Override
@@ -431,28 +444,26 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
 
     public String constructNiceString() {
-        StringBuilder stringBuffer = new StringBuilder();
-        stringBuffer.append("---MQ SERVER---")
-                .append("\nIP \t:")
-                .append(getHost())
-                .append("\nPort\t:")
-                .append(getPort())
-                .append("\nUsername\t:")
-                .append(getUsername())
-                .append("\nPassword\t:")
-                .append(getPassword())
-                .append("\nVirtual Host\t:")
-                .append(getVirtualHost())
-                .append("\n----------")
-                .append("\n---REQUEST---\n")
-                .append(logonRequest.toString());
+        String stringBuffer = "---MQ SERVER---" +
+                "\nIP \t:" +
+                getHost() +
+                "\nPort\t:" +
+                getPort() +
+                "\nUsername\t:" +
+                getUsername() +
+                "\nPassword\t:" +
+                getPassword() +
+                "\nVirtual Host\t:" +
+                getVirtualHost() +
+                "\n----------" +
+                "\n---REQUEST---\n" +
+                logonRequest.toString();
 
-        return stringBuffer.toString();
+        return stringBuffer;
 
     }
 
@@ -492,6 +503,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public void testEnded() {
         trace("testEnded()");
         cleanup();
+        terminateConnection();
     }
 
     @Override

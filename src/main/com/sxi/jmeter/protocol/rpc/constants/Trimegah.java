@@ -4,7 +4,7 @@ public class Trimegah {
     public static final String CONN_VAR_NAME = "AUTH_CON";
     public static final String HOST = "172.16.1.76";
     public static final String PORT = "5672";
-    public static final String TIMEOUT= "90000";
+    public static final String TIMEOUT= "600000";
     public static final String USERNAME = "guest";
     public static final String PASSWORD= "guest";
     public static final String MOBILE_USER_ID= "test9";

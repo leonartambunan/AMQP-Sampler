@@ -24,8 +24,6 @@ public class Login extends AbstractLogin {
         result.setSuccessful(false);
         result.setResponseCode("500");
         result.setSampleLabel(getTitle());
-
-
         result.setDataType(SampleResult.TEXT);
 
         result.sampleStart();
@@ -37,7 +35,6 @@ public class Login extends AbstractLogin {
             result.setSamplerData(constructNiceString());
 
             if (SUCCESSFUL_LOGIN.equals(logonResponse.getStatus())) {
-
                 result.setResponseCodeOK();
                 result.setSuccessful(true);
             }

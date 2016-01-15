@@ -1,33 +1,32 @@
 package com.sxi.jmeter.protocol.async.subscribeorder;
 
-import com.google.protobuf.GeneratedMessage;
 import com.rabbitmq.client.*;
-import id.co.tech.cakra.message.proto.olt.*;
+import id.co.tech.cakra.message.proto.olt.MFSubscribeOrder;
+import id.co.tech.cakra.message.proto.olt.OLTMessage;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class SubscribeOrder extends AbstractSubscribeOrder {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
 
-    MFSubscribeOrder request;
-    private transient String bindingQueueName;
+    OLTMessage request;
     private transient String sendingTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
-    public void makeRequest()  {
+    private static String orderRef = null;
 
-        request = MFSubscribeOrder
+    public void makeRequest()  {
+        orderRef = ""+System.currentTimeMillis();
+
+        MFSubscribeOrder contentRequest = MFSubscribeOrder
                 .newBuilder()
                 .setAccNo(getAccNo())
                 .setSessionId(getSessionId())
@@ -36,7 +35,17 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
                 .setOrderDate(System.currentTimeMillis())
                 .setProductCode(getProductCode())
                 .setProductId(getProductId())
+                .setUserId(getMobileUserId())
                 .build();
+
+        request = OLTMessage.newBuilder()
+                .setSessionId(getSessionId())
+                .setMFSubscribeOrder(contentRequest)
+                .setType(OLTMessage.Type.MF_SUBSCRIBE_ORDER)
+                .build();
+
+        result.setSamplerData(request.toString());
+
         try {
 
             initChannel();
@@ -44,28 +53,44 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
             DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    MFUpdateOrder response = MFUpdateOrder.parseFrom(body);
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
+
+                    trace("Message received <--");
+
+                    OLTMessage response = OLTMessage.parseFrom(body);
+
+                    trace(response.toString());
+
+                    trace("Type:" + response.getType());
+
+                    if (OLTMessage.Type.MF_UPDATE_ORDER.equals(response.getType())) {
+                        trace("MF Order Update");
+                        trace(orderRef + " VS " + response.getMFUpdateOrder().getClnOrderReff());
+                        if (orderRef.equals(response.getMFUpdateOrder().getClnOrderReff())) {
+                            result.setResponseData(response.toString() + "\n" + response.getMFUpdateOrder().toString(), null);
+                            result.setResponseCodeOK();
+                            result.setSuccessful(true);
+                            result.setResponseMessage(response.toString());
+                            latch.countDown();
+                        }
+
+                    } else {
+                        trace("What to do ? Calm, this msg is not your task as new order listener");
+                    }
+
                 }
             };
 
-            bindingQueueName = getChannel().queueDeclare().getQueue();
+            String bindingQueueName = getChannel().queueDeclare().getQueue();
 
-            trace("Listening to Exchange ["+getResponseExchangeName() +"] with Routing Key ["+getRoutingKey()+"]");
+            trace("Listening to Exchange ["+ getResponseExchange() +"] with Routing Key ["+getRoutingKey()+"]");
 
-            getChannel().queueBind(bindingQueueName,getResponseExchangeName(),getRoutingKey());
+            getChannel().queueBind(bindingQueueName, getResponseExchange(),getRoutingKey());
 
             sendingTag = getChannel().basicConsume(bindingQueueName,true,consumer);
 
-            new Thread(new AmendOrderPublisher()).start();
+            new Thread(new MFSubscribeOrderPublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();
@@ -119,7 +144,7 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
         super.cleanup();
     }
 
-    class AmendOrderPublisher implements Runnable {
+    class MFSubscribeOrderPublisher implements Runnable {
 
         @Override
         public void run() {
@@ -129,9 +154,9 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
                         .builder()
                         .build();
 
-                trace("Publishing Subscribe Order request message to Exchange:"+ getRequestExchangeName());
+                trace("Publishing Subscribe Order request message to Exchange:"+ getRequestQueue());
 
-                getChannel().basicPublish(getRequestExchangeName(), getRoutingKey(), props, request.toByteArray());
+                getChannel().basicPublish("", getRequestQueue(), props, request.toByteArray());
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AccountInfo extends AbstractAccountInfo {
@@ -43,7 +44,6 @@ public class AccountInfo extends AbstractAccountInfo {
                     AccountResponse response = AccountResponse.parseFrom(body);
                     result.setResponseMessage(response.toString());
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -56,7 +56,8 @@ public class AccountInfo extends AbstractAccountInfo {
 
             new Thread(new AccountInfoMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

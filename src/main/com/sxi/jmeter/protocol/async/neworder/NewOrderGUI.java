@@ -45,9 +45,7 @@ public class NewOrderGUI extends AbstractNewOrderGUI {
         NewOrder sampler = (NewOrder) te;
         sampler.clear();
         configureTestElement(sampler);
-
         super.modifyTestElement(sampler);
-
         sampler.setHeaders((Arguments) headers.createTestElement());
     }
 

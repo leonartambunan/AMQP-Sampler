@@ -1,12 +1,9 @@
 package com.sxi.jmeter.protocol.async.cancelorder;
 
-import com.google.protobuf.GeneratedMessage;
 import com.rabbitmq.client.*;
-import id.co.tech.cakra.message.proto.olt.CancelOLTOrderAck;
-import id.co.tech.cakra.message.proto.olt.CancelOLTOrderReject;
 import id.co.tech.cakra.message.proto.olt.CancelOLTOrderRequest;
+import id.co.tech.cakra.message.proto.olt.OLTMessage;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
@@ -20,20 +17,33 @@ public class CancelOrder extends AbstractCancelOrder {
 
     private static final long serialVersionUID = 1L;
     private final static String HEADERS = "AMQPPublisher.Headers";
-    CancelOLTOrderRequest request;
+    OLTMessage request;
     private transient String bindingQueueName;
-    private transient String sendingTag;
+    private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
+    private static String newOrderRef;
 
     public void makeRequest()  {
 
-        request = CancelOLTOrderRequest
+        newOrderRef = String.valueOf(System.currentTimeMillis());
+
+        CancelOLTOrderRequest contentRequest = CancelOLTOrderRequest
                 .newBuilder()
-                .setNewCliOrderRef(""+System.currentTimeMillis())
                 .setOldCliOrderRef(getOrderRef())
-                .setInputBy("JMETER")
                 .setOrderID(getOrderId())
+                .setNewCliOrderRef(newOrderRef)
+                .setInputBy(getMobileUserId())
                 .build();
+
+        request = OLTMessage
+                .newBuilder()
+                .setCancelOLTOrderRequest(contentRequest)
+                .setType(OLTMessage.Type.CANCEL_OLT_ORDER_REQUEST)
+                .setSessionId(getSessionId())
+                .build();
+
+        result.setSamplerData(request.toString());
+
         try {
 
             initChannel();
@@ -41,35 +51,50 @@ public class CancelOrder extends AbstractCancelOrder {
             DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
 
-                    GeneratedMessage response;
-                    try {
-                        response = CancelOLTOrderAck.parseFrom(body);
-                    } catch (Exception e) {
-                        response = CancelOLTOrderReject.parseFrom(body);
+                    trace("Message received <--");
+
+                    OLTMessage response = OLTMessage.parseFrom(body);
+
+                    trace(response.toString());
+
+                    if (OLTMessage.Type.CANCEL_OLT_ORDER_REJECT.equals(response.getType())) {
+                        trace("Order Cancellation Rejected");
+                        trace(newOrderRef + " VS " + response.getCancelOLTOrderReject().getNewCliOrderRef());
+                        if (newOrderRef.equals(response.getCancelOLTOrderReject().getNewCliOrderRef())) {
+                            result.setResponseData(response.toString() + "\n" + response.getCancelOLTOrderReject().toString(), null);
+                            result.setResponseCodeOK();
+                            result.setSuccessful(true);
+                            result.setResponseMessage(response.toString());
+                            latch.countDown();
+                        }
+                    } else if (OLTMessage.Type.CANCEL_OLT_ORDER_ACK.equals(response.getType())) {
+                        trace("Order Cancellation Ack");
+                        trace(newOrderRef + " VS " + response.getCancelOLTOrderAck().getNewCliOrderRef());
+                        if (newOrderRef.equals(response.getCancelOLTOrderAck().getNewCliOrderRef())) {
+                            result.setResponseData(response.toString() + "\n" + response.getCancelOLTOrderAck().toString(), null);
+                            result.setResponseCodeOK();
+                            result.setSuccessful(true);
+                            result.setResponseMessage(response.toString());
+                            latch.countDown();
+                        }
+                    } else {
+                        trace("What to do ? Calm, that msg is not your task as Cancellation listener");
                     }
-
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
                 }
             };
 
             bindingQueueName = getChannel().queueDeclare().getQueue();
 
-            trace("Listening to Exchange ["+bindingQueueName +"] with Routing Key ["+getMobileUserId()+"]");
+            trace("Listening to Queue ["+bindingQueueName +"] bind to exchange ["+ getResponseExchange()+"] with routing key ["+getRoutingKey()+"]");
 
-            getChannel().queueBind(bindingQueueName, getResponseExchange(),getMobileUserId());
+            getChannel().queueBind(bindingQueueName, getResponseExchange(),getRoutingKey());
 
-            sendingTag = getChannel().basicConsume(bindingQueueName,true,consumer);
+            responseTag = getChannel().basicConsume(bindingQueueName,true,consumer);
 
             new Thread(new CancelOrderPublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();
@@ -114,11 +139,11 @@ public class CancelOrder extends AbstractCancelOrder {
     public void cleanup() {
 
         try {
-            if (sendingTag != null && getChannel().isOpen()) {
-                getChannel().basicCancel(sendingTag);
+            if (responseTag != null && getChannel().isOpen()) {
+                getChannel().basicCancel(responseTag);
             }
         } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + sendingTag +" " +e.getMessage());
+            trace("Couldn't safely cancel the sample " + responseTag +" " +e.getMessage());
         }
         super.cleanup();
     }
@@ -134,13 +159,11 @@ public class CancelOrder extends AbstractCancelOrder {
                         .build();
 
                 trace("Publishing Cancel Order request message to Queue :"+ getRequestQueue());
-
                 getChannel().basicPublish("",getRequestQueue(),props, request.toByteArray());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
     }
     public Arguments getHeaders() {

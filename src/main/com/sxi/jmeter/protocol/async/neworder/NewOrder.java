@@ -4,7 +4,6 @@ import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
 import id.co.tech.cakra.message.proto.olt.OLTMessage;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
@@ -22,9 +21,11 @@ public class NewOrder extends AbstractNewOrder {
     private transient String bindingQueueName;
     private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
-    private final String orderRef = String.valueOf(System.currentTimeMillis());
+    private static String orderRef = null;
 
     public void makeRequest()  {
+
+        orderRef = ""+System.currentTimeMillis();
 
         NewOLTOrder contentRequest = NewOLTOrder
                 .newBuilder()
@@ -60,32 +61,38 @@ public class NewOrder extends AbstractNewOrder {
 
                     trace("Message received <--");
 
-                    trace(new String(body));
-
-                    result.setResponseMessage(new String(body));
-
                     OLTMessage response = OLTMessage.parseFrom(body);
 
-                    if (OLTMessage.Type.NEW_OLT_ORDER_REJECT.equals(response.getType())) {
+                    trace(response.toString());
 
+                    trace("Type:" + response.getType());
+
+                    if (OLTMessage.Type.NEW_OLT_ORDER_REJECT.equals(response.getType())) {
+                        trace("Order Rejected");
+                        trace(orderRef + " VS " + response.getNewOLTOrderExchangeUpdate().getClOrderRef());
                         if (orderRef.equals(response.getNewOLTOrderReject().getClOrderRef())) {
                             result.setResponseData(response.toString() + "\n" + response.getNewOLTOrderReject().toString(), null);
-                            result.setDataType(SampleResult.TEXT);
                             result.setResponseCodeOK();
                             result.setSuccessful(true);
+                            result.setResponseMessage(response.toString());
                             latch.countDown();
                         }
-
-                    } else {
-
+                    } else if (OLTMessage.Type.NEW_OLT_ORDER_EXCHANGE_UPDATE.equals(response.getType())) {
+                        trace("Got Update from Exchange");
+                        trace(orderRef + " VS " + response.getNewOLTOrderExchangeUpdate().getClOrderRef());
+                        if (orderRef.equals(response.getNewOLTOrderExchangeUpdate().getClOrderRef())) {
+                            result.setResponseData(response.toString() + "\n" + response.getNewOLTOrderExchangeUpdate().toString(), null);
+                            result.setResponseCodeOK();
+                            result.setSuccessful(true);
+                            result.setResponseMessage(response.toString());
+                            latch.countDown();
+                        }
+                    } else if (OLTMessage.Type.NEW_OLT_ORDER_ACK.equals(response.getType())) {
                         if (orderRef.equals(response.getNewOLTOrderAck().getClOrderRef())) {
-                            result.setResponseData(response.toString() + "\n" + response.getNewOLTOrderAck().toString(), null);
-                            result.setDataType(SampleResult.TEXT);
-                            result.setResponseCodeOK();
-                            result.setSuccessful(true);
-                            latch.countDown();
+                            trace("Patient. You have to wait");
                         }
-
+                    } else {
+                        trace("What to do ? Calm, this msg is not your task as new order listener");
                     }
                 }
             };
@@ -101,11 +108,6 @@ public class NewOrder extends AbstractNewOrder {
             new Thread(new NewOrderPublisher()).start();
 
             latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
-
-
-//            if (timeout) {
-//                result.setResponseMessage("Response Time out. Exceed "+getTimeout());
-//            }
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

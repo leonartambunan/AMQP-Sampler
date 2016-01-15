@@ -56,7 +56,6 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
                     NewOLTOrderAck response = null;
                     try {response = NewOLTOrderAck.parseFrom(body);} catch (InvalidProtocolBufferException e) {trace(e.getMessage());}
                     result.setResponseData((response==null?"":response.toString()), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();

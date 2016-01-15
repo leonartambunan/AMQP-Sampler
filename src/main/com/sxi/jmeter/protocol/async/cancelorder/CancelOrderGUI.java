@@ -23,7 +23,6 @@ public class CancelOrderGUI extends AbstractCancelOrderGUI {
         return this.getClass().getSimpleName();
     }
 
-
     @Override
     public void configure(TestElement element) {
         super.configure(element);

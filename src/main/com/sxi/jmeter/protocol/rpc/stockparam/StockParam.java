@@ -4,21 +4,18 @@ import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.StockParamRequest;
 import id.co.tech.cakra.message.proto.olt.StockParamResponse;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class StockParam extends AbstractStockParam {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
     private StockParamRequest stockParamRequest;
     private transient String stockParamConsumerTag;
@@ -43,23 +40,28 @@ public class StockParam extends AbstractStockParam {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     trace(new String(body));
-                    StockParamResponse response = StockParamResponse.parseFrom(body);
                     result.setResponseMessage(new String(body));
+
+                    StockParamResponse response = StockParamResponse.parseFrom(body);
+
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
+
+                    if ("OK".equals(response.getStatus())) {
+                        result.setResponseCodeOK();
+                        result.setSuccessful(true);
+                    }
+
                     latch.countDown();
+
                 }
             };
-
 
             trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
             stockParamConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
             new Thread(new StockParamMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

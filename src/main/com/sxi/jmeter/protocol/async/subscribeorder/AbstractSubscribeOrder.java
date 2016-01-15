@@ -1,16 +1,13 @@
 package com.sxi.jmeter.protocol.async.subscribeorder;
 
+import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
 import org.apache.jmeter.testelement.ThreadListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+public abstract class AbstractSubscribeOrder extends AbstractRabbitSampler {
 
-public abstract class AbstractSubscribeOrder extends AbstractLogin implements ThreadListener {
-
-    private final static String REQUEST_EXCHANGE_NAME = "Order.RequestExchangeName";
-    private final static String RESPONSE_EXCHANGE_NAME = "Order.ResponseExchangeName";
+    private final static String REQUEST_QUEUE = "Order.RequestQueue";
+    private final static String RESPONSE_EXCHANGE = "Order.ResponseExchange";
     private final static String ROUTING_KEY = "Order.RoutingKey";
 
     private final static String ACC_NO = "Order.AccNo";
@@ -39,20 +36,20 @@ public abstract class AbstractSubscribeOrder extends AbstractLogin implements Th
         setProperty(ROUTING_KEY, name);
     }
 
-    public String getRequestExchangeName() {
-        return getPropertyAsString(REQUEST_EXCHANGE_NAME,"olt.mf_subscribe_order");
+    public String getRequestQueue() {
+        return getPropertyAsString(REQUEST_QUEUE,"olt.mf_subscribe_order");
     }
 
-    public void setRequestExchangeName(String name) {
-        setProperty(REQUEST_EXCHANGE_NAME, name);
+    public void setRequestQueue(String name) {
+        setProperty(REQUEST_QUEUE, name);
     }
 
-    public String getResponseExchangeName() {
-        return getPropertyAsString(RESPONSE_EXCHANGE_NAME,"olt.order_reply");
+    public String getResponseExchange() {
+        return getPropertyAsString(RESPONSE_EXCHANGE,"olt.order_reply");
     }
 
-    public void setResponseExchangeName(String name) {
-        setProperty(RESPONSE_EXCHANGE_NAME, name);
+    public void setResponseExchange(String name) {
+        setProperty(RESPONSE_EXCHANGE, name);
     }
 
     public String getStockCode() {
@@ -88,7 +85,6 @@ public abstract class AbstractSubscribeOrder extends AbstractLogin implements Th
     public void setProductCode(String name) {
         setProperty(PRODUCT_CODE, name);
     }
-
 
     public String getProductId() {return getPropertyAsString(PRODUCT_ID);}
 

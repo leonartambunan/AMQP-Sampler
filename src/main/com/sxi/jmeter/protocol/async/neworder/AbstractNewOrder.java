@@ -20,6 +20,7 @@ public abstract class AbstractNewOrder extends AbstractRabbitSampler  {
     private final static String CLIENT_CODE = "Order.ClientCode";
     private final static String TIME_IN_FORCE = "Order.TimeInForce";
     private final static String ORDER_PERIOD = "Order.OrderPeriod";
+//    private final static String ORDER_REF = "Order.OrderRef";
 
     protected String getTitle() {
         return this.getName();
@@ -112,6 +113,12 @@ public abstract class AbstractNewOrder extends AbstractRabbitSampler  {
     public void setOrderPeriod(String name) {
         setProperty(ORDER_PERIOD, name);
     }
+
+//    public String getOrderRef() {return getPropertyAsString(ORDER_REF);}
+//
+//    public void setOrderRef(String name) {
+//        setProperty(ORDER_REF, name);
+//    }
 
 
 }

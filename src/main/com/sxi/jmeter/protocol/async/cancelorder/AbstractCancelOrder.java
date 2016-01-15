@@ -1,14 +1,13 @@
 package com.sxi.jmeter.protocol.async.cancelorder;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
 
 public abstract class AbstractCancelOrder extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "Order.RequestExchangeName";
     private final static String RESPONSE_EXCHANGE = "Order.ResponseExchangeName";
-//    private final static String ROUTING_KEY = "Order.RoutingKey";
+    private final static String ROUTING_KEY = "Order.RoutingKey";
+    private final static String SESSION_ID = "Order.SessionId";
 
     private final static String ORDER_REF = "Order.RefNo";
     private final static String ORDER_ID = "Order.Id";
@@ -17,13 +16,21 @@ public abstract class AbstractCancelOrder extends AbstractRabbitSampler {
         return this.getName();
     }
 
-//    public String getRoutingKey() {
-//        return getPropertyAsString(ROUTING_KEY);
-//    }
+    public String getSessionId() {
+        return getPropertyAsString(SESSION_ID);
+    }
 
-//    public void setRoutingKey(String name) {
-//        setProperty(ROUTING_KEY, name);
-//    }
+    public void setSessionId(String name) {
+        setProperty(SESSION_ID, name);
+    }
+
+    public String getRoutingKey() {
+        return getPropertyAsString(ROUTING_KEY);
+    }
+
+    public void setRoutingKey(String name) {
+        setProperty(ROUTING_KEY, name);
+    }
 
     public String getRequestQueue() {
         return getPropertyAsString(REQUEST_QUEUE,"olt.amend_olt_order_request");

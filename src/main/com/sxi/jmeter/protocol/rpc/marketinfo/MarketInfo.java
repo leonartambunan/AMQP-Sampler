@@ -5,14 +5,13 @@ import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
 import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
+import id.co.tech.cakra.message.proto.olt.StockTradeInfo;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.Interruptible;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -31,11 +30,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
     private static final long serialVersionUID = 7480863561320459099L;
 
-    private static final Logger log = LoggingManager.getLoggerForClass();
-
     private static final String RECEIVE_TIMEOUT = "AMQPConsumer.ReceiveTimeout";
-
-    private final static String HEADERS = "AMQPPublisher.Headers";
     private static final String POSITIVE_LOGON_STATUS = "OK";
 
     private transient Channel channel;
@@ -50,7 +45,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
     private transient CountDownLatch messageLatch = new CountDownLatch(1);
 
     @Override
-    public SampleResult sample(Entry entry) {
+    public SampleResult sample(final Entry entry) {
         trace("sample()");
 
         try {
@@ -132,6 +127,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 scheduleLatch.await();
 
                 //START LISTEN TO MARKET INFO
+                trace("SCHEDULE STARTED");
 
                 marketInfoBindingQueueName = channel.queueDeclare().getQueue();
 
@@ -142,17 +138,20 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 marketInfoConsumer = new DefaultConsumer(channel) {
                     @Override
                     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
                         trace(new String(body));
 
                         result.setResponseMessage(new String(body));
 
-                        result.setResponseData(new String(body), null);
+                        StockTradeInfo response = StockTradeInfo.parseFrom(body);
 
+                        result.setResponseData(response.toString(), null);
                         result.setDataType(SampleResult.TEXT);
 
-                        result.setResponseCodeOK();
-
-                        result.setSuccessful(true);
+                        if ("DONE".equals(response.getStatus())) {
+                            result.setResponseCodeOK();
+                            result.setSuccessful(true);
+                        }
 
                         messageLatch.countDown();
                     }
@@ -167,6 +166,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                     result.setResponseData("Time out occurred", null);
                     result.setDataType(SampleResult.TEXT);
                 }
+
             } else {
                 result.setResponseData("Login Failed",null);
                 result.setResponseMessage("Login Failed");
@@ -228,10 +228,10 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
         return getPropertyAsInt(RECEIVE_TIMEOUT);
     }
 
+    private final static String HEADERS = "AMQPPublisher.Headers";
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
     }
-
     public void setHeaders(Arguments headers) {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
@@ -290,23 +290,21 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
     }
 
     private String constructNiceString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("---MQ SERVER---")
-                .append("\nIP \t:")
-                .append(getHost())
-                .append("\nPort\t:")
-                .append(getPort())
-                .append("\nUsername\t:")
-                .append(getUsername())
-                .append("\nPassword\t:")
-                .append(getPassword())
-                .append("\nVirtual Host\t:")
-                .append(getVirtualHost())
-                .append("\n----------")
-                .append("\n---REQUEST---\n")
-                .append(logonRequest.toString());
 
-        return stringBuilder.toString();
+        return "---MQ SERVER---" +
+                "\nIP \t:" +
+                getHost() +
+                "\nPort\t:" +
+                getPort() +
+                "\nUsername\t:" +
+                getUsername() +
+                "\nPassword\t:" +
+                getPassword() +
+                "\nVirtual Host\t:" +
+                getVirtualHost() +
+                "\n----------" +
+                "\n---REQUEST---\n" +
+                logonRequest.toString();
 
     }
 

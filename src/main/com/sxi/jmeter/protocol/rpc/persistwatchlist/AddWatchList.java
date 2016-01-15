@@ -5,21 +5,20 @@ import id.co.tech.cakra.message.proto.olt.ExchangeKey;
 import id.co.tech.cakra.message.proto.olt.PersistWatchListRequest;
 import id.co.tech.cakra.message.proto.olt.PersistWatchListResponse;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class AddWatchList extends AbstractAddWatchList {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
     private PersistWatchListRequest persistWatchListRequest;
     private transient String watchListConsumerTag;
@@ -27,16 +26,21 @@ public class AddWatchList extends AbstractAddWatchList {
 
     public void makeRequest()  {
 
-        ExchangeKey key = ExchangeKey.newBuilder()
+
+        List<String> routingKeys = new ArrayList<>();
+        routingKeys.add(getBindingKey());
+
+        ExchangeKey watchList = ExchangeKey
+                .newBuilder()
                 .setExchangeName(getExchangeName())
-                .setBindingKey(0,getBindingKey()) //TODO ERROR
+                .addAllBindingKey(routingKeys)
                 .build();
 
         persistWatchListRequest = PersistWatchListRequest
                 .newBuilder()
                 .setUserId(getMobileUserId())
                 .setSessionId(getSessionId())
-                .setWatchList(key)
+                .setWatchList(watchList)
                 .build();
 
         try {
@@ -50,7 +54,6 @@ public class AddWatchList extends AbstractAddWatchList {
                     PersistWatchListResponse response = PersistWatchListResponse.parseFrom(body);
                     result.setResponseMessage(new String(body));
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -62,7 +65,7 @@ public class AddWatchList extends AbstractAddWatchList {
 
             new Thread(new AddWatchListPublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();
@@ -110,7 +113,6 @@ public class AddWatchList extends AbstractAddWatchList {
     public void setHeaders(Arguments headers) {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
-
 
     public void cleanup() {
 

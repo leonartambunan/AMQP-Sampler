@@ -1,5 +1,6 @@
 package com.sxi.jmeter.protocol.async.subscribeorder;
 
+import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
@@ -7,11 +8,11 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
+public abstract class AbstractSubscribeOrderGUI extends AbstractRabbitGUI{
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField requestExchangeName = new JLabeledTextField("Request Exchange Name");
+    protected JLabeledTextField requestQueueName = new JLabeledTextField("Request Queue Name");
     protected JLabeledTextField responseExchangeName = new JLabeledTextField("Response Exchange Name");
     protected JLabeledTextField routingKey = new JLabeledTextField("Routing Key");
 
@@ -24,7 +25,7 @@ public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
 
     @Override
     public String getStaticLabel() {
-        return "Trimegah Subscribe Order Sampler";
+        return "Trimegah MF Subscribe Order Sampler";
     }
 
     protected abstract void setMainPanel(JPanel panel);
@@ -35,8 +36,8 @@ public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
         if (!(element instanceof AbstractSubscribeOrder)) return;
         AbstractSubscribeOrder sampler = (AbstractSubscribeOrder) element;
 
-        responseExchangeName.setText(sampler.getResponseExchangeName());
-        requestExchangeName.setText(sampler.getRequestExchangeName());
+        responseExchangeName.setText(sampler.getResponseExchange());
+        requestQueueName.setText(sampler.getRequestQueue());
         routingKey.setText(sampler.getRoutingKey());
 
         accNo.setText(sampler.getStockCode());
@@ -56,7 +57,7 @@ public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
         orderRef.setText("");
         productCode.setText("");
         productId.setText("");
-        requestExchangeName.setText("olt.mf_subscribe_order");
+        requestQueueName.setText("olt.mf_subscribe_order");
         responseExchangeName.setText("olt.order_reply");
         routingKey.setText("");
     }
@@ -69,8 +70,8 @@ public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
 
         configureTestElement(sampler);
 
-        sampler.setRequestExchangeName(requestExchangeName.getText());
-        sampler.setResponseExchangeName(responseExchangeName.getText());
+        sampler.setRequestQueue(requestQueueName.getText());
+        sampler.setResponseExchange(responseExchangeName.getText());
         sampler.setRoutingKey(routingKey.getText());
 
         sampler.setStockCode(accNo.getText());
@@ -106,7 +107,7 @@ public abstract class AbstractSubscribeOrderGUI extends AbstractLoginGUI{
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
 
-        queueSettings.add(requestExchangeName, gridBagConstraints);
+        queueSettings.add(requestQueueName, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

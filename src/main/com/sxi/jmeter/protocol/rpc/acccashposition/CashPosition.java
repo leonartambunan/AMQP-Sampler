@@ -12,7 +12,9 @@ import org.apache.log.Logger;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class CashPosition extends AbstractCashPosition {
@@ -45,7 +47,6 @@ public class CashPosition extends AbstractCashPosition {
                     AccCashPosResponse response = AccCashPosResponse.parseFrom(body);
                     result.setResponseMessage(new String(body));
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
                     latch.countDown();
@@ -58,7 +59,7 @@ public class CashPosition extends AbstractCashPosition {
 
             new Thread(new CashPositionPublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

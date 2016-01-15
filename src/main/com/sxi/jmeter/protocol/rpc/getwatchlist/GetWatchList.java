@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class GetWatchList extends AbstractGetWatchList {
@@ -39,24 +40,33 @@ public class GetWatchList extends AbstractGetWatchList {
             DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+                    trace("Message received <--");
+                    trace(envelope.toString());
+
                     trace(new String(body));
+
                     result.setResponseMessage(new String(body));
+
                     GetWatchListResponse response = GetWatchListResponse.parseFrom(body);
+
                     result.setResponseData(response.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
+
+                    if ("OK".equals(response.getStatus())) {
+                        result.setResponseCodeOK();
+                        result.setSuccessful(true);
+                    }
+
                     latch.countDown();
                 }
             };
-
 
             trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
             watchListConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
             new Thread(new CashPositionPublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();

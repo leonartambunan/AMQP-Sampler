@@ -15,6 +15,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class OrderHistory extends AbstractOrderHistory {
@@ -60,7 +61,6 @@ public class OrderHistory extends AbstractOrderHistory {
 
                     result.setResponseMessage(new String(body));
                     result.setResponseData(sb.toString(), null);
-                    result.setDataType(SampleResult.TEXT);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
 
@@ -73,7 +73,7 @@ public class OrderHistory extends AbstractOrderHistory {
 
             new Thread(new OrderHistoryMessagePublisher()).start();
 
-            latch.await();
+            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
         } catch (ShutdownSignalException e) {
             e.printStackTrace();
