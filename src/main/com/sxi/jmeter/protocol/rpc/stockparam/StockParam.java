@@ -1,17 +1,17 @@
 package com.sxi.jmeter.protocol.rpc.stockparam;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.StockParamRequest;
 import id.co.tech.cakra.message.proto.olt.StockParamResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class StockParam extends AbstractStockParam {
 
@@ -22,7 +22,7 @@ public class StockParam extends AbstractStockParam {
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public void makeRequest()  {
+    public boolean makeRequest()  {
 
         stockParamRequest = StockParamRequest
                 .newBuilder()
@@ -61,46 +61,19 @@ public class StockParam extends AbstractStockParam {
 
             new Thread(new StockParamMessagePublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-
-        } catch (ShutdownSignalException e) {
+            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            if (!noZero) {
+                throw new Exception("Time out");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("100");
-            result.setResponseMessage(e.getMessage());
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("600");
-            result.setResponseMessage(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("700");
-            result.setResponseMessage(e.getMessage());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("800");
-            result.setResponseMessage(e.getMessage());
         }
+
+        return true;
+
     }
 
     public Arguments getHeaders() {
@@ -118,7 +91,7 @@ public class StockParam extends AbstractStockParam {
                 getChannel().basicCancel(stockParamConsumerTag);
             }
         } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + stockParamConsumerTag+ " " +  e.getMessage());
+            trace("Couldn't safely cancel the sample " + stockParamConsumerTag+ ' ' +  e.getMessage());
         }
         super.cleanup();
     }

@@ -33,6 +33,7 @@ public abstract class AbstractMarketInfoGUI extends AbstractSamplerGui {
     protected JLabeledTextField scheduledHour = new JLabeledTextField("Hour");
     protected JLabeledTextField scheduledMinute = new JLabeledTextField("Minute");
     protected JLabeledTextField scheduledSecond = new JLabeledTextField("Second");
+    protected JLabeledTextField scheduledDelay = new JLabeledTextField("Delay");
 
     protected abstract void setMainPanel(JPanel panel);
 
@@ -66,6 +67,7 @@ public abstract class AbstractMarketInfoGUI extends AbstractSamplerGui {
         scheduledHour.setText(sampler.getScheduleHour());
         scheduledMinute.setText(sampler.getScheduleMinute());
         scheduledSecond.setText(sampler.getScheduleSecond());
+        scheduledDelay.setText(sampler.getScheduleDelay());
 
     }
 
@@ -129,7 +131,7 @@ public abstract class AbstractMarketInfoGUI extends AbstractSamplerGui {
         sampler.setScheduleHour(scheduledHour.getText());
         sampler.setScheduleMinute(scheduledMinute.getText());
         sampler.setScheduleSecond(scheduledSecond.getText());
-
+        sampler.setScheduleDelay(scheduledDelay.getText());
 
     }
 
@@ -270,6 +272,10 @@ public abstract class AbstractMarketInfoGUI extends AbstractSamplerGui {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         scheduleSetting.add(scheduledSecond, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        scheduleSetting.add(scheduledDelay, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

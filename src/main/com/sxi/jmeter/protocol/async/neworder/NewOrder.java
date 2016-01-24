@@ -1,31 +1,30 @@
 package com.sxi.jmeter.protocol.async.neworder;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
 import id.co.tech.cakra.message.proto.olt.OLTMessage;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class NewOrder extends AbstractNewOrder {
 
     private static final long serialVersionUID = 1L;
     private final static String HEADERS = "AMQPPublisher.Headers";
     OLTMessage request;
-    private transient String bindingQueueName;
     private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
     private static String orderRef = null;
 
-    public void makeRequest()  {
+    public boolean makeRequest() {
 
-        orderRef = ""+System.currentTimeMillis();
+        orderRef = String.valueOf(System.currentTimeMillis());
 
         NewOLTOrder contentRequest = NewOLTOrder
                 .newBuilder()
@@ -71,7 +70,7 @@ public class NewOrder extends AbstractNewOrder {
                         trace("Order Rejected");
                         trace(orderRef + " VS " + response.getNewOLTOrderExchangeUpdate().getClOrderRef());
                         if (orderRef.equals(response.getNewOLTOrderReject().getClOrderRef())) {
-                            result.setResponseData(response.toString() + "\n" + response.getNewOLTOrderReject().toString(), null);
+                            result.setResponseData(response.toString() + '\n' + response.getNewOLTOrderReject().toString(), null);
                             result.setResponseCodeOK();
                             result.setSuccessful(true);
                             result.setResponseMessage(response.toString());
@@ -81,7 +80,7 @@ public class NewOrder extends AbstractNewOrder {
                         trace("Got Update from Exchange");
                         trace(orderRef + " VS " + response.getNewOLTOrderExchangeUpdate().getClOrderRef());
                         if (orderRef.equals(response.getNewOLTOrderExchangeUpdate().getClOrderRef())) {
-                            result.setResponseData(response.toString() + "\n" + response.getNewOLTOrderExchangeUpdate().toString(), null);
+                            result.setResponseData(response.toString() + '\n' + response.getNewOLTOrderExchangeUpdate().toString(), null);
                             result.setResponseCodeOK();
                             result.setSuccessful(true);
                             result.setResponseMessage(response.toString());
@@ -97,56 +96,30 @@ public class NewOrder extends AbstractNewOrder {
                 }
             };
 
-            bindingQueueName = getChannel().queueDeclare().getQueue();
+            String bindingQueueName = getChannel().queueDeclare().getQueue();
 
-            trace("Listening to Queue ["+bindingQueueName +"] bind to exchange ["+ getResponseExchange()+"] with routing key ["+getRoutingKey()+"]");
+            trace("Listening to Queue [" + bindingQueueName + "] bind to exchange [" + getResponseExchange() + "] with routing key [" + getRoutingKey() + ']');
 
-            getChannel().queueBind(bindingQueueName, getResponseExchange(),getRoutingKey());
+            getChannel().queueBind(bindingQueueName, getResponseExchange(), getRoutingKey());
 
-            responseTag = getChannel().basicConsume(bindingQueueName,true,consumer);
+            responseTag = getChannel().basicConsume(bindingQueueName, true, consumer);
 
             new Thread(new NewOrderPublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
+            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-        } catch (ShutdownSignalException e) {
+            if (!noZero) {
+                throw new Exception("Time out");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("100");
-            result.setResponseMessage(e.getMessage());
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("600");
-            result.setResponseMessage(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("700");
-            result.setResponseMessage(e.getMessage());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("800");
-            result.setResponseMessage(e.getMessage());
         }
+
+        return true;
     }
 
     public void cleanup() {

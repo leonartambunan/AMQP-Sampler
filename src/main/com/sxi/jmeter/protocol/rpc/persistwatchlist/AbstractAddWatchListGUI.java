@@ -1,7 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.persistwatchlist;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 
@@ -12,12 +11,12 @@ public abstract class AbstractAddWatchListGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
-    private JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
-    private JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
+    private final JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
+    private final JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
 
-    private JLabeledTextField sessionId = new JLabeledTextField("Session Id");
-    private JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
-    private JLabeledTextField bindingKey = new JLabeledTextField("Binding Key");
+    private final JLabeledTextField sessionId = new JLabeledTextField("Session Id");
+    private final JLabeledTextField exchangeName = new JLabeledTextField("Exchange Name");
+    private final JLabeledTextField bindingKey = new JLabeledTextField("Binding Key");
 
     @Override
     public String getStaticLabel() {

@@ -13,8 +13,8 @@ public abstract class AbstractRabbitGUI extends AbstractSamplerGui {
 
     private static final long serialVersionUID = 1L;
 
-    protected JLabeledTextField serverQueue = new JLabeledTextField("Login Queue");
-    protected JLabeledTextField replyToQueue = new JLabeledTextField("ReplyTo Queue");
+    protected JLabeledTextField serverQueue = new JLabeledTextField("Login Request Queue");
+    protected JLabeledTextField replyToQueue = new JLabeledTextField("Login Response Queue");
     protected JLabeledTextField virtualHost = new JLabeledTextField("Virtual Host");
 
     protected JLabeledTextField host = new JLabeledTextField("Host");

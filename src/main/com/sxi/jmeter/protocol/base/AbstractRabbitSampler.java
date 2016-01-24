@@ -75,7 +75,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
         result.setSampleLabel(getName());
         result.setSuccessful(false);
         result.setResponseCode("500");
-
+        result.setDataType(SampleResult.TEXT);
         result.setSampleLabel(getTitle());
 
         try {
@@ -89,15 +89,16 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
+            result.setResponseData(e.getMessage(),null);
         }
 
         result.sampleStart();
 
-        makeRequest();
-
-        result.sampleEnd();
-        result.setDataType(SampleResult.TEXT);
+        if (!makeRequest()) {
+            result = null;
+        } else {
+            result.sampleEnd();
+        }
 
         trace("sample() ended");
 
@@ -120,6 +121,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
+            factory.setConnectionTimeout(Integer.valueOf(getTimeout()));
 
             if (isConnectionSSL()) {
                 factory.useSslProtocol("TLS");
@@ -323,14 +325,12 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
     protected void cleanup() {
 
-        trace("cleanup()");
-
         try {
-            if (loginConsumerTag != null && getChannel()!=null && getChannel().isOpen()) {
-                getChannel().basicCancel(loginConsumerTag);
+            if (loginConsumerTag != null && channel!=null && channel.isOpen()) {
+                channel.basicCancel(loginConsumerTag);
             }
         } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + loginConsumerTag+ " " +  e.getMessage());
+            trace("Couldn't safely cancel the sample " + loginConsumerTag+ ' ' +  e.getMessage());
         }
     }
 
@@ -366,7 +366,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
         if (!"".equals(getAuthenticatedConnectionVarName().trim())) {
 
-            trace("Trying to reuse Rabbit Connection from VAR [" + getAuthenticatedConnectionVarName() + "]");
+            trace("Trying to reuse Rabbit Connection from VAR [" + getAuthenticatedConnectionVarName() + ']');
 
             JMeterContext jmetercontext = JMeterContextService.getContext();
             JMeterVariables vars = jmetercontext.getVariables();
@@ -437,7 +437,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
                         .replyTo(getLogonReplyToQueue())
                         .build();
 
-                trace("Publishing Login request message to Queue: ["+ getLogonRequestQueue()+"]");
+                trace("Publishing Login request message to Queue: ["+ getLogonRequestQueue()+ ']');
 
                 channel.basicPublish("", getLogonRequestQueue(), props, logonRequest.toByteArray());
 
@@ -448,7 +448,8 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     }
 
     public String constructNiceString() {
-        String stringBuffer = "---MQ SERVER---" +
+
+        return "---MQ SERVER---" +
                 "\nIP \t:" +
                 getHost() +
                 "\nPort\t:" +
@@ -462,8 +463,6 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
                 "\n----------" +
                 "\n---REQUEST---\n" +
                 logonRequest.toString();
-
-        return stringBuffer;
 
     }
 
@@ -503,7 +502,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public void testEnded() {
         trace("testEnded()");
         cleanup();
-        terminateConnection();
+        //terminateConnection();
     }
 
     @Override
@@ -530,6 +529,6 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     }
 
 
-    public abstract void makeRequest();
+    public abstract boolean makeRequest();
 
 }

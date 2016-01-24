@@ -3,9 +3,9 @@ package com.sxi.jmeter.protocol.rpc.marketinfo;
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.QueueingConsumer.Delivery;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
+import com.tech.cakra.datafeed.server.df.message.proto.MIMessage;
 import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
-import id.co.tech.cakra.message.proto.olt.StockTradeInfo;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.Interruptible;
@@ -35,17 +35,21 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
     private transient Channel channel;
     private transient QueueingConsumer loginConsumer;
-    private transient DefaultConsumer marketInfoConsumer;
-    private transient String loginConsumerTag;
+    private transient String loginConsumerTag=null;
+    private transient String marketInfoConsumerTag=null;
     private transient String marketInfoBindingQueueName;
 
     private LogonRequest logonRequest;
 
     private transient CountDownLatch scheduleLatch = new CountDownLatch(1);
+
     private transient CountDownLatch messageLatch = new CountDownLatch(1);
+
+    protected static boolean SCHEDULE_STARTED = false;
 
     @Override
     public SampleResult sample(final Entry entry) {
+
         trace("sample()");
 
         try {
@@ -68,7 +72,11 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
         result.setResponseCode("500");
         result.setSampleLabel(getTitle());
         result.setSamplerData(constructNiceString());
+        result.setDataType(SampleResult.TEXT);
 
+        result.sampleStart();
+
+        result.samplePause();
 
         try {
 
@@ -83,27 +91,16 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
             loginConsumerTag = channel.basicConsume(getReplyToQueue(), true, loginConsumer);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            trace("Failed to initialize channel " + ex.getMessage());
-            result.setResponseMessage(ex.toString());
-            result.setResponseData(ex.getLocalizedMessage(),null);
-            return result;
-        }
+            Thread senderThread = new Thread(new LoginMessagePublisher());
 
-        Thread senderThread = new Thread(new LoginMessagePublisher());
+            senderThread.start();
 
-        senderThread.start();
-
-        Delivery loginDelivery;
-
-        try {
+            Delivery loginDelivery;
 
             loginDelivery = loginConsumer.nextDelivery(getReceiveTimeoutAsInt());
 
             if(loginDelivery == null){
-                result.setResponseMessage("loginDelivery timed out");
-                return result;
+                throw new Exception("loginDelivery timed out");
             }
 
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
@@ -116,97 +113,97 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(getScheduleHour()));
                 calendar.set(Calendar.MINUTE, Integer.parseInt(getScheduleMinute()));
                 calendar.set(Calendar.SECOND, Integer.parseInt(getScheduleSecond()));
+
+                calendar.add(Calendar.SECOND,Integer.parseInt(getScheduleDelay()));
+
                 Date time = calendar.getTime();
 
                 Timer timer = new Timer();
+
                 ScheduledExecutionTask thread = new ScheduledExecutionTask(timer, scheduleLatch);
                 timer.schedule(thread, time);
 
-                trace("WAITING FOR SCHEDULE TO START");
-
-                scheduleLatch.await();
-
-                //START LISTEN TO MARKET INFO
-                trace("SCHEDULE STARTED");
+//                trace("Waiting for Schedule to start");
+//                scheduleLatch.await();
+//                trace("SCHEDULE STARTED");
+//                SCHEDULE_STARTED = true;
+//                result.sampleResume();
 
                 marketInfoBindingQueueName = channel.queueDeclare().getQueue();
 
                 channel.queueBind(marketInfoBindingQueueName,getMarketInfoExchange(),getRoutingKey());
 
-                result.sampleStart();
-
-                marketInfoConsumer = new DefaultConsumer(channel) {
+                DefaultConsumer marketInfoConsumer = new DefaultConsumer(channel) {
                     @Override
                     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-                        trace(new String(body));
+                        if (SCHEDULE_STARTED) {
 
-                        result.setResponseMessage(new String(body));
+                            trace("Message received with tag: [" + consumerTag + "] ");
 
-                        StockTradeInfo response = StockTradeInfo.parseFrom(body);
+                            result.setResponseMessage(new String(body));
 
-                        result.setResponseData(response.toString(), null);
-                        result.setDataType(SampleResult.TEXT);
+                            try {
+                                MIMessage response = MIMessage.parseFrom(body);
+                                result.setResponseData(response.toString(), null);
+                            } catch (Exception e) {
+                                result.setResponseData(new String(body), null);
+                            }
 
-                        if ("DONE".equals(response.getStatus())) {
                             result.setResponseCodeOK();
-                            result.setSuccessful(true);
-                        }
 
-                        messageLatch.countDown();
+                            result.setSuccessful(true);
+
+                            messageLatch.countDown();
+
+                            cleanup();
+
+                        } else {
+                            trace("Message received but schedule is not yet started");
+                        }
                     }
                 };
 
-                channel.basicConsume(marketInfoBindingQueueName,true,marketInfoConsumer);
+                trace("Subscribe to "+getMarketInfoExchange());
+
+                marketInfoConsumerTag = channel.basicConsume(marketInfoBindingQueueName,true, marketInfoConsumer);
+
+                trace("Waiting for Schedule to start");
+                scheduleLatch.await();
+                trace("Schedule started");
+                SCHEDULE_STARTED = true;
+                result.sampleResume();
 
                 boolean reachZero = messageLatch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
 
                 if (!reachZero) {
-                    result.setResponseMessage("Time out occurred");
-                    result.setResponseData("Time out occurred", null);
-                    result.setDataType(SampleResult.TEXT);
+//                    throw new Exception("Time out while waiting for market info message occurred");
+                    return null;
                 }
 
             } else {
-                result.setResponseData("Login Failed",null);
-                result.setResponseMessage("Login Failed");
+                throw new Exception("Login Failed." + '\n' +logonResponse.toString(),null);
             }
 
-        } catch (ShutdownSignalException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             loginConsumer = null;
-            loginConsumerTag = null;
             trace(e.getMessage());
             result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("100");
-            result.setResponseMessage(e.getLocalizedMessage());
+            result.setResponseMessage("Exception: "+e.getMessage());
+            result.setResponseData("Exception: "+e.getMessage(),null);
         } finally {
+
+            if (!SCHEDULE_STARTED) {
+                result.sampleResume();
+            }
+
             result.sampleEnd();
         }
 
         trace("sample() ended");
+
+        cleanup();
 
         return result;
     }
@@ -235,7 +232,6 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
     public void setHeaders(Arguments headers) {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
-
 
     @Override
     public boolean interrupt() {
@@ -266,17 +262,27 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
     public void cleanup() {
 
         try {
+            Thread.sleep(100 + Math.round(100*Math.random()));
+        } catch (Exception e) {}
+
+        try {
             if (loginConsumerTag != null) {
                 channel.basicCancel(loginConsumerTag);
+                loginConsumerTag=null;
+            }
+
+            if (marketInfoConsumerTag !=null) {
+                channel.basicCancel(marketInfoConsumerTag);
+                marketInfoConsumerTag=null;
             }
 
             if (marketInfoBindingQueueName != null) {
                 channel.queueUnbind(marketInfoBindingQueueName,getMarketInfoExchange(),getRoutingKey());
+                marketInfoBindingQueueName=null;
             }
 
-        } catch(IOException e) {
+        } catch(Exception e) {
             trace(e.getMessage());
-            e.printStackTrace();
         }
 
         super.cleanup();
@@ -292,18 +298,12 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
     private String constructNiceString() {
 
         return "---MQ SERVER---" +
-                "\nIP \t:" +
-                getHost() +
-                "\nPort\t:" +
-                getPort() +
-                "\nUsername\t:" +
-                getUsername() +
-                "\nPassword\t:" +
-                getPassword() +
-                "\nVirtual Host\t:" +
-                getVirtualHost() +
-                "\n----------" +
-                "\n---REQUEST---\n" +
+                "\nIP \t:" + getHost() +
+                "\nPort\t:" + getPort() +
+                "\nUsername\t:" + getUsername() +
+                "\nPassword\t:" + getPassword() +
+                "\nVirtual Host\t:" + getVirtualHost() +
+                "\n----------" + "\n---REQUEST---\n" +
                 logonRequest.toString();
 
     }
@@ -323,8 +323,6 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
                 channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
 
-                //TODO how about ack ? Is it a mandatory ?
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -343,8 +341,6 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
         }
 
         public void run() {
-
-            System.out.format("Market Info Process started at "+new Date());
 
             latch.countDown();
 

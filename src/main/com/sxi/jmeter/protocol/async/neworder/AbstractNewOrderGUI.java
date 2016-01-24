@@ -1,7 +1,6 @@
 package com.sxi.jmeter.protocol.async.neworder;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
-import com.sxi.jmeter.protocol.rpc.login.AbstractLoginGUI;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 

@@ -1,31 +1,27 @@
 package com.sxi.jmeter.protocol.rpc.logout;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
 import id.co.tech.cakra.message.proto.olt.LogoutRequest;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class Logout extends AbstractLogout {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
     private LogoutRequest logoutRequest;
     private transient String logoutTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public void makeRequest()  {
+    public boolean makeRequest()  {
 
         logoutRequest = LogoutRequest
                 .newBuilder()
@@ -57,49 +53,23 @@ public class Logout extends AbstractLogout {
 
             new Thread(new LogoutMessagePublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-
-        } catch (ShutdownSignalException e) {
+            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            if (!noZero) {
+                throw new Exception("Time out");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            trace("400 "+e.getMessage());
+            trace("400 " + e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            trace("300 "+e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            trace("200 "+ e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            trace("100 "+e.getMessage());
-            result.setResponseCode("100");
-            result.setResponseMessage(e.getMessage());
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-            trace("600 "+e.getMessage());
-            result.setResponseCode("600");
-            result.setResponseMessage(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            trace("700"+e.getMessage());
-            result.setResponseCode("700");
-            result.setResponseMessage(e.getMessage());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-            trace("800 "+e.getMessage());
-            result.setResponseCode("800");
-            result.setResponseMessage(e.getMessage());
+            result.setResponseData(e.getMessage(),null);
         }
+
+        terminateConnection();
+
+        return true;
+
     }
-
-
 
     public Arguments getHeaders() {
         return (Arguments) getProperty(HEADERS).getObjectValue();
@@ -116,7 +86,7 @@ public class Logout extends AbstractLogout {
                 getChannel().basicCancel(logoutTag);
             }
         } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + logoutTag+ " " +  e.getMessage());
+            trace("Couldn't safely cancel the sample " + logoutTag+ ' ' +  e.getMessage());
         }
 
         super.cleanup();

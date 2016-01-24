@@ -32,6 +32,7 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
     private static final String SCHEDULE_HOUR = "AMQPSampler.ScheduleHour";
     private static final String SCHEDULE_MINUTE = "AMQPSampler.ScheduleMinute";
     private static final String SCHEDULE_SECOND = "AMQPSampler.ScheduleSecond";
+    private static final String SCHEDULE_DELAY = "AMQPSampler.ScheduleDelay";
 
     private final static String LOGIN_QUEUE = "AMQPSampler.LoginQueue";
     private final static String REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
@@ -253,6 +254,14 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
         setProperty(SCHEDULE_SECOND, second);
     }
 
+    public String getScheduleDelay() {
+        return getPropertyAsString(SCHEDULE_DELAY);
+    }
+
+    public void setScheduleDelay(String second) {
+        setProperty(SCHEDULE_DELAY, second);
+    }
+
     protected void cleanup() {
         try {
             if(connection != null && connection.isOpen())
@@ -276,8 +285,8 @@ public abstract class AbstractMarketInfo extends AbstractSampler implements Thre
 
     public void trace(String s) {
         String tl = getTitle();
-//        String tn = Thread.currentThread().getName();
+        String tn = Thread.currentThread().getName();
 //        String th = this.toString();
-        log.info(tl + "\t- " + s);
+        System.out.println(tl + "\t- " + tn + "\t-"+s);
     }
 }

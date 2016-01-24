@@ -1,8 +1,6 @@
 package com.sxi.jmeter.protocol.async.neworder;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
-import com.sxi.jmeter.protocol.rpc.login.AbstractLogin;
-import org.apache.jmeter.testelement.ThreadListener;
 
 public abstract class AbstractNewOrder extends AbstractRabbitSampler  {
 

@@ -4,8 +4,6 @@ import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
-import java.io.IOException;
-
 public abstract class AbstractLogout extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "Logout.RequestQueue";

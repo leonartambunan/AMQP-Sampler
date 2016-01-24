@@ -25,7 +25,7 @@ public class PreOpeningGUI extends AbstractPreOpeningGUI {
 
     @Override
     public String getStaticLabel() {
-        return "Trimegah PreOpening Sampler";
+        return "Trimegah Pre-opening Sampler";
     }
 
     @Override

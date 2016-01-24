@@ -1,17 +1,17 @@
 package com.sxi.jmeter.protocol.async.subscribeorder;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.MFSubscribeOrder;
 import id.co.tech.cakra.message.proto.olt.OLTMessage;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class SubscribeOrder extends AbstractSubscribeOrder {
 
@@ -23,8 +23,9 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
     private transient CountDownLatch latch = new CountDownLatch(1);
     private static String orderRef = null;
 
-    public void makeRequest()  {
-        orderRef = ""+System.currentTimeMillis();
+    public boolean makeRequest()  {
+
+        orderRef = String.valueOf(System.currentTimeMillis());
 
         MFSubscribeOrder contentRequest = MFSubscribeOrder
                 .newBuilder()
@@ -66,7 +67,7 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
                         trace("MF Order Update");
                         trace(orderRef + " VS " + response.getMFUpdateOrder().getClnOrderReff());
                         if (orderRef.equals(response.getMFUpdateOrder().getClnOrderReff())) {
-                            result.setResponseData(response.toString() + "\n" + response.getMFUpdateOrder().toString(), null);
+                            result.setResponseData(response.toString() + '\n' + response.getMFUpdateOrder().toString(), null);
                             result.setResponseCodeOK();
                             result.setSuccessful(true);
                             result.setResponseMessage(response.toString());
@@ -82,7 +83,7 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
 
             String bindingQueueName = getChannel().queueDeclare().getQueue();
 
-            trace("Listening to Exchange ["+ getResponseExchange() +"] with Routing Key ["+getRoutingKey()+"]");
+            trace("Listening to Exchange ["+ getResponseExchange() +"] with Routing Key ["+getRoutingKey()+ ']');
 
             getChannel().queueBind(bindingQueueName, getResponseExchange(),getRoutingKey());
 
@@ -90,46 +91,21 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
 
             new Thread(new MFSubscribeOrderPublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-        } catch (ShutdownSignalException e) {
+            if (!notZero) {
+                throw new Exception("Time out");
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("100");
-            result.setResponseMessage(e.getMessage());
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("600");
-            result.setResponseMessage(e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("700");
-            result.setResponseMessage(e.getMessage());
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("800");
-            result.setResponseMessage(e.getMessage());
+            result.setResponseData(e.getMessage(),null);
         }
+
+        return true;
     }
 
     public void cleanup() {
@@ -139,7 +115,7 @@ public class SubscribeOrder extends AbstractSubscribeOrder {
                 getChannel().basicCancel(sendingTag);
             }
         } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + sendingTag+ " " +  e.getMessage());
+            trace("Couldn't safely cancel the sample " + sendingTag+ ' ' +  e.getMessage());
         }
         super.cleanup();
     }

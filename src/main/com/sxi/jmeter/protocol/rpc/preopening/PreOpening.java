@@ -13,7 +13,6 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
@@ -21,6 +20,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class PreOpening extends AbstractPreOpening implements Interruptible, TestStateListener {
@@ -32,20 +32,23 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
     private static final String POSITIVE_LOGON_STATUS = "OK";
     private transient Channel channel;
     private transient QueueingConsumer loginConsumer;
-    private transient QueueingConsumer orderStatusConsumer;
-    private transient String loginConsumerTag;
     private LogonRequest logonRequest;
-    //    private NewOLTOrder newOLTOrder;
-    OLTMessage request;
+    private PINValidationRequest pinRequest;
+    private AccountRequest accountRequest;
     private static String orderRef = null;
     private static String sessionId = null;
-
-    private transient CountDownLatch latch = new CountDownLatch(1);
+    protected static boolean SCHEDULE_STARTED = false;
+    private transient CountDownLatch marketOpenLatch = new CountDownLatch(1);
+    private transient CountDownLatch messageLatch  = new CountDownLatch(1);
+    private String INVESTOR_TYPE = "I";
+    private String ACC_NO = "";
+    private String USER_ID = "";
 
     @Override
     public SampleResult sample(Entry entry) {
 
-        orderRef = ""+System.currentTimeMillis();
+        orderRef = String.valueOf(System.currentTimeMillis());
+        USER_ID = getMobileUserId();
 
         try {
             logonRequest = LogonRequest
@@ -57,18 +60,22 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                     .setAppVersion(getMobileAppVersion())
                     .setIp(InetAddress.getLocalHost().getHostAddress())
                     .build();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            trace(e.toString());
         }
 
-        SampleResult result = new SampleResult();
+        final SampleResult result = new SampleResult();
         result.setSampleLabel(getName());
         result.setSuccessful(false);
         result.setResponseCode("500");
         result.setSampleLabel(getTitle());
         result.setSamplerData(constructNiceString());
+        result.setDataType(SampleResult.TEXT);
+        result.sampleStart();
 
-        trace("PreOpening sample() method started ");
+        result.samplePause();
+
+        trace("sample() method started ");
 
         try {
 
@@ -81,38 +88,151 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
 
             trace("Starting basicConsume to Login ReplyTo Queue:"+ getLoginReplyToQueue());
 
-            loginConsumerTag = channel.basicConsume(getLoginReplyToQueue(), true, loginConsumer);
+            String loginConsumerTag = channel.basicConsume(getLoginReplyToQueue(), true, loginConsumer);
 
+            Thread senderThread = new Thread(new LoginMessagePublisher());
+            senderThread.start();
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            trace("Failed to initialize channel");
-            result.setResponseMessage(ex.toString());
-            return result;
-        }
-
-        Thread senderThread = new Thread(new LoginMessagePublisher());
-        senderThread.start();
-
-        Delivery loginDelivery;
-        Delivery orderResponseDelivery;
-
-        try {
-
-            loginDelivery = loginConsumer.nextDelivery(getReceiveTimeoutAsInt());
+            Delivery loginDelivery = loginConsumer.nextDelivery(getReceiveTimeoutAsInt());
 
             if(loginDelivery == null){
-                result.setResponseMessage("Login Delivery timed out");
-                return result;
+                throw new Exception("Login Delivery timed out");
             }
 
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
 
+            System.out.println(logonResponse.toString());
+
+            channel.basicCancel(loginConsumerTag);
+
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
 
+                /*================================ <get account info> =====================================*/
                 sessionId = logonResponse.getSessionId();
 
-                //TODO SEND ORDER REQUEST HERE
+                accountRequest = AccountRequest
+                        .newBuilder()
+                        .setUserId(getMobileUserId())
+                        .setSessionId(sessionId)
+                        .build();
+
+                QueueingConsumer accountInfoConsumer = new QueueingConsumer(channel);
+
+                String accInfoConsumerTag = channel.basicConsume(getAccInfoResponseQueue(), true, accountInfoConsumer);
+
+                Thread accInfoSenderThread = new Thread(new AccountInfoMessagePublisher());
+                accInfoSenderThread.start();
+
+                Delivery accInfoDelivery = accountInfoConsumer.nextDelivery(getReceiveTimeoutAsInt());
+
+                if(accInfoDelivery == null){
+                    throw new Exception("Acc Info Delivery time-out");
+                }
+
+                AccountResponse accountResponse = AccountResponse.parseFrom(accInfoDelivery.getBody());
+
+                trace(accountResponse.toString());
+
+                if (accountResponse.getAccountInfoCount()>0) {
+                    INVESTOR_TYPE = accountResponse.getAccountInfo(0).getInvtype();
+                    ACC_NO = accountResponse.getAccountInfo(0).getAccno();
+
+                }
+
+                channel.basicCancel(accInfoConsumerTag);
+
+                //================================ </get account info> =======================================================
+
+                //================================ <Pin Validation> =======================================================
+                pinRequest = PINValidationRequest
+                        .newBuilder()
+                        .setUserId(getMobileUserId())
+                        .setSessionId(sessionId)
+                        .setPinValue(getMobilePin())
+                        .build();
+
+                QueueingConsumer pinValidationConsumer = new QueueingConsumer(channel);
+
+                String pinValidationConsumerTag = channel.basicConsume(getPinValidationResponseQueue(), true, pinValidationConsumer);
+
+                Thread pinValidationSenderThread = new Thread(new PinValidationMessagePublisher());
+                pinValidationSenderThread.start();
+
+                Delivery pinValidationDelivery = pinValidationConsumer.nextDelivery(getReceiveTimeoutAsInt());
+
+                if(pinValidationDelivery == null){
+                    throw new Exception("Pin Validation Delivery time-out");
+                }
+
+                PINValidationResponse pinValidationResponse = PINValidationResponse.parseFrom(pinValidationDelivery.getBody());
+
+                trace("Response: "+pinValidationResponse.toString());
+
+                channel.basicCancel(pinValidationConsumerTag);
+
+                /*================================ </Pin Validation> ========================================*/
+
+
+                /*====================<listen to response exchange>======================================*/
+                DefaultConsumer orderStatusConsumer = new DefaultConsumer(getChannel()) {
+                    @Override
+                    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
+                        trace("Message received <--");
+
+                        if (SCHEDULE_STARTED) {
+
+                            OLTMessage response = OLTMessage.parseFrom(body);
+
+                            trace(response.toString());
+
+                            trace("Type:" + response.getType());
+
+                            if (OLTMessage.Type.NEW_OLT_ORDER_REJECT.equals(response.getType())) {
+                                trace("Order Rejected");
+                                trace(orderRef + " VS " + response.getNewOLTOrderReject().getClOrderRef());
+                                if (orderRef.equals(response.getNewOLTOrderReject().getClOrderRef())) {
+                                    result.setResponseData(response.toString() + '\n' + response.getNewOLTOrderReject().toString(), null);
+                                    result.setResponseCodeOK();
+                                    result.setSuccessful(true);
+                                    result.setResponseMessage(response.toString());
+                                    messageLatch.countDown();
+                                }
+                            } else if (OLTMessage.Type.NEW_OLT_ORDER_EXCHANGE_UPDATE.equals(response.getType())) {
+                                trace("Got Update from Exchange");
+                                trace(orderRef + " VS " + response.getNewOLTOrderExchangeUpdate().getClOrderRef());
+                                if (orderRef.equals(response.getNewOLTOrderExchangeUpdate().getClOrderRef())) {
+                                    result.setResponseData(response.toString() + '\n' + response.getNewOLTOrderExchangeUpdate().toString(), null);
+                                    result.setResponseCodeOK();
+                                    result.setSuccessful(true);
+                                    result.setResponseMessage(response.toString());
+                                    messageLatch.countDown();
+                                }
+
+                            } else if (OLTMessage.Type.NEW_OLT_ORDER_ACK.equals(response.getType())) {
+
+                                if (orderRef.equals(response.getNewOLTOrderAck().getClOrderRef())) {
+                                    trace("Patient. You have to wait");
+                                }
+
+                            } else {
+                                trace("What to do ? Calm, this msg is not your task as new order listener");
+                            }
+                        } else {
+                            trace("Message received while market is not opened");
+                        }
+                    }
+                };
+
+                String bindingQueueName = channel.queueDeclare().getQueue();
+                trace("Listening to Queue ["+ bindingQueueName +"] bind to exchange ["+ getOrderResponseQueue()+"] with routing key ["+getRoutingKey()+ ']');
+                channel.queueBind(bindingQueueName, getOrderResponseQueue(),getRoutingKey());
+                channel.basicConsume(bindingQueueName,true,orderStatusConsumer);
+                /*==================== </listen to response exchange>=================================*/
+
+                /*====================<send new order>=================================*/
+                new Thread(new NewOrderMessagePublisher()).start();
+                /*====================</send new order>=================================*/
 
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(getScheduleHour()));
@@ -121,77 +241,44 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                 Date time = calendar.getTime();
 
                 Timer timer = new Timer();
-                ScheduledExecutionTask thread = new ScheduledExecutionTask(timer,latch);
+                ScheduledExecutionTask thread = new ScheduledExecutionTask(timer, marketOpenLatch);
                 timer.schedule(thread, time);
 
-                latch.await();
+                trace("Waiting for schedule to start");
+                marketOpenLatch.await();
+                trace("Schedule started");
+                SCHEDULE_STARTED = true;
+                result.sampleResume();
 
-                result.sampleStart();
+                boolean reachZero = messageLatch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-                orderStatusConsumer = new QueueingConsumer(channel);
-
-                trace("Starting basicConsume to Order Queue:"+getOrderResponseQueue());
-
-                channel.basicConsume(getOrderResponseQueue(),true,orderStatusConsumer);
-
-                new Thread(new NewOrderMessagePublisher()).start();
-
-                orderResponseDelivery = orderStatusConsumer.nextDelivery(getReceiveTimeoutAsInt());
-
-                if(orderResponseDelivery == null){
-                    result.setResponseMessage("Order response timed out");
-                    return result;
+                if (!reachZero) {
+                    //throw new Exception("Time out while waiting for market info message occurred");
+                    return null;
                 }
 
-                OrderInfoResponse stockTradeInfo= OrderInfoResponse.parseFrom(orderResponseDelivery.getBody());
-
-                result.setResponseMessage(stockTradeInfo.toString());
-
-                result.setResponseData(stockTradeInfo.toString(), null);
-
-                result.setDataType(SampleResult.TEXT);
-
-                result.setResponseCodeOK();
-
-                result.setSuccessful(true);
-
+            } else {
+                throw new Exception("Login Failed.\n"+logonResponse.toString(),null);
             }
 
-        } catch (ShutdownSignalException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (ConsumerCancelledException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("300");
-            result.setResponseMessage(e.getMessage());
-            interrupt();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
-            trace(e.getMessage());
-            result.setResponseCode("200");
-            result.setResponseMessage(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            loginConsumer = null;
-            loginConsumerTag = null;
             trace(e.getMessage());
             result.setResponseCode("100");
-            result.setResponseMessage(e.getMessage());
+            result.setResponseMessage("Exception: "+e);
+            result.setResponseData("Exception: "+e,null);
         } finally {
+            if (!SCHEDULE_STARTED) {
+                result.sampleResume();
+            }
+
             result.sampleEnd();
         }
 
-        trace("PreOpening sample() method ended");
+        trace("sample() ended");
+
+        cleanup();
 
         return result;
     }
@@ -250,13 +337,9 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
     public void cleanup() {
 
         try {
-            if (loginConsumerTag != null) {
-                channel.basicCancel(loginConsumerTag);
-            }
+            Thread.sleep(100 + Math.round(100*Math.random()));
+        } catch (Exception e) {}
 
-        } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + loginConsumerTag);
-        }
 
         super.cleanup();
 
@@ -301,8 +384,53 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                         .build();
 
                 trace("Publishing login request message to Queue:"+getLoginQueue());
-
+                trace("Request: "+logonRequest.toString());
                 channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class AccountInfoMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getAccInfoResponseQueue())
+                        .build();
+
+                trace("Publishing acc info request message to Queue:"+getAccInfoResponseQueue());
+
+                trace("Request: "+accountRequest.toString());
+
+                channel.basicPublish("", getAccInfoRequestQueue(), props, accountRequest.toByteArray());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class PinValidationMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getPinValidationResponseQueue())
+                        .build();
+
+                trace("Publishing PIN validation request message to Queue:"+getPinValidationRequestQueue());
+                trace("Request: "+pinRequest.toString());
+
+                channel.basicPublish("", getPinValidationRequestQueue(), props, pinRequest.toByteArray());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -319,33 +447,36 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                     .newBuilder()
                     .setOrderTime(System.currentTimeMillis())
                     .setBuySell(getBuySell())
-                    .setInputBy(getMobileUserId())
-                    .setClientCode(getClientCode())
+                    .setInputBy(USER_ID)
+                    .setClientCode(ACC_NO)
                     .setOrdQty(Double.valueOf(getStockAmount()))
                     .setOrdPrice(Double.valueOf(getOrderPrice()))
                     .setClOrderRef(orderRef)
                     .setBoard(getBoard())
                     .setStockCode(getStockCode())
                     .setTimeInForce(getTimeInForce())
-                    .setInsvtType(getInvestorType())
+                    .setInsvtType(INVESTOR_TYPE)
                     .setOrderTime(System.currentTimeMillis())
                     .build();
 
-            request = OLTMessage.newBuilder()
+            OLTMessage newOrderRequest = OLTMessage.newBuilder()
                     .setSessionId(sessionId)
                     .setNewOLTOrder(contentRequest)
                     .setType(OLTMessage.Type.NEW_OLT_ORDER)
                     .build();
 
             try {
+
                 AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
                         .builder()
                         .replyTo(getOrderResponseQueue())
                         .build();
 
                 trace("Publishing new order request message to Queue:"+getOrderRequestQueue());
+                trace("Request: "+ newOrderRequest.toString());
+                trace("Subject to be replied to "+getOrderResponseQueue());
 
-                channel.basicPublish("", getOrderRequestQueue(), props, request.toByteArray());
+                channel.basicPublish("", getOrderRequestQueue(), props, newOrderRequest.toByteArray());
 
             } catch (Exception e) {
                 e.printStackTrace();

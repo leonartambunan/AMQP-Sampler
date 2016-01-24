@@ -1,7 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.acccashposition;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
-import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 

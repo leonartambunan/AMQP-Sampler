@@ -2,7 +2,6 @@ package com.sxi.jmeter.protocol.rpc.logout;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
-import org.apache.jmeter.gui.util.VerticalPanel;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jorphan.gui.JLabeledTextField;
 

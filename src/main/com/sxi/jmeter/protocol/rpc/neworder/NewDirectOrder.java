@@ -8,7 +8,6 @@ import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrderAck;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
@@ -26,7 +25,7 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
     private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public void makeRequest()  {
+    public boolean makeRequest()  {
 
         request = NewOLTOrder
                 .newBuilder()
@@ -36,7 +35,7 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
                 .setClientCode(getClientCode())
                 .setOrdQty(Double.valueOf(getOrderQty()))
                 .setOrdPrice(Double.valueOf(getOrderPrice()))
-                .setClOrderRef(""+System.currentTimeMillis())
+                .setClOrderRef(String.valueOf(System.currentTimeMillis()))
                 .setBoard(getBoard())
                 .setStockCode(getStockCode())
                 .setTimeInForce(getTimeInForce())
@@ -67,15 +66,18 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
 
             new Thread(new NewOrderPublisher()).start();
 
-            latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
-
+            boolean noZero=latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
+            if (!noZero) {
+                throw new Exception("Time out");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
-            interrupt();
         }
+
+        return true;
     }
 
     public void cleanup() {

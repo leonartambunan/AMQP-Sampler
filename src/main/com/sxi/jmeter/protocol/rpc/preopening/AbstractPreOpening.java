@@ -6,8 +6,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -21,7 +19,7 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public static final String DEFAULT_ORDER_REQUEST_QUEUE = "oms.order_request-rpc";
     public static final String DEFAULT_ORDER_RESPONSE_QUEUE = "amq.rabbitmq.reply-to";
 
-    private static final Logger log = LoggingManager.getLoggerForClass();
+//    private static final Logger log = LoggingManager.getLoggerForClass();
 
     protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
@@ -36,6 +34,13 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
 
     private final static String LOGIN_QUEUE = "AMQPSampler.ServerQueue";
     private final static String LOGIN_REPLY_TO_QUEUE = "AMQPSampler.ReplyToQueue";
+
+    private final static String ACC_INFO_REQUEST_QUEUE = "AMQPSampler.AccountInfoQueue";
+    private final static String ACC_INFO_RESPONSE_QUEUE = "AMQPSampler.AccountInfoReplyToQueue";
+
+    private final static String PIN_VALIDATION_REQUEST_QUEUE = "AMQPSampler.PinRequestQueue";
+    private final static String PIN_VALIDATION_RESPONSE_QUEUE = "AMQPSampler.PinResponseQueue";
+
     private final static String ORDER_REQUEST_QUEUE = "AMQPSampler.OrderRequestQueue";
     private final static String ORDER_RESPONSE_QUEUE = "AMQPSampler.OrderResponseQueue";
     private static final String ROUTING_KEY = "AMQPSampler.RoutingKey";
@@ -44,9 +49,9 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     private static final String BUY_SELL = "AMQPSampler.BurOrSell";
     private static final String BOARD = "AMQPSampler.Board";
     private static final String TIME_IN_FORCE= "AMQPSampler.TimeInForce";
-    private static final String INVESTOR_TYPE= "AMQPSampler.InvestorType";
+//    private static final String INVESTOR_TYPE= "AMQPSampler.InvestorType";
     private static final String ORDER_PRICE = "AMQPSampler.OrderPrice";
-    private static final String CLIENT_CODE= "AMQPSampler.ClientCode";
+//    private static final String CLIENT_CODE= "AMQPSampler.ClientCode";
     private static final String ORDER_PERIOD= "AMQPSampler.OrderPeriod";
 
     private final static String MOBILE_DEVICE_ID = "Mobile.DeviceId";
@@ -54,6 +59,7 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
+    private final static String MOBILE_PIN = "Mobile.MobilePIN";
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
@@ -204,6 +210,38 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
         setProperty(ORDER_REQUEST_QUEUE, queue);
     }
 
+    public String getAccInfoRequestQueue() {
+        return getPropertyAsString(ACC_INFO_REQUEST_QUEUE);
+    }
+
+    public void setAccInfoRequestQueue(String queue) {
+        setProperty(ACC_INFO_REQUEST_QUEUE, queue);
+    }
+
+    public String getPinValidationRequestQueue() {
+        return getPropertyAsString(PIN_VALIDATION_REQUEST_QUEUE);
+    }
+
+    public void setPinValidationRequestQueue(String queue) {
+        setProperty(PIN_VALIDATION_REQUEST_QUEUE, queue);
+    }
+
+    public String getPinValidationResponseQueue() {
+        return getPropertyAsString(PIN_VALIDATION_RESPONSE_QUEUE);
+    }
+
+    public void setPinValidationResponseQueue(String queue) {
+        setProperty(PIN_VALIDATION_RESPONSE_QUEUE, queue);
+    }
+
+    public String getAccInfoResponseQueue() {
+        return getPropertyAsString(ACC_INFO_RESPONSE_QUEUE);
+    }
+
+    public void setAccInfoResponseQueue(String queue) {
+        setProperty(ACC_INFO_RESPONSE_QUEUE, queue);
+    }
+
     public String getRoutingKey() {
         return getPropertyAsString(ROUTING_KEY);
     }
@@ -220,13 +258,13 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
         setProperty(STOCK_CODE, id);
     }
 
-    public String getInvestorType() {
-        return getPropertyAsString(INVESTOR_TYPE);
-    }
-
-    public void setInvestorType(String id) {
-        setProperty(INVESTOR_TYPE, id);
-    }
+//    public String getInvestorType() {
+//        return getPropertyAsString(INVESTOR_TYPE);
+//    }
+//
+//    public void setInvestorType(String id) {
+//        setProperty(INVESTOR_TYPE, id);
+//    }
 
     public String getOrderPrice() {
         return getPropertyAsString(ORDER_PRICE);
@@ -258,13 +296,13 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public void setTimeInForce(String id) {
         setProperty(TIME_IN_FORCE, id);
     }
-    public String getClientCode() {
-        return getPropertyAsString(CLIENT_CODE);
-    }
+//    public String getClientCode() {
+//        return getPropertyAsString(CLIENT_CODE);
+//    }
 
-    public void setClientCode(String id) {
-        setProperty(CLIENT_CODE, id);
-    }
+//    public void setClientCode(String id) {
+//        setProperty(CLIENT_CODE, id);
+//    }
 
     public String getOrderPeriod() {
         return getPropertyAsString(ORDER_PERIOD);
@@ -310,6 +348,14 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
         return getPropertyAsString(MOBILE_USER_ID);
     }
 
+    public void setMobilePin(String userId) {
+        setProperty(MOBILE_PIN, userId);
+    }
+
+    public String getMobilePin() {
+        return getPropertyAsString(MOBILE_PIN);
+    }
+
     public void setMobileType(String mobileType) {
         setProperty(MOBILE_TYPE, mobileType);
     }
@@ -340,7 +386,6 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
 
     protected void cleanup() {
         try {
-            //getChannel().close();   // closing the connection will close the channel if it's still open
             if(connection != null && connection.isOpen())
                 connection.close();
         } catch (IOException e) {
@@ -358,10 +403,11 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public void threadStarted() {
 
     }
+
     public void trace(String s) {
         String tl = getTitle();
-//        String tn = Thread.currentThread().getName();
+        String tn = Thread.currentThread().getName();
 //        String th = this.toString();
-        log.info(tl + "\t- " + s);
+        System.out.println(tl + "\t- " + tn + "\t-"+s);
     }
 }
