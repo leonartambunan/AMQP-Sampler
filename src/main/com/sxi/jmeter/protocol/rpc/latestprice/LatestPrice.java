@@ -62,10 +62,12 @@ public class LatestPrice extends AbstractLatestPrice {
 
             new Thread(new LatestPriceMessagePublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());

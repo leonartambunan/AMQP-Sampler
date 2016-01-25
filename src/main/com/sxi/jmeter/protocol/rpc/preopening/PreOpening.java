@@ -173,7 +173,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                 /*================================ </Pin Validation> ========================================*/
 
 
-                /*====================<listen to response exchange>======================================*/
+                /*====================<listen to new order response exchange>======================================*/
                 DefaultConsumer orderStatusConsumer = new DefaultConsumer(getChannel()) {
                     @Override
                     public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -228,7 +228,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                 trace("Listening to Queue ["+ bindingQueueName +"] bind to exchange ["+ getOrderResponseQueue()+"] with routing key ["+getRoutingKey()+ ']');
                 channel.queueBind(bindingQueueName, getOrderResponseQueue(),getRoutingKey());
                 channel.basicConsume(bindingQueueName,true,orderStatusConsumer);
-                /*==================== </listen to response exchange>=================================*/
+                /*==================== </listen to new order response exchange>=================================*/
 
                 /*====================<send new order>=================================*/
                 new Thread(new NewOrderMessagePublisher()).start();

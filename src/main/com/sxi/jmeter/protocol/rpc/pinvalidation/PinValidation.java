@@ -5,8 +5,8 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.MessageProperties;
-import id.co.tech.cakra.message.proto.olt.ValidateTokenRequest;
-import id.co.tech.cakra.message.proto.olt.ValidateTokenResponse;
+import id.co.tech.cakra.message.proto.olt.PINValidationRequest;
+import id.co.tech.cakra.message.proto.olt.PINValidationResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
@@ -17,20 +17,18 @@ import java.util.concurrent.TimeUnit;
 public class PinValidation extends AbstractPinValidation {
 
     private static final long serialVersionUID = 1L;
-//    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
-    ValidateTokenRequest request;
+    private PINValidationRequest request;
     private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
     public boolean makeRequest()  {
 
-        request = ValidateTokenRequest
+        request = PINValidationRequest
                 .newBuilder()
                 .setUserId(getMobileUserId())
-                .setDeviceId(getMobileDeviceId())
-                .setDeviceType(getMobileType())
-                .setToken(getPin())
+                .setSessionId(getSessionId())
+                .setPinValue(getPin())
                 .build();
         try {
 
@@ -41,8 +39,8 @@ public class PinValidation extends AbstractPinValidation {
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     trace(new String(body));
                     result.setResponseMessage(new String(body));
-                    ValidateTokenResponse response = null;
-                    try {response = ValidateTokenResponse.parseFrom(body);} catch (InvalidProtocolBufferException e) {trace(e.getMessage());}
+                    PINValidationResponse response = null;
+                    try {response = PINValidationResponse.parseFrom(body);} catch (InvalidProtocolBufferException e) {trace(e.getMessage());}
                     result.setResponseData((response==null?"":response.toString()), null);
                     result.setResponseCodeOK();
                     result.setSuccessful(true);
@@ -55,10 +53,12 @@ public class PinValidation extends AbstractPinValidation {
 
             new Thread(new PinValidationPublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());

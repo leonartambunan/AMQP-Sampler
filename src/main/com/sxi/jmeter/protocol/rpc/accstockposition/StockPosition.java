@@ -67,12 +67,14 @@ public class StockPosition extends AbstractStockPosition{
 
             new Thread(new StockPositionMessagePublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
-            e.printStackTrace();
+            trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             result.setResponseData(e.getMessage(),null);
@@ -120,7 +122,7 @@ public class StockPosition extends AbstractStockPosition{
                 getChannel().basicPublish("", getRequestQueue(), props, accStockPosRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e.getMessage());
             }
 
         }

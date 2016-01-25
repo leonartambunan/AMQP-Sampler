@@ -53,10 +53,12 @@ public class Logout extends AbstractLogout {
 
             new Thread(new LogoutMessagePublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             trace("400 " + e.getMessage());

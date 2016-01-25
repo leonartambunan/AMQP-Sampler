@@ -93,11 +93,13 @@ public class CancelOrder extends AbstractCancelOrder {
 
             new Thread(new CancelOrderPublisher()).start();
 
-            boolean notZero = latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
+            latch.await();
 
-            if (!notZero) {
-                throw new Exception("Time out");
-            }
+//            boolean notZero = latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
+//
+//            if (!notZero) {
+//                throw new Exception("Time out");
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

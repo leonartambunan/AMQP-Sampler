@@ -62,10 +62,12 @@ public class GetWatchList extends AbstractGetWatchList {
 
             new Thread(new CashPositionPublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());

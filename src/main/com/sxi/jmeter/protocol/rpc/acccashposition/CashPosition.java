@@ -11,7 +11,6 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 public class CashPosition extends AbstractCashPosition {
 
@@ -54,13 +53,13 @@ public class CashPosition extends AbstractCashPosition {
 
             new Thread(new CashPositionPublisher()).start();
 
-            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
-            e.printStackTrace();
+            trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage(e.getMessage());
             result.setResponseData("Exception."+e.getMessage(),null);
@@ -105,7 +104,7 @@ public class CashPosition extends AbstractCashPosition {
                 getChannel().basicPublish("", getRequestQueue(), props, accCashPosRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e.getMessage());
             }
 
         }

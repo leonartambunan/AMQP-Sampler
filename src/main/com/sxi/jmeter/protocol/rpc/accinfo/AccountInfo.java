@@ -52,11 +52,13 @@ public class AccountInfo extends AbstractAccountInfo {
 
             new Thread(new AccountInfoMessagePublisher()).start();
 
-            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            latch.await();
 
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

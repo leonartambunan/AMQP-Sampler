@@ -72,10 +72,12 @@ public class OrderHistory extends AbstractOrderHistory {
 
             new Thread(new OrderHistoryMessagePublisher()).start();
 
-            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             trace(e.getMessage());

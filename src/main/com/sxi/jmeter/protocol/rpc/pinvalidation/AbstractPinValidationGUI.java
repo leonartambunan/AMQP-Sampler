@@ -112,6 +112,10 @@ public abstract class AbstractPinValidationGUI extends AbstractRabbitGUI {
         gridBagConstraints.gridy = 1;
         orderSettings.add(pin, gridBagConstraints);
 
+        gridBagConstraintsCommon.gridx = 1;
+        gridBagConstraintsCommon.gridy = 1;
+        commonPanel.add(orderSettings, gridBagConstraintsCommon);
+
         return commonPanel;
     }
 }

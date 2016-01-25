@@ -4,8 +4,8 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.MessageProperties;
-import id.co.tech.cakra.message.proto.olt.StockParamResponse;
 import id.co.tech.cakra.message.proto.olt.StockRecommendRequest;
+import id.co.tech.cakra.message.proto.olt.StockRecommendResponse;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
@@ -40,18 +40,19 @@ public class StockRecommendation extends AbstractStockRecommendation {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
+                    trace("Message received");
+
                     trace(new String(body));
 
                     result.setResponseMessage(new String(body));
 
-                    StockParamResponse response = StockParamResponse.parseFrom(body);
+                    StockRecommendResponse response = StockRecommendResponse.parseFrom(body);
 
                     result.setResponseData(response.toString(), null);
 
-                    if ("OK".equals(response.getStatus())) {
-                        result.setResponseCodeOK();
-                        result.setSuccessful(true);
-                    }
+                    result.setResponseCodeOK();
+
+                    result.setSuccessful(true);
 
                     latch.countDown();
 
@@ -63,12 +64,13 @@ public class StockRecommendation extends AbstractStockRecommendation {
 
             new Thread(new StockRecommendationMessagePublisher()).start();
 
-            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-            if (!noZero) {
-                throw new Exception("Time out");
-            }
+            latch.await();
+
+//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+//            if (!noZero) {
+//                throw new Exception("Time out");
+//            }
         } catch (Exception e) {
-            e.printStackTrace();
             trace(e.getMessage());
             result.setResponseCode("400");
             result.setResponseMessage("Exception:"+e.getMessage());
@@ -110,11 +112,12 @@ class StockRecommendationMessagePublisher implements Runnable {
                     .build();
 
             trace("Publishing Stock Recommendation request message to Queue:"+ getRequestQueue());
+            trace(stockRecommendationRequest.toString());
             result.setSamplerData(stockRecommendationRequest.toString());
             getChannel().basicPublish("", getRequestQueue(), props, stockRecommendationRequest.toByteArray());
 
         } catch (Exception e) {
-            e.printStackTrace();
+           trace(e.getMessage());
         }
 
     }

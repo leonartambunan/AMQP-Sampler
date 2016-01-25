@@ -63,7 +63,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                     .setIp(InetAddress.getLocalHost().getHostAddress())
                     .build();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            trace(e.getMessage());
         }
 
         final SampleResult result = new SampleResult();
@@ -186,7 +186,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             loginConsumer = null;
             trace(e.getMessage());
             result.setResponseCode("400");
@@ -263,7 +263,9 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
         try {
             Thread.sleep(100 + Math.round(100*Math.random()));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            trace(e.getMessage());
+        }
 
         try {
             if (loginConsumerTag != null) {
@@ -324,7 +326,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
                 channel.basicPublish("", getLoginQueue(), props, logonRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e.getMessage());
             }
 
         }
