@@ -12,6 +12,7 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class Logout extends AbstractLogout {
 
@@ -21,7 +22,7 @@ public class Logout extends AbstractLogout {
     private transient String logoutTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         logoutRequest = LogoutRequest
                 .newBuilder()
@@ -30,44 +31,37 @@ public class Logout extends AbstractLogout {
                 .setReason(getLogoutReason())
                 .build();
 
-        try {
 
-            initChannel();
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
+                LogonResponse response = LogonResponse.parseFrom(body);
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
+                result.setResponseCodeOK();
+                result.setSuccessful(true);
+                latch.countDown();
+            }
+        };
 
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    LogonResponse response = LogonResponse.parseFrom(body);
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
-                }
-            };
+        result.sampleStart();
 
-            trace("Starting basicConsume to Logout Response Queue: " + getResponseQueue());
+        trace("Starting basicConsume to Logout Response Queue: " + getResponseQueue());
 
-            logoutTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
+        logoutTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
-            new Thread(new LogoutMessagePublisher()).start();
+        new Thread(new LogoutMessagePublisher()).start();
 
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace("400 " + e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            result.setResponseData(e.getMessage(),null);
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
-
-        terminateConnection();
 
         return true;
 
@@ -91,7 +85,7 @@ public class Logout extends AbstractLogout {
             trace("Couldn't safely cancel the sample " + logoutTag+ ' ' +  e.getMessage());
         }
 
-        super.cleanup();
+        terminateConnection();
 
     }
 
@@ -111,7 +105,7 @@ public class Logout extends AbstractLogout {
                 getChannel().basicPublish("", getRequestQueue(), props, logoutRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
 
         }

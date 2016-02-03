@@ -1,9 +1,8 @@
 package com.sxi.jmeter.protocol.rpc.pinvalidation;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
-import org.apache.jmeter.testelement.ThreadListener;
 
-public abstract class AbstractPinValidation extends AbstractRabbitSampler implements ThreadListener {
+public abstract class AbstractPinValidation extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "Order.RequestQueue";
     private final static String RESPONSE_QUEUE = "Order.ResponseQueue";

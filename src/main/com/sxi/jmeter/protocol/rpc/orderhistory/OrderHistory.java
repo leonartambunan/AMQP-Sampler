@@ -1,33 +1,28 @@
 package com.sxi.jmeter.protocol.rpc.orderhistory;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.OrderHistoryRequest;
 import id.co.tech.cakra.message.proto.olt.OrderHistoryResponse;
 import id.co.tech.cakra.message.proto.olt.OrderReleaseInfo;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class OrderHistory extends AbstractOrderHistory {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
     private OrderHistoryRequest orderHistoryRequest;
     private transient String orderHistoryConsumerTag;
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         orderHistoryRequest = OrderHistoryRequest
                 .newBuilder()
@@ -37,10 +32,6 @@ public class OrderHistory extends AbstractOrderHistory {
                 .setStartDate(getStartDateAsLong())
                 .setEndDate(getEndDateAsLong())
                 .build();
-
-        try {
-
-            initChannel();
 
             DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
                 @Override
@@ -60,30 +51,29 @@ public class OrderHistory extends AbstractOrderHistory {
 
                     result.setResponseMessage(new String(body));
                     result.setResponseData(sb.toString(), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
 
                     latch.countDown();
                 }
             };
+
+            result.sampleStart();
 
             trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
             orderHistoryConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
             new Thread(new OrderHistoryMessagePublisher()).start();
 
-            latch.await();
+            if (Integer.valueOf(getTimeout()) == 0) {
+                latch.await();
+            } else {
+                boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-        }
+                if (!notZero) {
+                    throw new TimeoutException("Time out");
+                }
+            }
+
+
 
         return true;
     }
@@ -105,7 +95,6 @@ public class OrderHistory extends AbstractOrderHistory {
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + orderHistoryConsumerTag);
         }
-        super.cleanup();
     }
 
 
@@ -122,10 +111,11 @@ public class OrderHistory extends AbstractOrderHistory {
 
                 trace("Publishing Order History request message to Queue:"+ getRequestQueue());
                 result.setSamplerData(orderHistoryRequest.toString());
+
                 getChannel().basicPublish("", getRequestQueue(), props, orderHistoryRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
 
         }

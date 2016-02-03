@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.stockparam;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.StockParamRequest;
 import id.co.tech.cakra.message.proto.olt.StockParamResponse;
 import org.apache.jmeter.config.Arguments;
@@ -12,6 +9,7 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class StockParam extends AbstractStockParam {
 
@@ -22,7 +20,7 @@ public class StockParam extends AbstractStockParam {
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws TimeoutException, InterruptedException, IOException {
 
         stockParamRequest = StockParamRequest
                 .newBuilder()
@@ -32,46 +30,36 @@ public class StockParam extends AbstractStockParam {
                 .setBoardcode(getBoardCode())
                 .build();
 
-        try {
 
-            initChannel();
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
 
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    result.setResponseMessage(new String(body));
+                StockParamResponse response = StockParamResponse.parseFrom(body);
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
 
-                    StockParamResponse response = StockParamResponse.parseFrom(body);
+                latch.countDown();
 
-                    result.setResponseData(response.toString(), null);
+            }
+        };
 
-                    if ("OK".equals(response.getStatus())) {
-                        result.setResponseCodeOK();
-                        result.setSuccessful(true);
-                    }
+        result.sampleStart();
 
-                    latch.countDown();
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        stockParamConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
-                }
-            };
+        new Thread(new StockParamMessagePublisher()).start();
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
-            stockParamConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
-
-            new Thread(new StockParamMessagePublisher()).start();
-
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -95,29 +83,29 @@ public class StockParam extends AbstractStockParam {
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + stockParamConsumerTag+ ' ' +  e.getMessage());
         }
-        super.cleanup();
     }
 
-class StockParamMessagePublisher implements Runnable {
+    class StockParamMessagePublisher implements Runnable {
 
-    @Override
-    public void run() {
+        @Override
+        public void run() {
 
-        try {
-            AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
-                    .builder()
-                    .replyTo(getResponseQueue())
-                    .build();
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getResponseQueue())
+                        .build();
 
-            trace("Publishing Stock Param request message to Queue:"+ getRequestQueue());
-            result.setSamplerData(stockParamRequest.toString());
-            getChannel().basicPublish("", getRequestQueue(), props, stockParamRequest.toByteArray());
+                trace("Publishing Stock Param request message to Queue:"+ getRequestQueue());
+                result.setSamplerData(stockParamRequest.toString());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                getChannel().basicPublish("", getRequestQueue(), props, stockParamRequest.toByteArray());
+
+            } catch (Exception e) {
+                trace(e);
+            }
+
         }
-
     }
-}
 
 }

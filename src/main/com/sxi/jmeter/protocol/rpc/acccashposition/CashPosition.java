@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.acccashposition;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.AccCashPosRequest;
 import id.co.tech.cakra.message.proto.olt.AccCashPosResponse;
 import org.apache.jmeter.config.Arguments;
@@ -11,6 +8,8 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class CashPosition extends AbstractCashPosition {
 
@@ -21,7 +20,7 @@ public class CashPosition extends AbstractCashPosition {
     private transient String accCashPosConsumerTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws InterruptedException, IOException, TimeoutException {
 
         accCashPosRequest = AccCashPosRequest
                 .newBuilder()
@@ -30,39 +29,34 @@ public class CashPosition extends AbstractCashPosition {
                 .setAccNo(getAccNo())
                 .build();
 
-        try {
 
-            initChannel();
-
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    AccCashPosResponse response = AccCashPosResponse.parseFrom(body);
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
-                }
-            };
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
+                AccCashPosResponse response = AccCashPosResponse.parseFrom(body);
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
+                latch.countDown();
+            }
+        };
 
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
-            accCashPosConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
+        result.sampleStart();
 
-            new Thread(new CashPositionPublisher()).start();
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        accCashPosConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
+        new Thread(new CashPositionPublisher()).start();
+
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
-//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            result.setResponseData("Exception."+e.getMessage(),null);
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -78,13 +72,12 @@ public class CashPosition extends AbstractCashPosition {
 
     public void cleanup() {
         try {
-            if (accCashPosConsumerTag != null && getChannel().isOpen()) {
+            if (accCashPosConsumerTag != null && getChannel()!=null && getChannel().isOpen()) {
                 getChannel().basicCancel(accCashPosConsumerTag);
             }
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + accCashPosConsumerTag);
         }
-        super.cleanup();
     }
 
 
@@ -100,7 +93,9 @@ public class CashPosition extends AbstractCashPosition {
                         .build();
 
                 trace("Publishing Cash Position request message to Queue:"+ getRequestQueue());
+
                 result.setSamplerData(accCashPosRequest.toString());
+
                 getChannel().basicPublish("", getRequestQueue(), props, accCashPosRequest.toByteArray());
 
             } catch (Exception e) {

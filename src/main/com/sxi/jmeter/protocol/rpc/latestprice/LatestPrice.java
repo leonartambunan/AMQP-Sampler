@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.latestprice;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import com.tech.cakra.datafeed.server.df.message.proto.CurrentMessageRequest;
 import com.tech.cakra.datafeed.server.df.message.proto.CurrentMessageResponse;
 import com.tech.cakra.datafeed.server.df.message.proto.MIType;
@@ -13,17 +10,18 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class LatestPrice extends AbstractLatestPrice {
 
     private static final long serialVersionUID = 1L;
     private final static String HEADERS = "AMQPPublisher.Headers";
-    private CurrentMessageRequest stockPriceRequest;
+    private transient CurrentMessageRequest stockPriceRequest;
     private transient String stockPriceConsumeTag;
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws TimeoutException, InterruptedException, IOException {
 
         stockPriceRequest = CurrentMessageRequest
                 .newBuilder()
@@ -32,48 +30,39 @@ public class LatestPrice extends AbstractLatestPrice {
                 .addItemCode(getStockId())
                 .build();
 
-        try {
 
-            initChannel();
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace("Message received");
 
-                    trace("Message received");
+                trace(new String(body));
 
-                    trace(new String(body));
+                CurrentMessageResponse response = CurrentMessageResponse.parseFrom(body);
 
-                    result.setResponseMessage(new String(body));
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
+                latch.countDown();
 
-                    CurrentMessageResponse response = CurrentMessageResponse.parseFrom(body);
+            }
+        };
 
-                    result.setResponseData(response.toString(), null);
-                        result.setResponseCodeOK();
-                        result.setSuccessful(true);
+        result.sampleStart(); //STARTER
 
-                    latch.countDown();
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        stockPriceConsumeTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
-                }
-            };
+        new Thread(new LatestPriceMessagePublisher()).start();
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
-            stockPriceConsumeTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
-
-            new Thread(new LatestPriceMessagePublisher()).start();
-
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            result.setResponseData(e.getMessage(),null);
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -96,29 +85,30 @@ public class LatestPrice extends AbstractLatestPrice {
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + stockPriceConsumeTag + ' ' +  e.getMessage());
         }
-        super.cleanup();
     }
 
-class LatestPriceMessagePublisher implements Runnable {
+    class LatestPriceMessagePublisher implements Runnable {
 
-    @Override
-    public void run() {
+        @Override
+        public void run() {
 
-        try {
-            AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
-                    .builder()
-                    .replyTo(getResponseQueue())
-                    .build();
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getResponseQueue())
+                        .build();
 
-            trace("Publishing Latest Stock Price request message to Queue:"+ getRequestQueue());
-            result.setSamplerData(stockPriceRequest.toString());
-            getChannel().basicPublish("", getRequestQueue(), props, stockPriceRequest.toByteArray());
+                trace("Publishing Latest Stock Price request message to Queue:"+ getRequestQueue());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                result.setSamplerData(stockPriceRequest.toString());
+
+                getChannel().basicPublish("", getRequestQueue(), props, stockPriceRequest.toByteArray());
+
+            } catch (Exception e) {
+                trace(e);
+            }
+
         }
-
     }
-}
 
 }

@@ -105,7 +105,7 @@ public class MarketInfo extends AbstractMarketInfo implements Interruptible, Tes
 
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
 
-            System.out.println(logonResponse.toString());
+            trace(logonResponse.toString());
 
             if (POSITIVE_LOGON_STATUS.equals(logonResponse.getStatus())) {
 

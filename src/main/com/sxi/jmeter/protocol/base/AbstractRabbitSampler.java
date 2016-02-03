@@ -1,10 +1,9 @@
 package com.sxi.jmeter.protocol.base;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
-import id.co.tech.cakra.message.proto.olt.LogonRequest;
-import id.co.tech.cakra.message.proto.olt.LogonResponse;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.samplers.Entry;
 import org.apache.jmeter.samplers.Interruptible;
@@ -18,8 +17,6 @@ import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
@@ -29,12 +26,12 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public static final String DEFAULT_LOGON_REPLY_TO_QUEUE = "amq.rabbitmq.reply-to";
     public static final String DEFAULT_LOGON_REQUEST_QUEUE = "olt.logon_request-rpc";
 
-    protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
-    protected static final String HOST = "AMQPSampler.Host";
-    protected static final String PORT = "AMQPSampler.Port";
-    protected static final String SSL = "AMQPSampler.SSL";
-    protected static final String USERNAME = "AMQPSampler.Username";
-    protected static final String PASSWORD = "AMQPSampler.Password";
+    private static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
+    private static final String HOST = "AMQPSampler.Host";
+    private static final String PORT = "AMQPSampler.Port";
+    private static final String SSL = "AMQPSampler.SSL";
+    private static final String USERNAME = "AMQPSampler.Username";
+    private static final String PASSWORD = "AMQPSampler.Password";
     private static final String TIMEOUT = "AMQPSampler.Timeout";
     private static final String AUTHENTICATED_CONNECTION_VAR_NAME= "AMQPSampler.AuthenticatedConnectionVariableName";
 
@@ -46,24 +43,22 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     private final static String MOBILE_PASSWORD = "Mobile.Password";
     private final static String MOBILE_TYPE = "Mobile.Type";
     private final static String MOBILE_APP_VERSION = "Mobile.AppVersion";
+    private final static String SESSION_ID = "Mobile.SessionID";
 
     private transient ConnectionFactory factory;
     private transient Connection connection;
     private transient Channel channel;
 
-    public transient QueueingConsumer loginConsumer;
-    public transient String loginConsumerTag;
+    public transient SampleResult result = null;
 
-    public LogonRequest logonRequest;
-
-    public static final String SUCCESSFUL_LOGIN = "OK";
-    public SampleResult result = new SampleResult();
     public static final Logger log = LoggingManager.getLoggerForClass();
 
+    public static boolean VERBOSE = false;
 
     protected AbstractRabbitSampler(){
         factory = new ConnectionFactory();
         factory.setRequestedHeartbeat(Trimegah.HEARTBEAT);
+        VERBOSE = isVerbose();
     }
 
     @Override
@@ -73,8 +68,8 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
         result = new SampleResult();
         result.setSampleLabel(getName());
-        result.setSuccessful(false);
-        result.setResponseCode("500");
+        result.setSuccessful(true);
+        result.setResponseCodeOK();
         result.setDataType(SampleResult.TEXT);
         result.setSampleLabel(getTitle());
 
@@ -84,26 +79,32 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
                 createFreshAMQPConnection();
             }
 
+            makeRequest();
+
+//            if (!makeRequest()) {
+//                result = null;
+//            } else {
+//                result.sampleEnd();
+//            }
+
         } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
+            trace(e);
+            result.setSuccessful(false);
             result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
-            result.setResponseData(e.getMessage(),null);
+            result.setResponseMessage("Exception:"+e);
+            result.setResponseData("Exception:"+e,null);
+        } finally {
+            if (result.getStartTime()!=0L ) result.sampleEnd();
         }
 
-        result.sampleStart();
-
-        if (!makeRequest()) {
-            result = null;
-        } else {
-            result.sampleEnd();
-        }
+        cleanup();
 
         trace("sample() ended");
 
         return result;
     }
+
+    public  abstract  void cleanup();
 
     protected boolean initChannel() throws IOException, NoSuchAlgorithmException, KeyManagementException, TimeoutException {
 
@@ -121,7 +122,8 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
-            factory.setConnectionTimeout(Integer.valueOf(getTimeout()));
+            factory.setConnectionTimeout(0);
+            factory.setAutomaticRecoveryEnabled(true);
 
             if (isConnectionSSL()) {
                 factory.useSslProtocol("TLS");
@@ -129,7 +131,7 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
             connection = factory.newConnection();
             channel  = connection.createChannel();
-            channel.basicQos(2);
+            channel.basicQos(0);
         }
 
         saveConnectionToJMeterVariable();
@@ -137,56 +139,285 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
         return true;
     }
 
-    protected LogonResponse login() throws ShutdownSignalException, ConsumerCancelledException, InterruptedException, InvalidProtocolBufferException {
+//    private transient LogonRequest logonRequest = null;
 
-        trace("login()");
+//    private void authenticateUser() {
+//
+//        String loginConsumerTag = null;
+//
+//        QueueingConsumer loginConsumer = new QueueingConsumer(channel);
+//
+//        trace("Starting basicConsume to Login ReplyTo Queue:"+ getLogonReplyToQueue());
+//
+//        try {
+//
+//            logonRequest = LogonRequest
+//                    .newBuilder()
+//                    .setUserId(getMobileUserId())
+//                    .setPassword(getMobilePassword())
+//                    .setDeviceId(getMobileDeviceId())
+//                    .setDeviceType(getMobileType())
+//                    .setAppVersion(getMobileAppVersion())
+//                    .setIp(InetAddress.getLocalHost().getHostAddress())
+//                    .build();
+//
+//            loginConsumerTag = channel.basicConsume(getLogonReplyToQueue(), true, loginConsumer);
+//
+//            new Thread(new LoginMessagePublisher()).start();
+//
+//            QueueingConsumer.Delivery loginDelivery;
+//
+//            loginDelivery = loginConsumer.nextDelivery(Long.valueOf(getTimeout()));
+//
+//            LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
+//
+//            HEADER_RESPONSE_DATA = "NewSessionID=\""+logonResponse.getSessionId()+"\"";
+//
+//            channel.basicCancel(loginConsumerTag);
+//
+//        } catch (Exception e) {
+//            trace(e.getMessage());
+//        }
+//
+//    }
 
-        LogonResponse response = LogonResponse.getDefaultInstance();
+//    protected void reconnectToMQ() {
+//        try {
+//
+//            initChannel();
+//
+//            authenticateUser();
+//
+//        }catch ( Exception e) {
+//            trace(e);
+//        }
+//    }
+
+
+//    protected void cleanup() {
+//
+//        try {
+//            if (loginConsumerTag != null && channel!=null && channel.isOpen()) {
+//                channel.basicCancel(loginConsumerTag);
+//            }
+//        } catch(IOException e) {
+//            trace("Couldn't safely cancel the sample " + loginConsumerTag+ ' ' +  e.getMessage());
+//        }
+//    }
+
+    protected void terminateConnection() {
 
         try {
-            logonRequest = LogonRequest
-                    .newBuilder()
-                    .setUserId(getMobileUserId())
-                    .setPassword(getMobilePassword())
-                    .setDeviceId(getMobileDeviceId())
-                    .setDeviceType(getMobileType())
-                    .setAppVersion(getMobileAppVersion())
-                    .setIp(InetAddress.getLocalHost().getHostAddress())
-                    .build();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
-        try {
-
-            initChannel();
-
-            if (loginConsumer == null) {
-                trace("Creating rpc login consumer");
-                loginConsumer = new QueueingConsumer(channel);
+            if (connection != null && connection.isOpen()) {
+                connection.close();
             }
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getLogonReplyToQueue());
-            loginConsumerTag = channel.basicConsume(getLogonReplyToQueue(), true, loginConsumer);
-
-            new Thread(new LoginMessagePublisher()).start();
-
-        } catch (Exception ex) {
-            trace("Failed to initialize channel");
-            loginConsumerTag=null;
-            loginConsumer=null;
+        } catch (IOException e) {
+            trace("Failed to close connection");
+            trace(e);
         }
 
-        QueueingConsumer.Delivery delivery = loginConsumer.nextDelivery(Long.valueOf(getTimeout()));
+        connection=null;
+        channel=null;
 
-        if (delivery != null) {
-            trace("Response to login request received <-- ");
-            trace(new String(delivery.getBody()));
-            response = LogonResponse.parseFrom(delivery.getBody());
-        }
-
-        return response;
     }
+
+    @Override
+    public void threadFinished() {
+        trace("threadFinished()");
+        terminateConnection();
+    }
+
+    @Override
+    public void threadStarted() {
+
+    }
+
+    protected boolean restoreConnection() {
+
+        trace("restoreConnection()");
+
+        boolean restored = false;
+
+        if (!getAuthenticatedConnectionVarName().isEmpty()) {
+
+            trace("Trying to reuse Rabbit Connection from VAR [" + getAuthenticatedConnectionVarName() + ']');
+
+            JMeterContext jmetercontext = JMeterContextService.getContext();
+            JMeterVariables vars = jmetercontext.getVariables();
+
+            if (vars == null) return false;
+
+            Object a = vars.getObject(getAuthenticatedConnectionVarName());
+
+            if (a != null) {
+                connection = (Connection) a;
+
+                if (connection !=null && connection.isOpen()) {
+                    try {
+
+                        channel = connection.createChannel();
+
+                        restored = true;
+
+                        trace("Connection is " + (connection.isOpen() ? "" : "not") + " open");
+                        trace("CONNECTION RESTORED");
+
+                    } catch (IOException e) {
+                        trace(e);
+                    }
+
+                }
+
+
+            }
+        }
+
+        return restored;
+
+    }
+
+    protected void createFreshAMQPConnection() throws KeyManagementException, TimeoutException, NoSuchAlgorithmException, IOException, InterruptedException {
+
+        trace("createFreshAMQPConnection()");
+
+        if (connection!=null && connection.isOpen()) {
+            connection.close();
+        }
+
+        connection=null;
+        channel=null;
+
+        initChannel();
+
+    }
+
+//    class LoginMessagePublisher implements Runnable {
+//
+//        @Override
+//        public void run() {
+//
+//            try {
+//                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+//                        .builder()
+//                        .replyTo(getLogonReplyToQueue())
+//                        .build();
+//
+//                trace("Publishing Login request message to Queue: ["+ getLogonRequestQueue()+ ']');
+//
+//                channel.basicPublish("", getLogonRequestQueue(), props, logonRequest.toByteArray());
+//
+//            } catch (Exception e) {
+//                trace(e);
+//            }
+//        }
+//    }
+
+//    public String constructNiceString() {
+//
+//        return "---MQ SERVER---" +
+//                "\nIP \t:" +
+//                getHost() +
+//                "\nPort\t:" +
+//                getPort() +
+//                "\nUsername\t:" +
+//                getUsername() +
+//                "\nPassword\t:" +
+//                getPassword() +
+//                "\nVirtual Host\t:" +
+//                getVirtualHost() +
+//                "\n----------" +
+//                "\n---REQUEST---\n" +
+//                logonRequest.toString();
+//
+//    }
+
+    protected void saveConnectionToJMeterVariable() {
+        trace("saveConnectionToJMeterVariable() started");
+
+        if (!getAuthenticatedConnectionVarName().isEmpty()) {
+
+//            if (connection!=null && connection.isOpen()) {
+
+            JMeterContext jMeterContext = JMeterContextService.getContext();
+
+            JMeterVariables vars = jMeterContext.getVariables();
+
+            if (vars == null) vars = new JMeterVariables();
+
+            vars.putObject(getAuthenticatedConnectionVarName(), connection);
+
+            jMeterContext.setVariables(vars);
+
+            trace("connection saved to " + getAuthenticatedConnectionVarName());
+//            }
+        }
+
+        trace("saveConnectionToJMeterVariable() ended");
+
+    }
+
+    private static boolean isVerbose() {
+
+        JMeterContext jMeterContext = JMeterContextService.getContext();
+
+        JMeterVariables vars = jMeterContext.getVariables();
+
+        if (vars == null) vars = new JMeterVariables();
+
+        String verbose = vars.get("VERBOSE");
+
+        return ("1".equalsIgnoreCase(verbose));
+    }
+
+
+    @Override
+    public boolean interrupt() {
+        testEnded();
+        return true;
+    }
+
+    @Override
+    public void testEnded() {
+        trace("testEnded()");
+        terminateConnection();
+    }
+
+    @Override
+    public void testEnded(String arg0) {
+
+        trace("testEnded(String arg0)");
+    }
+
+    @Override
+    public void testStarted() {
+
+    }
+
+    @Override
+    public void testStarted(String arg0) {
+
+    }
+
+    public void trace(String s) {
+        if (VERBOSE) {
+            String tl = getTitle();
+            String tn = Thread.currentThread().getName();
+            log.info(tl + "\t- " + tn + "\t-" + s);
+        }
+    }
+
+    public void trace(Exception e) {
+        if (VERBOSE) {
+            String tl = getTitle();
+            String tn = Thread.currentThread().getName();
+            log.info(tl + "\t- " + tn + "\t-", e);
+            e.printStackTrace();
+        }
+    }
+
+    public abstract boolean makeRequest() throws IOException, InterruptedException, TimeoutException;
 
     protected String getTitle() {
         return this.getName();
@@ -238,6 +469,14 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public boolean isConnectionSSL() {
         return getPropertyAsBoolean(SSL);
     }
+
+//    public void setLoggingActive(Boolean value) {
+//        setProperty(LOGGING_ACTIVE, value.toString());
+//    }
+//
+//    public boolean isLoggingActive() {
+//        return getPropertyAsBoolean(LOGGING_ACTIVE);
+//    }
 
     public void setAuthenticatedConnectionVarName(String name) {
         setProperty(AUTHENTICATED_CONNECTION_VAR_NAME, name);
@@ -314,6 +553,13 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public String getMobileUserId() {
         return getPropertyAsString(MOBILE_USER_ID);
     }
+    public void setSessionId(String userId) {
+        setProperty(SESSION_ID, userId);
+    }
+
+    public String getSessionId() {
+        return getPropertyAsString(SESSION_ID);
+    }
 
     public void setMobileType(String mobileType) {
         setProperty(MOBILE_TYPE, mobileType);
@@ -322,213 +568,4 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
     public Channel getChannel() {
         return channel;
     }
-
-    protected void cleanup() {
-
-        try {
-            if (loginConsumerTag != null && channel!=null && channel.isOpen()) {
-                channel.basicCancel(loginConsumerTag);
-            }
-        } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + loginConsumerTag+ ' ' +  e.getMessage());
-        }
-    }
-
-    protected void terminateConnection() {
-
-        trace("terminateConnection()");
-
-        try {
-            if (connection != null && connection.isOpen())
-                connection.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            trace("Failed to close connection");
-        }
-    }
-
-    @Override
-    public void threadFinished() {
-        trace("threadFinished()");
-        cleanup();
-    }
-
-    @Override
-    public void threadStarted() {
-
-    }
-
-    protected boolean restoreConnection() {
-
-        trace("restoreConnection()");
-
-        boolean restored = false;
-
-        if (!"".equals(getAuthenticatedConnectionVarName().trim())) {
-
-            trace("Trying to reuse Rabbit Connection from VAR [" + getAuthenticatedConnectionVarName() + ']');
-
-            JMeterContext jmetercontext = JMeterContextService.getContext();
-            JMeterVariables vars = jmetercontext.getVariables();
-
-            if (vars == null) return false;
-
-            Object a = vars.getObject(getAuthenticatedConnectionVarName());
-
-            if (a != null) {
-                connection = (Connection) a;
-                try {
-
-                    channel = connection.createChannel();
-
-                    restored = true;
-
-                    trace("Connection is "+(connection.isOpen()?"":"not")+" open");
-                    trace("CONNECTION RESTORED");
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }
-
-        return restored;
-
-    }
-
-
-    protected void createFreshAMQPConnection() throws KeyManagementException, TimeoutException, NoSuchAlgorithmException, IOException, InterruptedException {
-
-        trace("createFreshAMQPConnection()");
-
-        initChannel();
-
-        if (loginConsumerTag == null) {
-            trace("Creating rpc login consumer");
-            loginConsumer = new QueueingConsumer(channel);
-        }
-
-        trace("Starting basicConsume to Login ReplyTo Queue:"+ getLogonReplyToQueue());
-
-        loginConsumerTag = channel.basicConsume(getLogonReplyToQueue(), true, loginConsumer);
-
-        new Thread(new LoginMessagePublisher()).start();
-
-        QueueingConsumer.Delivery loginDelivery;
-
-        loginDelivery = loginConsumer.nextDelivery(Long.valueOf(getTimeout()));
-
-        LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
-
-        trace(logonResponse.toString());
-
-    }
-
-    class LoginMessagePublisher implements Runnable {
-
-        @Override
-        public void run() {
-
-            try {
-                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
-                        .builder()
-                        .replyTo(getLogonReplyToQueue())
-                        .build();
-
-                trace("Publishing Login request message to Queue: ["+ getLogonRequestQueue()+ ']');
-
-                channel.basicPublish("", getLogonRequestQueue(), props, logonRequest.toByteArray());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public String constructNiceString() {
-
-        return "---MQ SERVER---" +
-                "\nIP \t:" +
-                getHost() +
-                "\nPort\t:" +
-                getPort() +
-                "\nUsername\t:" +
-                getUsername() +
-                "\nPassword\t:" +
-                getPassword() +
-                "\nVirtual Host\t:" +
-                getVirtualHost() +
-                "\n----------" +
-                "\n---REQUEST---\n" +
-                logonRequest.toString();
-
-    }
-
-    protected void saveConnectionToJMeterVariable() {
-        trace("saveConnectionToJMeterVariable() started");
-
-        if (!"".equals(getAuthenticatedConnectionVarName())) {
-
-            if (connection!=null && connection.isOpen()) {
-
-                JMeterContext jMeterContext = JMeterContextService.getContext();
-
-                JMeterVariables vars = jMeterContext.getVariables();
-
-                if (vars == null) vars = new JMeterVariables();
-
-                vars.putObject(getAuthenticatedConnectionVarName(), connection);
-
-                jMeterContext.setVariables(vars);
-
-                trace("connection saved to " + getAuthenticatedConnectionVarName());
-
-            }
-        }
-
-        trace("saveConnectionToJMeterVariable() ended");
-    }
-
-
-    @Override
-    public boolean interrupt() {
-        testEnded();
-        return true;
-    }
-
-    @Override
-    public void testEnded() {
-        trace("testEnded()");
-        cleanup();
-        //terminateConnection();
-    }
-
-    @Override
-    public void testEnded(String arg0) {
-
-        trace("testEnded(String arg0)");
-    }
-
-    @Override
-    public void testStarted() {
-
-    }
-
-    @Override
-    public void testStarted(String arg0) {
-
-    }
-
-    public void trace(String s) {
-        String tl = getTitle();
-//        String tn = Thread.currentThread().getName();
-//        String th = this.toString();
-        log.info(tl + "\t- " + s);
-    }
-
-
-    public abstract boolean makeRequest();
-
 }

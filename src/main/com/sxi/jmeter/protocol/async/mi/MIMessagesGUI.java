@@ -1,4 +1,4 @@
-package com.sxi.jmeter.protocol.async.bookingorder;
+package com.sxi.jmeter.protocol.async.mi;
 
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
@@ -6,7 +6,7 @@ import org.apache.jmeter.testelement.TestElement;
 
 import javax.swing.*;
 
-public class BookingOrderGUI extends AbstractBookingGUI {
+public class MIMessagesGUI extends AbstractMIMessagesGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public class BookingOrderGUI extends AbstractBookingGUI {
 
     private ArgumentsPanel headers = new ArgumentsPanel("Headers");
 
-    public BookingOrderGUI(){
+    public MIMessagesGUI(){
         init();
     }
 
@@ -27,22 +27,22 @@ public class BookingOrderGUI extends AbstractBookingGUI {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (!(element instanceof BookingOrder)) return;
-        BookingOrder sampler = (BookingOrder) element;
+        if (!(element instanceof MIMessages)) return;
+        MIMessages sampler = (MIMessages) element;
 
         configureHeaders(sampler);
     }
 
     @Override
     public TestElement createTestElement() {
-        BookingOrder sampler = new BookingOrder();
+        MIMessages sampler = new MIMessages();
         modifyTestElement(sampler);
         return sampler;
     }
 
     @Override
     public void modifyTestElement(TestElement te) {
-        BookingOrder sampler = (BookingOrder) te;
+        MIMessages sampler = (MIMessages) te;
         sampler.clear();
         configureTestElement(sampler);
         super.modifyTestElement(sampler);
@@ -66,7 +66,7 @@ public class BookingOrderGUI extends AbstractBookingGUI {
         headers.clearGui();
     }
 
-    private void configureHeaders(BookingOrder sampler)
+    private void configureHeaders(MIMessages sampler)
     {
         Arguments sampleHeaders = sampler.getHeaders();
         if (sampleHeaders != null) {

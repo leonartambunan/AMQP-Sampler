@@ -1,31 +1,26 @@
 package com.sxi.jmeter.protocol.rpc.neworder;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrder;
 import id.co.tech.cakra.message.proto.olt.NewOLTOrderAck;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.testelement.property.TestElementProperty;
-import org.apache.jorphan.logging.LoggingManager;
-import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class NewDirectOrder extends AbstractNewDirectOrder {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger log = LoggingManager.getLoggerForClass();
     private final static String HEADERS = "AMQPPublisher.Headers";
-    NewOLTOrder request;
+    private NewOLTOrder request;
     private transient String responseTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         request = NewOLTOrder
                 .newBuilder()
@@ -43,40 +38,33 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
                 .setOrderTime(System.currentTimeMillis())
                 .setOrderPeriod(Long.valueOf(getOrderPeriod()))
                 .build();
-        try {
 
-            initChannel();
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
+                result.setResponseMessage(new String(body));
+                NewOLTOrderAck response = null;
+                try {response = NewOLTOrderAck.parseFrom(body);} catch (InvalidProtocolBufferException e) {trace(e.getMessage());}
+                result.setResponseData((response==null?"":response.toString()), null);
+                latch.countDown();
+            }
+        };
 
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    result.setResponseMessage(new String(body));
-                    NewOLTOrderAck response = null;
-                    try {response = NewOLTOrderAck.parseFrom(body);} catch (InvalidProtocolBufferException e) {trace(e.getMessage());}
-                    result.setResponseData((response==null?"":response.toString()), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
-                }
-            };
+        result.sampleStart();
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
-            responseTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        responseTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
-            new Thread(new NewOrderPublisher()).start();
+        new Thread(new NewOrderPublisher()).start();
 
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
-
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()),TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -91,7 +79,6 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + responseTag);
         }
-        super.cleanup();
     }
 
     class NewOrderPublisher implements Runnable {
@@ -107,10 +94,11 @@ public class NewDirectOrder extends AbstractNewDirectOrder {
 
                 trace("Publishing New Order RPC Request to Queue:"+ getRequestQueue());
                 result.setSamplerData(request.toString());
+
                 getChannel().basicPublish("", getRequestQueue(), props, request.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
         }
     }

@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.stockrecommendation;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.StockRecommendRequest;
 import id.co.tech.cakra.message.proto.olt.StockRecommendResponse;
 import org.apache.jmeter.config.Arguments;
@@ -12,6 +9,7 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class StockRecommendation extends AbstractStockRecommendation {
 
@@ -22,7 +20,7 @@ public class StockRecommendation extends AbstractStockRecommendation {
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         stockRecommendationRequest = StockRecommendRequest
                 .newBuilder()
@@ -32,10 +30,6 @@ public class StockRecommendation extends AbstractStockRecommendation {
                 .setStockCode(getStockId())
                 .build();
 
-        try {
-
-            initChannel();
-
             DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -44,40 +38,73 @@ public class StockRecommendation extends AbstractStockRecommendation {
 
                     trace(new String(body));
 
-                    result.setResponseMessage(new String(body));
-
                     StockRecommendResponse response = StockRecommendResponse.parseFrom(body);
-
+                    result.setResponseMessage(response.toString());
                     result.setResponseData(response.toString(), null);
 
-                    result.setResponseCodeOK();
-
-                    result.setSuccessful(true);
-
                     latch.countDown();
-
                 }
             };
 
+            result.sampleStart();
+
             trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+
             stockParamConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
             new Thread(new StockRecommendationMessagePublisher()).start();
 
-            latch.await();
+            if (Integer.valueOf(getTimeout()) == 0) {
+                latch.await();
+            } else {
 
-//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage("Exception:"+e.getMessage());
-            result.setResponseData("Exception:"+e.getMessage(),null);
-        }
+                boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+
+                if (!notZero) {
+                    throw new TimeoutException("Time out");
+                }
+
+            }
 
         return true;
+    }
+
+
+    public void cleanup() {
+
+        try {
+            if (stockParamConsumerTag != null && getChannel()!=null && getChannel().isOpen()) {
+                getChannel().basicCancel(stockParamConsumerTag);
+            }
+        } catch(IOException e) {
+            trace("Couldn't safely cancel the sample " + stockParamConsumerTag+ ' ' +  e);
+        }
+    }
+
+    class StockRecommendationMessagePublisher implements Runnable {
+
+        @Override
+        public void run() {
+
+            try {
+                AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
+                        .builder()
+                        .replyTo(getResponseQueue())
+                        .build();
+
+                trace("Publishing Stock Recommendation request message to Queue:"+ getRequestQueue());
+
+                trace(stockRecommendationRequest.toString());
+
+                result.setSamplerData(stockRecommendationRequest.toString());
+
+                getChannel().basicPublish("", getRequestQueue(), props, stockRecommendationRequest.toByteArray());
+
+            } catch (Exception e) {
+                trace(e);
+            }
+
+        }
     }
 
     public Arguments getHeaders() {
@@ -88,39 +115,5 @@ public class StockRecommendation extends AbstractStockRecommendation {
         setProperty(new TestElementProperty(HEADERS, headers));
     }
 
-    public void cleanup() {
-
-        try {
-            if (stockParamConsumerTag != null && getChannel()!=null && getChannel().isOpen()) {
-                getChannel().basicCancel(stockParamConsumerTag);
-            }
-        } catch(IOException e) {
-            trace("Couldn't safely cancel the sample " + stockParamConsumerTag+ ' ' +  e.getMessage());
-        }
-        super.cleanup();
-    }
-
-class StockRecommendationMessagePublisher implements Runnable {
-
-    @Override
-    public void run() {
-
-        try {
-            AMQP.BasicProperties props = MessageProperties.MINIMAL_BASIC
-                    .builder()
-                    .replyTo(getResponseQueue())
-                    .build();
-
-            trace("Publishing Stock Recommendation request message to Queue:"+ getRequestQueue());
-            trace(stockRecommendationRequest.toString());
-            result.setSamplerData(stockRecommendationRequest.toString());
-            getChannel().basicPublish("", getRequestQueue(), props, stockRecommendationRequest.toByteArray());
-
-        } catch (Exception e) {
-           trace(e.getMessage());
-        }
-
-    }
-}
 
 }

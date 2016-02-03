@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.assetallocation;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.AssetAllocationRequest;
 import id.co.tech.cakra.message.proto.olt.AssetAllocationResponse;
 import org.apache.jmeter.config.Arguments;
@@ -16,6 +13,7 @@ import org.apache.log.Logger;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class AssetAllocation extends AbstractAssetAllocation implements Interruptible, TestStateListener {
 
@@ -26,7 +24,7 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
     private transient String assetAllocationConsumerTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         assetAllocationRequest = AssetAllocationRequest
                 .newBuilder()
@@ -35,41 +33,34 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
                 .setRequestType(getRequestTypeAsInt())
                 .build();
 
-        try {
+        DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
+                AssetAllocationResponse response = AssetAllocationResponse.parseFrom(body);
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
+                latch.countDown();
+            }
+        };
 
-            initChannel();
+        result.sampleStart();
 
-            DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    AssetAllocationResponse response = AssetAllocationResponse.parseFrom(body);
-                    result.setResponseMessage(new String(body));
-                    result.setResponseData(response.toString(), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
-                }
-            };
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        assetAllocationConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
 
+        new Thread(new CashPositionPublisher()).start();
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
-            assetAllocationConsumerTag = getChannel().basicConsume(getResponseQueue(), true, consumer);
-
-            new Thread(new CashPositionPublisher()).start();
-
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
+
 
         return true;
     }
@@ -81,31 +72,6 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
         setProperty(new TestElementProperty(HEADERS, headers));
     }
 
-    @Override
-    public boolean interrupt() {
-        testEnded();
-        return true;
-    }
-
-    @Override
-    public void testEnded() {
-
-    }
-
-    @Override
-    public void testEnded(String arg0) {
-
-    }
-
-    @Override
-    public void testStarted() {
-
-    }
-
-    @Override
-    public void testStarted(String arg0) {
-
-    }
     public void cleanup() {
 
         try {
@@ -115,11 +81,7 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + assetAllocationConsumerTag );
         }
-        super.cleanup();
     }
-
-
-
 
     class CashPositionPublisher implements Runnable {
 
@@ -134,10 +96,11 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
 
                 trace("Publishing Asset Allocation request message to Queue:"+ getRequestQueue());
                 result.setSamplerData(assetAllocationRequest.toString());
+
                 getChannel().basicPublish("", getRequestQueue(), props, assetAllocationRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
 
         }

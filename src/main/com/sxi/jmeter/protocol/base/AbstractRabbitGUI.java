@@ -50,6 +50,7 @@ public abstract class AbstractRabbitGUI extends AbstractSamplerGui {
         password.setText(sampler.getPassword());
         SSL.setSelected(sampler.isConnectionSSL());
         varNameAuthenticatedCon.setText(sampler.getAuthenticatedConnectionVarName());
+//        loggingStatus.setSelected(sampler.isLoggingActive());
 
         mobileAppVersion.setText(sampler.getMobileAppVersion());
         mobileDeviceId.setText(sampler.getMobileDeviceId());
@@ -103,7 +104,9 @@ public abstract class AbstractRabbitGUI extends AbstractSamplerGui {
         sampler.setUsername(username.getText());
         sampler.setPassword(password.getText());
         sampler.setConnectionSSL(SSL.isSelected());
+//        sampler.setLoggingActive(loggingStatus.isSelected());
         sampler.setAuthenticatedConnectionVarName(varNameAuthenticatedCon.getText());
+//        sampler.setLoggingActive(loggingStatus.isSelected());
 
         sampler.setMobileAppVersion(mobileAppVersion.getText());
         sampler.setMobileDeviceId(mobileDeviceId.getText());
@@ -220,8 +223,12 @@ public abstract class AbstractRabbitGUI extends AbstractSamplerGui {
         gridBagConstraints.gridy = 5;
         serverSettings.add(timeout, gridBagConstraints);
 
+//        gridBagConstraints.gridx = 0;
+//        gridBagConstraints.gridy = 6;
+//        serverSettings.add(loggingStatus, gridBagConstraints);
+
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         serverSettings.add(varNameAuthenticatedCon, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;

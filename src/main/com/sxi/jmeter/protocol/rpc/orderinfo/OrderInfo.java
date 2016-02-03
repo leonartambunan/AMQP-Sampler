@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.orderinfo;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.OrderInfoRequest;
 import id.co.tech.cakra.message.proto.olt.OrderInfoResponse;
 import org.apache.jmeter.config.Arguments;
@@ -13,6 +10,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class OrderInfo extends AbstractOrderInfo {
 
@@ -26,7 +24,7 @@ public class OrderInfo extends AbstractOrderInfo {
 
     private static String correlationID;
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws TimeoutException, InterruptedException, IOException {
 
         correlationID = UUID.randomUUID().toString();
 
@@ -37,58 +35,50 @@ public class OrderInfo extends AbstractOrderInfo {
                 .setAccNo(getAccNo())
                 .build();
 
-        try {
 
-            initChannel();
+        DefaultConsumer orderInfoConsumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 
-            DefaultConsumer orderInfoConsumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace("Message received <--");
 
-                    trace("Message received <--");
+                trace('[' +correlationID +"] <-> ["+properties.getCorrelationId()+ ']');
 
-                    trace('[' +correlationID +"] <-> ["+properties.getCorrelationId()+ ']');
+                trace(new String(body));
 
-                    trace(new String(body));
+                if (correlationID.equals(properties.getCorrelationId())) {
 
-                    if (correlationID.equals(properties.getCorrelationId())) {
+                    OrderInfoResponse response = null;
 
-                        OrderInfoResponse response = null;
-
-                        try {response = OrderInfoResponse.parseFrom(body); } catch(Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        result.setResponseMessage(new String(body));
-                        result.setResponseData(response==null?new String(body):response.toString(), null);
-                        result.setResponseCodeOK();
-                        result.setSuccessful(true);
-
-                        latch.countDown();
-
-                    } else {
-                        trace("No correlation message");
+                    try {response = OrderInfoResponse.parseFrom(body); } catch(Exception e) {
+                        trace(e);
                     }
+                    result.setResponseMessage(new String(body));
+                    result.setResponseData((response==null?new String(body):response.toString()), null);
+                    latch.countDown();
+
+                } else {
+                    trace("No correlation message");
                 }
-            };
+            }
+        };
 
-            trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
+        result.sampleStart(); //STARTER
 
-            orderInfoConsumerTag = getChannel().basicConsume(getResponseQueue(), true, orderInfoConsumer);
+        trace("Starting basicConsume to ReplyTo Queue: " + getResponseQueue());
 
-            new Thread(new OrderInfoMessagePublisher()).start();
+        orderInfoConsumerTag = getChannel().basicConsume(getResponseQueue(), true, orderInfoConsumer);
 
+        new Thread(new OrderInfoMessagePublisher()).start();
+
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
 
-//            boolean noZero=latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -113,7 +103,6 @@ public class OrderInfo extends AbstractOrderInfo {
             trace("Couldn't safely cancel the orderInfoConsumerTag " + orderInfoConsumerTag+ ' ' +  e.getMessage());
         }
 
-        super.cleanup();
 
     }
 
@@ -131,11 +120,13 @@ public class OrderInfo extends AbstractOrderInfo {
                         .build();
 
                 trace("Publishing order info request message to Queue:"+ getRequestQueue());
+
                 result.setSamplerData(orderInfoRequest.toString());
+
                 getChannel().basicPublish("", getRequestQueue(), props, orderInfoRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
 
         }

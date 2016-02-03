@@ -6,6 +6,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.sxi.jmeter.protocol.rpc.constants.Trimegah;
 import org.apache.jmeter.samplers.AbstractSampler;
 import org.apache.jmeter.testelement.ThreadListener;
+import org.apache.jorphan.logging.LoggingManager;
+import org.apache.log.Logger;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -19,7 +21,7 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public static final String DEFAULT_ORDER_REQUEST_QUEUE = "oms.order_request-rpc";
     public static final String DEFAULT_ORDER_RESPONSE_QUEUE = "amq.rabbitmq.reply-to";
 
-//    private static final Logger log = LoggingManager.getLoggerForClass();
+    private static final Logger log = LoggingManager.getLoggerForClass();
 
     protected static final String VIRTUAL_HOST = "AMQPSampler.VirtualHost";
     protected static final String HOST = "AMQPSampler.Host";
@@ -407,7 +409,12 @@ public abstract class AbstractPreOpening extends AbstractSampler implements Thre
     public void trace(String s) {
         String tl = getTitle();
         String tn = Thread.currentThread().getName();
-//        String th = this.toString();
-        System.out.println(tl + "\t- " + tn + "\t-"+s);
+        log.info(tl + "\t- " + tn + "\t-"+s);
+    }
+
+    public void trace(Exception e) {
+        String tl = getTitle();
+        String tn = Thread.currentThread().getName();
+        log.info(tl + "\t- " + tn + "\t-",e);
     }
 }

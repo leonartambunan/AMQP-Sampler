@@ -18,7 +18,6 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
     protected JLabeledTextField sessionId = new JLabeledTextField("Session ID");
     protected JLabeledTextField stockCode = new JLabeledTextField("Stock Code");
     protected JLabeledTextField orderQty = new JLabeledTextField("Order Qty");
-//    protected JLabeledTextField orderRef = new JLabeledTextField("Order Ref");
 
     protected JLabeledTextField orderPrice = new JLabeledTextField("Order Price");
     protected JLabeledTextField board = new JLabeledTextField("Board");
@@ -187,10 +186,6 @@ public abstract class AbstractNewOrderGUI extends AbstractRabbitGUI {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
         orderSettings.add(orderPrice, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 10;
-//        orderSettings.add(orderRef, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

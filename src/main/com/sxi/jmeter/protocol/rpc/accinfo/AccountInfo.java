@@ -1,9 +1,6 @@
 package com.sxi.jmeter.protocol.rpc.accinfo;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import id.co.tech.cakra.message.proto.olt.AccountRequest;
 import id.co.tech.cakra.message.proto.olt.AccountResponse;
 import org.apache.jmeter.config.Arguments;
@@ -12,6 +9,7 @@ import org.apache.jmeter.testelement.property.TestElementProperty;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class AccountInfo extends AbstractAccountInfo {
 
@@ -21,7 +19,7 @@ public class AccountInfo extends AbstractAccountInfo {
     private transient String accountInfoConsumerTag;
     private transient CountDownLatch latch = new CountDownLatch(1);
 
-    public boolean makeRequest()  {
+    public boolean makeRequest() throws IOException, InterruptedException, TimeoutException {
 
         accountRequest = AccountRequest
                 .newBuilder()
@@ -29,42 +27,32 @@ public class AccountInfo extends AbstractAccountInfo {
                 .setSessionId(getSessionId())
                 .build();
 
-        try {
+        DefaultConsumer accountInfoConsumer = new DefaultConsumer(getChannel()) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                trace(new String(body));
+                AccountResponse response = AccountResponse.parseFrom(body);
+                result.setResponseMessage(response.toString());
+                result.setResponseData(response.toString(), null);
+                latch.countDown();
+            }
+        };
 
-            initChannel();
+        result.sampleStart();
 
-            DefaultConsumer accountInfoConsumer = new DefaultConsumer(getChannel()) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    trace(new String(body));
-                    AccountResponse response = AccountResponse.parseFrom(body);
-                    result.setResponseMessage(response.toString());
-                    result.setResponseData(response.toString(), null);
-                    result.setResponseCodeOK();
-                    result.setSuccessful(true);
-                    latch.countDown();
-                }
-            };
+        trace("Starting basicConsume to Response Queue: " + getResponseQueue());
 
-            trace("Starting basicConsume to Response Queue: " + getResponseQueue());
+        accountInfoConsumerTag = getChannel().basicConsume(getResponseQueue(), true, accountInfoConsumer);
 
-            accountInfoConsumerTag = getChannel().basicConsume(getResponseQueue(), true, accountInfoConsumer);
+        new Thread(new AccountInfoMessagePublisher()).start();
 
-            new Thread(new AccountInfoMessagePublisher()).start();
-
+        if (Integer.valueOf(getTimeout()) == 0) {
             latch.await();
-
-//            boolean noZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
-//
-//            if (!noZero) {
-//                throw new Exception("Time out");
-//            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            trace(e.getMessage());
-            result.setResponseCode("400");
-            result.setResponseMessage(e.getMessage());
+        } else {
+            boolean notZero = latch.await(Long.valueOf(getTimeout()), TimeUnit.MILLISECONDS);
+            if (!notZero) {
+                throw new TimeoutException("Time out");
+            }
         }
 
         return true;
@@ -87,7 +75,6 @@ public class AccountInfo extends AbstractAccountInfo {
         } catch(IOException e) {
             trace("Couldn't safely cancel the sample " + accountInfoConsumerTag+ ' ' +  e.getMessage());
         }
-        super.cleanup();
     }
 
 
@@ -106,10 +93,12 @@ public class AccountInfo extends AbstractAccountInfo {
 
                 result.setSamplerData(accountRequest.toString());
 
+
+
                 getChannel().basicPublish("", getRequestQueue(), props, accountRequest.toByteArray());
 
             } catch (Exception e) {
-                e.printStackTrace();
+                trace(e);
             }
 
         }

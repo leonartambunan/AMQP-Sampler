@@ -101,7 +101,7 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
 
             LogonResponse logonResponse = LogonResponse.parseFrom(loginDelivery.getBody());
 
-            System.out.println(logonResponse.toString());
+            //System.out.println(logonResponse.toString());
 
             channel.basicCancel(loginConsumerTag);
 
@@ -192,7 +192,6 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
                                 trace("Order Rejected");
                                 trace(orderRef + " VS " + response.getNewOLTOrderReject().getClOrderRef());
                                 if (orderRef.equals(response.getNewOLTOrderReject().getClOrderRef())) {
-                                    result.setResponseData(response.toString() + '\n' + response.getNewOLTOrderReject().toString(), null);
                                     result.setResponseCodeOK();
                                     result.setSuccessful(true);
                                     result.setResponseMessage(response.toString());
@@ -262,9 +261,8 @@ public class PreOpening extends AbstractPreOpening implements Interruptible, Tes
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             loginConsumer = null;
-            trace(e.getMessage());
+            trace(e);
             result.setResponseCode("100");
             result.setResponseMessage("Exception: "+e);
             result.setResponseData("Exception: "+e,null);

@@ -11,6 +11,7 @@ public abstract class AbstractStockRecommendation extends AbstractRabbitSampler 
     private final static String STOCK_ID = "StockRecommendation.StockID";
     private final static String BOARD_CODE = "StockRecommendation.BoardCode";
 
+
     protected String getTitle() {
         return this.getName();
     }
