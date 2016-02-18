@@ -81,12 +81,6 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
 
             makeRequest();
 
-//            if (!makeRequest()) {
-//                result = null;
-//            } else {
-//                result.sampleEnd();
-//            }
-
         } catch (Exception e) {
             trace(e);
             result.setSuccessful(false);
@@ -123,7 +117,6 @@ public abstract class AbstractRabbitSampler extends AbstractSampler implements T
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
             factory.setConnectionTimeout(0);
-            factory.setAutomaticRecoveryEnabled(true);
 
             if (isConnectionSSL()) {
                 factory.useSslProtocol("TLS");

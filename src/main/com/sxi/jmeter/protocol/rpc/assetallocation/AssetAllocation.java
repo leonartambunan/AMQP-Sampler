@@ -31,6 +31,7 @@ public class AssetAllocation extends AbstractAssetAllocation implements Interrup
                 .setUserId(getMobileUserId())
                 .setSessionId(getSessionId())
                 .setRequestType(getRequestTypeAsInt())
+                .setAccNo(getAccNo())
                 .build();
 
         DefaultConsumer consumer = new DefaultConsumer(getChannel()) {

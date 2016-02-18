@@ -35,9 +35,9 @@ public class AmendOrderGUI extends AbstractAmendOrderGUI {
 
     @Override
     public TestElement createTestElement() {
-        AmendOrder sampler = new AmendOrder();
-        modifyTestElement(sampler);
-        return sampler;
+            AmendOrder sampler = new AmendOrder();
+            modifyTestElement(sampler);
+            return sampler;
     }
 
     @Override

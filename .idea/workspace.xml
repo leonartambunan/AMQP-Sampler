@@ -31,31 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="Login.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/Login.java">
+      <file leaf-file-name="GetWatchList.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/getwatchlist/GetWatchList.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="9" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OrderHistory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderhistory/OrderHistory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="67" column="20" selection-start-line="67" selection-start-column="20" selection-end-line="67" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractRabbitSampler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitSampler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.2045455">
-              <caret line="286" column="9" selection-start-line="286" selection-start-column="9" selection-end-line="286" selection-end-column="9" />
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,31 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Trimegah.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/constants/Trimegah.java">
+      <file leaf-file-name="CurrentMessage.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/CurrentMessage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="36" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AbstractNotificationSampler.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationSampler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7896104">
-              <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MIMessages.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessages.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="28" column="41" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.4713217">
+              <caret line="27" column="45" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -95,41 +55,88 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AmendOrder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AmendOrder.java">
+      <file leaf-file-name="AbstractCurrentMessageGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessageGUI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
+              <caret line="121" column="5" selection-start-line="121" selection-start-column="5" selection-end-line="121" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractAmendOrder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AbstractAmendOrder.java">
+      <file leaf-file-name="CashBalance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalance.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="60" selection-start-line="8" selection-start-column="60" selection-end-line="8" selection-end-column="60" />
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CashBalanceGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalanceGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractRabbitGUI.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitGUI.java">
+      <file leaf-file-name="AbstractCashBalanceGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalanceGUI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="42" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractCashBalance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+              <folding>
+                <element signature="e#836#837#0" expanded="true" />
+                <element signature="e#877#878#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractCurrentMessage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AbstractMIMessagesOrder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/AbstractMIMessagesOrder.java">
+      <file leaf-file-name="AssetAllocation.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocation.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="4" column="67" selection-start-line="4" selection-start-column="67" selection-end-line="4" selection-end-column="67" />
+              <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractAssetAllocationGUI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AbstractAssetAllocationGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -157,57 +164,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockParam.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/AbstractStockParamGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockParamGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockRecommendationGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/neworder/AbstractNewOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/AbstractNewOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/BookingOrderGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/test/Test.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/AbstractStockRecommendationGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/AbstractBookingGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/AbstractBookingOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/persistwatchlist/AbstractAddWatchListGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/redeemorder/RedeemOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/subscribeorder/SubscribeOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/AbstractPinValidationGUI.java" />
-        <option value="C:/Java/jdk1.7/src.zip!/java/lang/Object.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/bookingorder/BookingOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/AbstractBookingGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/preopening/AbstractPreOpening.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/marketinfo/MarketInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/AbstractNewOrderGUI.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/AbstractPinValidation.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/AbstractStockRecommendation.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/preopening/PreOpening.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/cancelorder/CancelOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/PinValidation.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/StockParam.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/persistwatchlist/AddWatchList.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderinfo/OrderInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/neworder/NewDirectOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/logout/Logout.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/LatestPrice.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/getwatchlist/GetWatchList.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocation.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/accstockposition/StockPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/accinfo/AccountInfo.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/acccashposition/CashPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/NewOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitTopicSampler.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/AbstractMIMessagesOrder.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationGUI.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/AbstractMIMessagesGUI.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AmendOrder.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockRecommendation.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitGUI.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderhistory/OrderHistory.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/Login.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessages.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/constants/Trimegah.java" />
-        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocation.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AbstractAssetAllocation.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AbstractAssetAllocationGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/NewOrder.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderinfo/OrderInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessages.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/ReadException.java" />
+        <option value="$USER_HOME$/TcpRelay/src/com/indocert/tcprelay/base/ReadException.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AmendOrderGUI.java" />
         <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitSampler.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/stockparam/AbstractStockParam.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/AbstractStockParam.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/StockParam.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/StockParamGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/TradingIdeaGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/AbstractTradingIdea.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/AbstractTradingIdeaGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/tradingidea/TradingIdea.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/AbstractCashBalance.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/CashBalance.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/CashBalanceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/LatestPriceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/AbstractCashBalanceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractTradingIdea.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/TradingIdea.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/TradingIdeaGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractTradingIdeaGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/LatestPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/AbstractLatestPriceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/AbstractLatestPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractLatestPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessage.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/LatestPrice.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/LatestPriceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/CurrentMessageGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractLatestPriceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalance.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalanceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalance.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/TradingIdea.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/Login.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessageGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalanceGUI.java" />
+        <option value="$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/CurrentMessage.java" />
       </list>
     </option>
   </component>
@@ -227,10 +234,9 @@
     <treeState />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-11" />
-    <option name="y" value="-11" />
+    <option name="x" value="-10" />
     <option name="width" value="1924" />
-    <option name="height" value="1042" />
+    <option name="height" value="1030" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -306,8 +312,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -365,6 +369,158 @@
               <option name="myItemId" value="protocol" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protocol" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="currentmsg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protocol" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rpc" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cashbalance" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protocol" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="protocol" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="async" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="production" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AMQP-Sampler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="out" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="artifacts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -383,6 +539,8 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -390,7 +548,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.19616859" />
-    <property name="last_opened_file_path" value="C:/Java/apache-jmeter-2.13/lib/jorphan.jar!/" />
+    <property name="last_opened_file_path" value="C:/Java/apache-jmeter-2.13/lib/rabbitmq-client.jar!/" />
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
@@ -403,11 +561,11 @@
       <recent name="com.sxi.jmeter.protocol.amqp.gui" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\rpc\cashbalance" />
+      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\rpc\tradingidea" />
+      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\lib" />
       <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\async\bookingorder" />
       <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\rpc\stockrecommendation" />
-      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\lib" />
-      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\rpc\pinvalidation" />
-      <recent name="C:\Users\Leonar Tambunan\AMQP-Sampler\src\main\com\sxi\jmeter\protocol\test" />
     </key>
   </component>
   <component name="RunManager">
@@ -805,11 +963,39 @@
       <workItem from="1454323322856" duration="3859000" />
       <workItem from="1454413528528" duration="130000" />
       <workItem from="1454417255789" duration="371000" />
+      <workItem from="1454524091571" duration="50000" />
+      <workItem from="1454569758117" duration="742000" />
+      <workItem from="1454592442286" duration="1304000" />
+      <workItem from="1454681088939" duration="2500000" />
+      <workItem from="1454688067614" duration="46000" />
+      <workItem from="1455032757892" duration="1453000" />
+      <workItem from="1455101252708" duration="1998000" />
+      <workItem from="1455104237792" duration="390000" />
+      <workItem from="1455106543516" duration="3549000" />
+      <workItem from="1455179577563" duration="2328000" />
+      <workItem from="1455528397184" duration="120000" />
+      <workItem from="1455619762003" duration="120000" />
+      <workItem from="1455684089470" duration="275000" />
+      <workItem from="1455700000654" duration="875000" />
+      <workItem from="1455701734633" duration="425000" />
+      <workItem from="1455717030647" duration="1696000" />
+      <workItem from="1455725914142" duration="104000" />
+      <workItem from="1455726065112" duration="34000" />
+      <workItem from="1455741308540" duration="415000" />
+      <workItem from="1455741922370" duration="89000" />
+      <workItem from="1455742113675" duration="17000" />
+      <workItem from="1455781530544" duration="1100000" />
+      <workItem from="1455783308980" duration="535000" />
+      <workItem from="1455796129673" duration="206000" />
+      <workItem from="1455815780087" duration="643000" />
+      <workItem from="1455816699117" duration="1106000" />
+      <workItem from="1455817833327" duration="313000" />
+      <workItem from="1455818780272" duration="526000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="329879000" />
+    <option name="totallyTimeSpent" value="352838000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -821,32 +1007,32 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="1924" height="1042" extended-state="0" />
+    <frame x="-10" y="0" width="1924" height="1030" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32079905" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3206198" sideWeight="0.49782136" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31942788" sideWeight="0.50217867" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955772" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902467" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32896304" sideWeight="0.49782136" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2788671" sideWeight="0.4958872" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34422657" sideWeight="0.4958872" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2511737" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2858684" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28856528" sideWeight="0.5041128" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39788732" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24910608" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -869,207 +1055,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Java/jdk1.7/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33277592">
-          <caret line="501" column="22" selection-start-line="501" selection-start-column="22" selection-end-line="501" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/AbstractLatestPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/logout/AbstractLogout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AbstractAmendOrderGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="58" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/AbstractNewOrderGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/AbstractStockRecommendationGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/AbstractPinValidation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="60" selection-start-line="4" selection-start-column="60" selection-end-line="4" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Java/apache-jmeter-2.13/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/testelement/ThreadListener.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13953489">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Java/apache-jmeter-2.13/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/samplers/Interruptible.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.13953489">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Java/apache-jmeter-2.13/lib/ext/ApacheJMeter_core.jar!/org/apache/jmeter/testelement/TestStateListener.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.075">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="9" selection-end-line="12" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/accstockposition/AbstractStockPosition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="65" selection-start-line="4" selection-start-column="65" selection-end-line="4" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/getwatchlist/AbstractGetWatchList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="59" selection-start-line="4" selection-start-column="59" selection-end-line="4" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/preopening/PreOpening.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="194" column="0" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/persistwatchlist/AbstractAddWatchList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="60" selection-start-line="4" selection-start-column="60" selection-end-line="4" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/acccashposition/AbstractCashPosition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/PinValidation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="14" selection-start-line="41" selection-start-column="14" selection-end-line="41" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/persistwatchlist/AddWatchList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.909091">
-          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderinfo/OrderInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="120" column="0" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/neworder/NewDirectOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="69" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="113" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/marketinfo/MarketInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="86" selection-start-line="89" selection-start-column="86" selection-end-line="89" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/logout/Logout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/latestprice/LatestPrice.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/getwatchlist/GetWatchList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="23" selection-start-line="46" selection-start-column="21" selection-end-line="49" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="109" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/accstockposition/StockPosition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="58" column="0" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/acccashposition/CashPosition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="107" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/cancelorder/AbstractCancelOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="57" selection-start-line="4" selection-start-column="57" selection-end-line="4" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessagesGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1084,25 +1069,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/StockParam.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="92" column="17" selection-start-line="92" selection-start-column="17" selection-end-line="92" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/accinfo/AccountInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="24" column="29" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/AbstractLogin.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1113,31 +1083,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/AbstractStockParamGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/AbstractStockRecommendation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockRecommendation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/AbstractLoginGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -1148,18 +1097,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/NewOrder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AmendOrder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="13" column="44" selection-start-line="13" selection-start-column="44" selection-end-line="13" selection-end-column="44" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1167,23 +1108,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="8" column="60" selection-start-line="8" selection-start-column="60" selection-end-line="8" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="42" selection-start-line="68" selection-start-column="42" selection-end-line="68" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderhistory/OrderHistory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="20" selection-start-line="67" selection-start-column="20" selection-end-line="67" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1194,55 +1118,327 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocationGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AbstractAssetAllocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/neworder/NewOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="57" selection-start-line="40" selection-start-column="57" selection-end-line="40" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/AbstractMIMessagesOrder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="4" column="67" selection-start-line="4" selection-start-column="67" selection-end-line="4" selection-end-column="67" />
-          <folding />
+          <caret line="4" column="60" selection-start-line="4" selection-start-column="60" selection-end-line="4" selection-end-column="60" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/Login.java">
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="9" selection-start-line="76" selection-start-column="9" selection-end-line="76" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessages.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="41" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="2" column="50" selection-start-line="2" selection-start-column="50" selection-end-line="2" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/constants/Trimegah.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="40" />
-          <folding />
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/mi/MIMessages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5006227">
+          <caret line="88" column="12" selection-start-line="88" selection-start-column="12" selection-end-line="88" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/AbstractLogin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/AbstractStockParamGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="15" selection-start-line="59" selection-start-column="15" selection-end-line="59" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AbstractAmendOrderGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="82" column="46" selection-start-line="82" selection-start-column="46" selection-end-line="82" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/AbstractLoginGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="2" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="120" column="20" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/async/amendorder/AmendOrderGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/LoginGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/rabbitmq-client.jar!/com/rabbitmq/client/ConnectionFactory.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3503937">
+          <caret line="225" column="16" selection-start-line="225" selection-start-column="16" selection-end-line="225" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationSampler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="105" column="9" selection-start-line="105" selection-start-column="9" selection-end-line="105" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractRabbitSampler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.2045455">
-          <caret line="286" column="9" selection-start-line="286" selection-start-column="9" selection-end-line="286" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="46" selection-start-line="121" selection-start-column="46" selection-end-line="121" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/AbstractTradingIdea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/TradingIdeaGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="27" selection-start-line="67" selection-start-column="27" selection-end-line="67" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/AbstractTradingIdeaGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="85" column="66" selection-start-line="85" selection-start-column="66" selection-end-line="85" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/AbstractStockParam.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/CurrentMessageGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/ProtobufTest.jar!/id/co/tech/cakra/message/proto/olt/TradingIdeaRequest.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21259843">
+          <caret line="26" column="19" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/tradingidea/TradingIdea.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="43" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockrecommendation/StockRecommendation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/stockparam/StockParam.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/pinvalidation/PinValidation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderinfo/OrderInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/orderhistory/OrderHistory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/neworder/NewDirectOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/logout/Logout.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/base/AbstractNotificationSampler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/login/Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7896104">
-          <caret line="262" column="0" selection-start-line="262" selection-start-column="0" selection-end-line="262" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/getwatchlist/GetWatchList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AssetAllocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/assetallocation/AbstractAssetAllocationGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding>
+            <element signature="e#836#837#0" expanded="true" />
+            <element signature="e#877#878#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/CashBalanceGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/cashbalance/AbstractCashBalanceGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/AbstractCurrentMessageGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="121" column="5" selection-start-line="121" selection-start-column="5" selection-end-line="121" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/com/sxi/jmeter/protocol/rpc/currentmsg/CurrentMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4713217">
+          <caret line="27" column="45" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1277,7 +1473,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
-          <last-edited>JMeter-13-Libs</last-edited>
+          <last-edited>rabbitmq-client-3.4.3</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1306,6 +1502,7 @@
             <option name="proportions">
               <list>
                 <option value="0.19616859" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -1329,7 +1526,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.3900383" />
+                <option value="0.19616859" />
               </list>
             </option>
           </splitter-proportions>

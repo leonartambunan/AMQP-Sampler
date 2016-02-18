@@ -1,8 +1,8 @@
-package com.sxi.jmeter.protocol.rpc.latestprice;
+package com.sxi.jmeter.protocol.rpc.currentmsg;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitSampler;
 
-public abstract class AbstractLatestPrice extends AbstractRabbitSampler {
+public abstract class AbstractCurrentMessage extends AbstractRabbitSampler {
 
     private final static String REQUEST_QUEUE = "LatestPrice.RequestQueue";
     private final static String RESPONSE_QUEUE = "LatestPrice.OrderResponseQueue";
@@ -44,7 +44,7 @@ public abstract class AbstractLatestPrice extends AbstractRabbitSampler {
     }
 
     public String getRequestQueue() {
-        return getPropertyAsString(REQUEST_QUEUE,"olt.stock_param_request-rpc");
+        return getPropertyAsString(REQUEST_QUEUE,"mi.current_message_request-rpc");
     }
 
     public void setRequestQueue(String name) {

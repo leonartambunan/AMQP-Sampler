@@ -18,21 +18,20 @@ public class MIMessages extends AbstractMIMessagesOrder {
     private static final long serialVersionUID = 1L;
     private final static String HEADERS = "AMQPPublisher.Headers";
 
-    private transient String responseTag=null;
-    private transient String bindingQueueName=null;
+    private String responseTag=null;
+    private String bindingQueueName=null;
     private transient CountDownLatch latch = new CountDownLatch(1);
-    //private SampleResult sampleResult = null;
 
     public void listen() throws IOException, InterruptedException, TimeoutException {
 
-        sampleResult.setSampleLabel(getName());
-        sampleResult.setSuccessful(true);
-        sampleResult.setResponseCodeOK();
-        sampleResult.setDataType(SampleResult.TEXT);
-        sampleResult.setSampleLabel(getTitle());
-        sampleResult.setSamplerData("Listen to "+getExchange());
+        result.setSampleLabel(getName());
+        result.setSuccessful(true);
+        result.setResponseCodeOK();
+        result.setDataType(SampleResult.TEXT);
+        result.setSampleLabel(getTitle());
+        result.setSamplerData("Listen to "+getExchange());
 
-        sampleResult.sampleStart();
+        result.sampleStart();
 
         DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
             @Override
@@ -46,19 +45,18 @@ public class MIMessages extends AbstractMIMessagesOrder {
 
                     trace(response.toString());
 
-                    sampleResult.sampleEnd();
+                    if (result.getEndTime()==0L) result.sampleEnd();
 
 //                    sampleResult = SampleResult.createTestSample(response.getSendingTime(),System.currentTimeMillis()-response.getSendingTime());
 //                    sampleResult.setTimeStamp(response.getSendingTime());
-                    sampleResult.setResponseMessage(response.toString());
-                    sampleResult.setResponseData(response.toString(),null);
-                    sampleResult.setSuccessful(true);
-                    sampleResult.setResponseCodeOK();
+                    result.setResponseMessage(response.toString());
+                    result.setResponseData(response.toString(),null);
+                    result.setSuccessful(true);
+                    result.setResponseCodeOK();
 
                     latch.countDown();
 
                 } catch(Exception e) {
-
                     trace(e.toString());
                 }
             }

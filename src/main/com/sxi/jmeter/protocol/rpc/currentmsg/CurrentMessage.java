@@ -1,4 +1,4 @@
-package com.sxi.jmeter.protocol.rpc.latestprice;
+package com.sxi.jmeter.protocol.rpc.currentmsg;
 
 import com.rabbitmq.client.*;
 import com.tech.cakra.datafeed.server.df.message.proto.CurrentMessageRequest;
@@ -12,24 +12,23 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class LatestPrice extends AbstractLatestPrice {
+public class CurrentMessage extends AbstractCurrentMessage {
 
     private static final long serialVersionUID = 1L;
     private final static String HEADERS = "AMQPPublisher.Headers";
-    private transient CurrentMessageRequest stockPriceRequest;
+    private transient CurrentMessageRequest request;
     private transient String stockPriceConsumeTag;
 
     private transient CountDownLatch latch = new CountDownLatch(1);
 
     public boolean makeRequest() throws TimeoutException, InterruptedException, IOException {
 
-        stockPriceRequest = CurrentMessageRequest
+        request = CurrentMessageRequest
                 .newBuilder()
                 .setBoardCode(getBoardCode())
                 .setDataType(MIType.LATEST_PRICE)
                 .addItemCode(getStockId())
                 .build();
-
 
         DefaultConsumer consumer = new DefaultConsumer(getChannel()) {
             @Override
@@ -98,11 +97,11 @@ public class LatestPrice extends AbstractLatestPrice {
                         .replyTo(getResponseQueue())
                         .build();
 
-                trace("Publishing Latest Stock Price request message to Queue:"+ getRequestQueue());
+                trace("Publishing Current Message request message to Queue:"+ getRequestQueue());
 
-                result.setSamplerData(stockPriceRequest.toString());
+                result.setSamplerData(request.toString());
 
-                getChannel().basicPublish("", getRequestQueue(), props, stockPriceRequest.toByteArray());
+                getChannel().basicPublish("", getRequestQueue(), props, request.toByteArray());
 
             } catch (Exception e) {
                 trace(e);

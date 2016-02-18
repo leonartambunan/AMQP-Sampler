@@ -1,4 +1,4 @@
-package com.sxi.jmeter.protocol.rpc.latestprice;
+package com.sxi.jmeter.protocol.rpc.currentmsg;
 
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
@@ -6,7 +6,7 @@ import org.apache.jmeter.testelement.TestElement;
 
 import javax.swing.*;
 
-public class LatestPriceGUI extends AbstractLatestPriceGUI {
+public class CurrentMessageGUI extends AbstractCurrentMessageGUI {
 
     private static final long serialVersionUID = 1L;
 
@@ -14,7 +14,7 @@ public class LatestPriceGUI extends AbstractLatestPriceGUI {
 
     private ArgumentsPanel headers = new ArgumentsPanel("Headers");
 
-    public LatestPriceGUI(){
+    public CurrentMessageGUI(){
         init();
     }
 
@@ -27,22 +27,22 @@ public class LatestPriceGUI extends AbstractLatestPriceGUI {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (!(element instanceof LatestPrice)) return;
-        LatestPrice sampler = (LatestPrice) element;
+        if (!(element instanceof CurrentMessage)) return;
+        CurrentMessage sampler = (CurrentMessage) element;
 
         configureHeaders(sampler);
     }
 
     @Override
     public TestElement createTestElement() {
-        LatestPrice sampler = new LatestPrice();
+        CurrentMessage sampler = new CurrentMessage();
         modifyTestElement(sampler);
         return sampler;
     }
 
     @Override
     public void modifyTestElement(TestElement te) {
-        LatestPrice sampler = (LatestPrice) te;
+        CurrentMessage sampler = (CurrentMessage) te;
         sampler.clear();
         configureTestElement(sampler);
 
@@ -68,7 +68,7 @@ public class LatestPriceGUI extends AbstractLatestPriceGUI {
         headers.clearGui();
     }
 
-    private void configureHeaders(LatestPrice sampler)
+    private void configureHeaders(CurrentMessage sampler)
     {
         Arguments sampleHeaders = sampler.getHeaders();
         if (sampleHeaders != null) {

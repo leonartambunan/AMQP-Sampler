@@ -32,9 +32,8 @@ public class OrderInfo extends AbstractOrderInfo {
                 .newBuilder()
                 .setUserId(getMobileUserId())
                 .setSessionId(getSessionId())
-                .setAccNo(getAccNo())
+                .addAccNo(getAccNo())
                 .build();
-
 
         DefaultConsumer orderInfoConsumer = new DefaultConsumer(getChannel()) {
             @Override

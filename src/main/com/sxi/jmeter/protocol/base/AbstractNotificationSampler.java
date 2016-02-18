@@ -52,7 +52,7 @@ public abstract class AbstractNotificationSampler extends AbstractSampler implem
 
     public static final Logger log = LoggingManager.getLoggerForClass();
 
-    public SampleResult sampleResult = new SampleResult();
+    public SampleResult result = new SampleResult();
 
     protected AbstractNotificationSampler(){
         factory = new ConnectionFactory();
@@ -74,22 +74,22 @@ public abstract class AbstractNotificationSampler extends AbstractSampler implem
 
         } catch (Exception e) {
             trace(e);
-//            sampleResult.setSuccessful(false);
-//            sampleResult.setResponseCode("400");
-//            sampleResult.setResponseMessage("Exception:" + e);
-//            sampleResult.setResponseData("Exception:" + e, null);
-            sampleResult = null;
+            result.setSuccessful(false);
+            result.setResponseCode("400");
+            result.setResponseMessage("Exception:" + e);
+            result.setResponseData("Exception:" + e, null);
+            return null; //ERROR IS IGNORED
         } finally {
-            if (sampleResult!=null && sampleResult.getEndTime()==0L) {
-                sampleResult.sampleEnd();
-            }
+            cleanup();
         }
 
-        cleanup();
+        if (result!=null && result.getEndTime()==0L && result.getStartTime()!=0L) {
+            result.sampleEnd();
+        }
 
         trace("sample() ended");
 
-        return sampleResult;
+        return result;
     }
 
     public abstract void listen() throws IOException, InterruptedException, TimeoutException;
@@ -112,9 +112,7 @@ public abstract class AbstractNotificationSampler extends AbstractSampler implem
             factory.setHost(getHost());
             factory.setUsername(getUsername());
             factory.setPassword(getPassword());
-            factory.setAutomaticRecoveryEnabled(true);
             factory.setConnectionTimeout(0);
-            factory.setAutomaticRecoveryEnabled(true);
 
             if (isConnectionSSL()) {
                 factory.useSslProtocol("TLS");

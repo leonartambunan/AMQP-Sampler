@@ -14,6 +14,7 @@ public abstract class AbstractAssetAllocationGUI extends AbstractRabbitGUI {
     protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
     protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
     protected JLabeledTextField requestType = new JLabeledTextField("Request Type");
+    protected JLabeledTextField accNo = new JLabeledTextField("Acc No");
 
     @Override
     public String getStaticLabel() {
@@ -31,12 +32,11 @@ public abstract class AbstractAssetAllocationGUI extends AbstractRabbitGUI {
         requestType.setText(sampler.getRequestType());
         requestQueue.setText(sampler.getRequestQueue());
         responseQueue.setText(sampler.getResponseQueue());
-
+        accNo.setText(sampler.getAccNo());
     }
 
     @Override
     public void clearGui() {
-
         sessionId.setText("");
         requestType.setText("1");
         requestQueue.setText("olt.asset_alloc_request-rpc");
@@ -57,7 +57,7 @@ public abstract class AbstractAssetAllocationGUI extends AbstractRabbitGUI {
 
         sampler.setRequestQueue(requestQueue.getText());
         sampler.setResponseQueue(responseQueue.getText());
-
+        sampler.setAccNo(accNo.getText());
 
     }
 
@@ -117,6 +117,10 @@ public abstract class AbstractAssetAllocationGUI extends AbstractRabbitGUI {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         orderSettings.add(requestType, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        orderSettings.add(accNo, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;

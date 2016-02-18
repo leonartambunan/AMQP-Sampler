@@ -12,5 +12,5 @@ public class Trimegah {
     public static final String MOBILE_DEVICE_ID= "a18632d8bde899bc";
     public static final String MOBILE_DEVICE_TYPE= "ANDROID";
     public static final String MOBILE_APP_VERSION= "3.0";
-    public static final int    HEARTBEAT = 60;
+    public static final int    HEARTBEAT = 120;
 }

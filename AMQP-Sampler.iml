@@ -10,7 +10,7 @@
     <orderEntry type="library" name="commons-lang3-3.3.1" level="project" />
     <orderEntry type="library" name="protobuf-java-2.6.1" level="project" />
     <orderEntry type="library" name="ProtobufTest" level="project" />
-    <orderEntry type="library" name="rabbitmq-client-3.4.3" level="application" />
     <orderEntry type="library" name="JMeter-13-Libs" level="application" />
+    <orderEntry type="library" name="rabbitmq-client" level="project" />
   </component>
 </module>

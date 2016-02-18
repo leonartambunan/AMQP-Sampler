@@ -1,11 +1,12 @@
 package com.sxi.jmeter.protocol.rpc.login;
 
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.MessageProperties;
 import id.co.tech.cakra.message.proto.olt.LogonRequest;
 import id.co.tech.cakra.message.proto.olt.LogonResponse;
 import org.apache.jmeter.config.Arguments;
-import org.apache.jmeter.samplers.Entry;
-import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.testelement.property.TestElementProperty;
 
 import java.io.IOException;

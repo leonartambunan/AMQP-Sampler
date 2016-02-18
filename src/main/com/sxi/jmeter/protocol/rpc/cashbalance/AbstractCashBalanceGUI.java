@@ -1,4 +1,4 @@
-package com.sxi.jmeter.protocol.rpc.latestprice;
+package com.sxi.jmeter.protocol.rpc.cashbalance;
 
 import com.sxi.jmeter.protocol.base.AbstractRabbitGUI;
 import org.apache.jmeter.testelement.TestElement;
@@ -7,20 +7,19 @@ import org.apache.jorphan.gui.JLabeledTextField;
 import javax.swing.*;
 import java.awt.*;
 
-public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
+public abstract class AbstractCashBalanceGUI extends AbstractRabbitGUI {
 
     private static final long serialVersionUID = 1L;
 
     protected JLabeledTextField requestQueue = new JLabeledTextField("Request Queue");
     protected JLabeledTextField responseQueue = new JLabeledTextField("Response Queue");
 
-    protected JLabeledTextField sessionId = new JLabeledTextField("Session ID");
-    protected JLabeledTextField stockId = new JLabeledTextField("Stock ID");
-    protected JLabeledTextField board = new JLabeledTextField("Board Code");
+    protected JLabeledTextField sessionId = new JLabeledTextField("Session Id");
+    protected JLabeledTextField accNo = new JLabeledTextField("Acc No");
 
     @Override
     public String getStaticLabel() {
-        return "Trimegah Latest Stock Price Sampler";
+        return "Trimegah Cash Balance Sampler";
     }
 
     protected abstract void setMainPanel(JPanel panel);
@@ -28,12 +27,11 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
     @Override
     public void configure(TestElement element) {
         super.configure(element);
-        if (!(element instanceof AbstractLatestPrice)) return;
-        AbstractLatestPrice sampler = (AbstractLatestPrice) element;
+        if (!(element instanceof AbstractCashBalance)) return;
+        AbstractCashBalance sampler = (AbstractCashBalance) element;
 
         sessionId.setText(sampler.getSessionId());
-        stockId.setText(sampler.getStockId());
-        board.setText(sampler.getBoardCode());
+        accNo.setText(sampler.getAccNo());
         requestQueue.setText(sampler.getRequestQueue());
         responseQueue.setText(sampler.getResponseQueue());
 
@@ -43,10 +41,10 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
     public void clearGui() {
 
         sessionId.setText("");
-        stockId.setText("IDX");
-        board.setText("RG");
-        requestQueue.setText("mi.current_message_request-rpc");
+        accNo.setText("");
+        requestQueue.setText("olt.CASH_BALANCE_REQUEST-rpc".toLowerCase());
         responseQueue.setText("");
+
     }
 
     @Override
@@ -54,13 +52,12 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
 
         super.modifyTestElement(element);
 
-        AbstractLatestPrice sampler = (AbstractLatestPrice) element;
+        AbstractCashBalance sampler = (AbstractCashBalance) element;
 
         configureTestElement(sampler);
 
         sampler.setSessionId(sessionId.getText());
-        sampler.setStockId(stockId.getText());
-        sampler.setBoardCode(board.getText());
+        sampler.setAccNo(accNo.getText());
 
         sampler.setRequestQueue(requestQueue.getText());
         sampler.setResponseQueue(responseQueue.getText());
@@ -86,7 +83,7 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
 
         JPanel queueSettings = new JPanel(new GridBagLayout());
         queueSettings.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Latest Stock Price Queues"));
+                BorderFactory.createEtchedBorder(), "Trading Idea Queues"));
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -101,7 +98,7 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
 
         JPanel orderSettings = new JPanel(new GridBagLayout());
         orderSettings.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Stock"));
+                BorderFactory.createEtchedBorder(), "Cash Balance Param"));
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -109,11 +106,7 @@ public abstract class AbstractLatestPriceGUI extends AbstractRabbitGUI {
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        orderSettings.add(stockId, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        orderSettings.add(board, gridBagConstraints);
+        orderSettings.add(accNo, gridBagConstraints);
 
         gridBagConstraintsCommon.gridx = 1;
         gridBagConstraintsCommon.gridy = 1;
